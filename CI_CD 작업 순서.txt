@@ -1,0 +1,30 @@
+1) Git&Github Workbook p32 ~ p44 까지 따라하기
+ - AWS IAM 설정 - EC2 역할 생성
+ - AWS IAM 설정 - CodeDeploy 역할 생성
+ - AWS IAM 설정 - Github Actions 사용자 생성
+ - AWS EC2 설정
+ - AWS S3 설정
+ - AWS CodeDeploy 설정
+ 
+2) Github 저장소 - Settings - Secrets and variables - Actions 설정
+ - APP_PROPERTIES 등록(yml 또는 properties 파일 내용 전체 복붙)
+ - AWS_ACCESS_KEY 등록(AWS에서 Github Actions 사용자 생성하고 발급된 Access Key)
+ - AWS_SECRET_KEY 등록(AWS에서 Github Actions 사용자 생성하고 발급된 Secret Key)
+
+3) 프로젝트 > .github > workflows > deploy.yml 파일 수정
+ - 07번째 줄 : Github 저장소 메인 branch명 수정(master 아니면 main 임)
+ - 11번째 줄 : PROJECT_NAME 프로젝트명 수정
+ - 12번째 줄 : AWS_REGION 수정(대한민국 서울일 경우 ap-northeast-2) 
+ - 13번째 줄 : S3_BUCKET_NAME 수정(본인의 S3 버킷 이름 확인)
+ - 14번째 줄 : CODE_DEPLOY_APPLICATION_NAME 수정(본인의 CodeDeploy 이름 확인)
+ - 15번째 줄 : CODE_DEPLOY_DEPLOYMENT_GROUP_NAME 수정(본인의 CodeDeploy Group 이름 확인)
+ - 나머지 손대지 말것
+ 
+4) 프로젝트 > scripts > deploy.sh 파일 수정
+ - 02번째 줄 : 프로젝트명 수정
+ - 나머지 손대지 말것
+ 
+5) 프로젝트 > appspec.yml 파일 수정
+ - 07번째 줄 : 프로젝트명으로 destination 경로 수정(이 부분 env 환경변수로 처리가 안된다 ---> 반나절 동안 삽질함... ㅡㅡ;)
+ - 나머지 손대지 말것
+ 
