@@ -1,4 +1,4 @@
-package kr.co.orangenode.dto.chat;
+package kr.co.orangenode.dto.chatDTO;
 
 
 import lombok.*;
