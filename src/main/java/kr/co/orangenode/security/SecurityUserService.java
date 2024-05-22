@@ -1,6 +1,6 @@
 package kr.co.orangenode.security;
 
-import kr.co.orangenode.entity.Member;
+import kr.co.orangenode.entity.member.Member;
 import kr.co.orangenode.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
