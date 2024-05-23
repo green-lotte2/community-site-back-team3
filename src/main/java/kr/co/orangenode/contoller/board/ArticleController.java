@@ -1,7 +1,7 @@
 package kr.co.orangenode.contoller.board;
 
 import kr.co.orangenode.entity.board.Article;
-import kr.co.orangenode.repository.ArticleRepository;
+import kr.co.orangenode.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,18 +15,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleController {
 
+    private ArticleService articleService;
 
 
     // 전체 게시글 조회
     @GetMapping("/api/articles")
     public List<Article> CheckAllArticles(){
-        return articleRepository.findAll(); 
+        return articleService.checkAllArticles();
     }
 
     // 특정 게시글 조회
     @GetMapping("/api/articles/{uid}")
     public Article CheckArticleId(@PathVariable int uid) {
-        Optional<Article> article = articleRepository.findById(uid);
+        Optional<Article> article = articleService.checkArticleById(uid);
         if (article.isPresent()) {
             return article.get();
         } else {
@@ -39,34 +40,25 @@ public class ArticleController {
     // 게시글 생성
     @PostMapping("/api/articles")
     public Article CreateArticle(@RequestBody Article article){
-        return articleRepository.save(article);
+        return articleService.createArticle(article);
     }
 
 
     // 게시글 업데이트
     @PutMapping("/api/articles/{uid}")
     public Article updateArticle(@PathVariable int uid, @RequestBody Article article1) {
-        Optional<Article> articleOptional = articleRepository.findById(uid);
-        if(articleOptional.isPresent()) {
-            Article article2 = articleOptional.get();
-            article2.setTitle(article1.getTitle());
-            article2.setContent(article1.getTitle());
-
-            return articleRepository.save(article2);
-        }else{
+        Optional<Article> updatedArticle  = articleService.updateArticle(uid, article1);
+        if (updatedArticle.isPresent()) {
+            return updatedArticle.get();
+        } else {
             log.info("UpdateError!!");
             return null;
         }
     }
 
-    @DeleteMapping("/api/articles/{uid}")
-    public void deleteArticle(@PathVariable int uid){
-        Optional<Article> articleOptional = articleRepository.findById(uid);
-        if(articleOptional.isPresent()){
-            articleRepository.delete(articleOptional.get());
-        }else{
-            log.info("DeleteError!!!");
-        }
+    @DeleteMapping("/{uid}")
+    public void deleteArticle(@PathVariable int uid) {
+        articleService.deleteArticle(uid);
     }
 
 
