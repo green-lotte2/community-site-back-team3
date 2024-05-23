@@ -35,8 +35,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("uploads/**")
                 .addResourceLocations("file:" + staticServerPathImg);
     }
+<<<<<<< HEAD
 //    // CORS 방지를 위한 설정
     /*
+=======
+    // CORS 방지를 위한 설정
+>>>>>>> 06fe144116f43b4f7f2b6757ad8525a32812e2eb
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
