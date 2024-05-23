@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/user")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
 
         log.info(userDTO);

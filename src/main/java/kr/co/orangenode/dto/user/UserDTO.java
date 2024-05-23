@@ -15,6 +15,7 @@ public class UserDTO {
 
     private String uid;
     private String pass;
+    private String pass2;
     private String name;
     private String email;
     private String hp;

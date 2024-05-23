@@ -6,7 +6,7 @@ mybatis:
 server:
     port: 8080
     servlet:
-        context-path: /orangenode
+        context-path: /
 
 spring:
     application:
