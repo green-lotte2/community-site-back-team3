@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ArticleController {
 
@@ -19,13 +19,15 @@ public class ArticleController {
 
 
     // 전체 게시글 조회
-    @GetMapping("/api/articles")
-    public List<Article> CheckAllArticles(){
-        return articleService.checkAllArticles();
+    @GetMapping("/articles")
+    public String CheckAllArticles(@RequestParam("cno") int cno){
+        log.info("cno : " + cno);
+        return  "article list ";
+        //articleService.checkAllArticles();
     }
 
     // 특정 게시글 조회
-    @GetMapping("/api/articles/{uid}")
+    @GetMapping("/articles/{uid}")
     public Article CheckArticleId(@PathVariable int uid) {
         Optional<Article> article = articleService.checkArticleById(uid);
         if (article.isPresent()) {
@@ -38,14 +40,14 @@ public class ArticleController {
     }
 
     // 게시글 생성
-    @PostMapping("/api/articles")
+    @PostMapping("/articles")
     public Article CreateArticle(@RequestBody Article article){
         return articleService.createArticle(article);
     }
 
 
     // 게시글 업데이트
-    @PutMapping("/api/articles/{uid}")
+    @PutMapping("/articles/{uid}")
     public Article updateArticle(@PathVariable int uid, @RequestBody Article article1) {
         Optional<Article> updatedArticle  = articleService.updateArticle(uid, article1);
         if (updatedArticle.isPresent()) {
@@ -60,8 +62,6 @@ public class ArticleController {
     public void deleteArticle(@PathVariable int uid) {
         articleService.deleteArticle(uid);
     }
-
-
 }
 
 
