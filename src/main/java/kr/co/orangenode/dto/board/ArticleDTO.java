@@ -15,6 +15,7 @@ public class ArticleDTO {
 
     private int ano;
     private String uid;
+    private int cno;
     private String title;
     private String content;
     private int file;

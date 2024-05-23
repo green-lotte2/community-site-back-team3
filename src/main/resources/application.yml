@@ -6,7 +6,7 @@ mybatis:
 server:
     port: 8080
     servlet:
-        context-path: /orangenode
+        context-path: /
 
 spring:
     application:
@@ -152,3 +152,6 @@ logging:
                     descriptor:
                         sql: trace
 
+jwt:
+    issuer: gudals9677@gmail.com
+    secret: 4XudNUpSmog3lwI9thJFejF7YfBBQnCI

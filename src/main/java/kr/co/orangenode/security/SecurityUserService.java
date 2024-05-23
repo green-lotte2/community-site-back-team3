@@ -14,17 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityUserService implements UserDetailsService {
 
-    private final UserRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User member = memberRepository.findById(username)
+        User user = userRepository.findById(username)
                 .orElseThrow(()->new UsernameNotFoundException(username + " NotFound"));
 
         // 사용자 인증객체 생성(세션에 저장)
         UserDetails userDetails = MyUserDetails.builder()
-                .member(member)
+                .user(user)
                 .build();
 
 
