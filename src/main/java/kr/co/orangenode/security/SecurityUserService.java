@@ -22,11 +22,6 @@ public class SecurityUserService implements UserDetailsService {
         User member = memberRepository.findById(username)
                 .orElseThrow(()->new UsernameNotFoundException(username + " NotFound"));
 
-        if (member.getWdate() != null) {
-            throw new UsernameNotFoundException("탈퇴한 회원입니다.");
-        }
-
-
         // 사용자 인증객체 생성(세션에 저장)
         UserDetails userDetails = MyUserDetails.builder()
                 .member(member)
