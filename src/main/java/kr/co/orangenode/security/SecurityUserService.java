@@ -1,7 +1,7 @@
 package kr.co.orangenode.security;
 
 import kr.co.orangenode.entity.user.User;
-import kr.co.orangenode.repository.MemberRepository;
+import kr.co.orangenode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityUserService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
