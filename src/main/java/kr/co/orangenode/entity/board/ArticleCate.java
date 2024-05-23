@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.chat;
+package kr.co.orangenode.entity.board;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,10 +11,11 @@ import lombok.*;
 @Entity
 @Builder
 @ToString
-@Table(name = "chatroom")
-public class ChatRoom {
+@Table(name = "articleCate")
+public class ArticleCate {
     @Id
-    private int chatNo;
-    private String title;
-    private String status;
+    private int cNo;
+    private String uid;
+    private String cateName;
+
 }

@@ -1,6 +1,6 @@
 package kr.co.orangenode.security;
 
-import kr.co.orangenode.entity.member.Member;
+import kr.co.orangenode.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +19,8 @@ import java.util.List;
 @Builder
 public class MyUserDetails implements UserDetails {
 
-    // Member 엔티티
-    private Member member;
+    // User 엔티티
+    private User user;
 /*
     @Override
     public Map<String, Object> getAttributes() {
@@ -36,19 +36,19 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 계정이 갖는 권한 목록
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+member.getLevel()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getRole()));
 
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return member.getPass();
+        return user.getPass();
     }
 
     @Override
     public String getUsername() {
-        return member.getUid();
+        return user.getUid();
     }
 
     @Override

@@ -1,10 +1,11 @@
-package kr.co.orangenode.entity.chat;
+package kr.co.orangenode.entity.calendar;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -13,14 +14,15 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @ToString
-@Table(name = "chatmessage")
-public class ChatMessage {
+@Table(name = "calendar")
+
+public class Calendar {
     @Id
-    private int cmNo;
-    private String message;
-    private LocalDateTime cDate;
-    private int chatNo;
+    private int calNo;
     private String uid;
-    private String oName;
-    private String sName;
+    private String event;
+    private LocalDateTime date;
+    private Time sdate;
+    private Time edate;
+
 }

@@ -1,7 +1,7 @@
 package kr.co.orangenode.security;
 
-import kr.co.orangenode.entity.member.Member;
-import kr.co.orangenode.repository.MemberRepository;
+import kr.co.orangenode.entity.user.User;
+import kr.co.orangenode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,22 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityUserService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findById(username)
+        User user = userRepository.findById(username)
                 .orElseThrow(()->new UsernameNotFoundException(username + " NotFound"));
-
-        if (member.getWdate() != null) {
-            throw new UsernameNotFoundException("탈퇴한 회원입니다.");
-        }
-
 
         // 사용자 인증객체 생성(세션에 저장)
         UserDetails userDetails = MyUserDetails.builder()
-                .member(member)
+                .user(user)
                 .build();
 
 
