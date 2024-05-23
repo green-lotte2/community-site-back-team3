@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @ToString
 @Table(name = "file")
-public class file {
+public class File {
     @Id
     private int fno;
     private int ano;
