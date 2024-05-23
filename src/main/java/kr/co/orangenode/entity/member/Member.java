@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity;
+package kr.co.orangenode.entity.member;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

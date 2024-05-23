@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 @Builder
 @ToString
-@Table(name = "chatRoom")
+@Table(name = "chatroom")
 public class ChatRoom {
     @Id
     private int chatNo;
