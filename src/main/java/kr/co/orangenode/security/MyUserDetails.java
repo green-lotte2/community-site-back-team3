@@ -1,6 +1,6 @@
 package kr.co.orangenode.security;
 
-import kr.co.orangenode.entity.Member;
+import kr.co.orangenode.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -20,8 +19,8 @@ import java.util.Map;
 @Builder
 public class MyUserDetails implements UserDetails {
 
-    // Member 엔티티
-    private Member member;
+    // User 엔티티
+    private User member;
 /*
     @Override
     public Map<String, Object> getAttributes() {
@@ -37,7 +36,7 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 계정이 갖는 권한 목록
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+member.getLevel()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+member.getRole()));
 
         return authorities;
     }

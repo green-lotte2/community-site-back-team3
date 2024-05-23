@@ -1,9 +1,10 @@
-package kr.co.orangenode.entity.chat;
+package kr.co.orangenode.entity.page;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,10 +12,13 @@ import lombok.*;
 @Entity
 @Builder
 @ToString
-@Table(name = "chatroom")
-public class ChatRoom {
+@Table(name = "partner")
+public class Partner {
+
     @Id
-    private int chatNo;
-    private String title;
-    private String status;
+    private int partNo;
+    private int pageNo;
+    private String uid;
+
+
 }
