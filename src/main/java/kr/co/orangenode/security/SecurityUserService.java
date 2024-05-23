@@ -1,6 +1,6 @@
 package kr.co.orangenode.security;
 
-import kr.co.orangenode.entity.member.Member;
+import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class SecurityUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findById(username)
+        User member = memberRepository.findById(username)
                 .orElseThrow(()->new UsernameNotFoundException(username + " NotFound"));
 
         if (member.getWdate() != null) {
