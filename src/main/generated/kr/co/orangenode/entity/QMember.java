@@ -7,14 +7,14 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import kr.co.orangenode.entity.member.Member;
+import kr.co.orangenode.entity.user.User;
 
 
 /**
  * QMember is a Querydsl query type for Member
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMember extends EntityPathBase<Member> {
+public class QMember extends EntityPathBase<User> {
 
     private static final long serialVersionUID = -1366736350L;
 
@@ -71,15 +71,15 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath zip = createString("zip");
 
     public QMember(String variable) {
-        super(Member.class, forVariable(variable));
+        super(User.class, forVariable(variable));
     }
 
-    public QMember(Path<? extends Member> path) {
+    public QMember(Path<? extends User> path) {
         super(path.getType(), path.getMetadata());
     }
 
     public QMember(PathMetadata metadata) {
-        super(Member.class, metadata);
+        super(User.class, metadata);
     }
 
 }
