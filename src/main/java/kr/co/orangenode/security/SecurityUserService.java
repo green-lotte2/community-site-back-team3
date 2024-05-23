@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class SecurityUserService implements UserDetailsService {
-
     private final UserRepository userRepository;
+
+    private final UserRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
