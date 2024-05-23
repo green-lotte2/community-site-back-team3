@@ -1,8 +1,6 @@
 package kr.co.orangenode.entity.chat;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -14,6 +12,7 @@ import lombok.*;
 @Table(name = "chatuser")
 public class ChatUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cuNo;
-    private int uid;
+    private String uid;
 }
