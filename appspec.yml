@@ -1,6 +1,7 @@
 version: 0.0
 os: linux
 
+
 # S3에 있는 zip 파일이 EC2에 배포될 위치를 지정, destination 경로를 변수로 처리하는 방법 찾아보기
 files:
   - source: / # CodeDeploy에서 전달해 준 파일 중 destination으로 이동시킬 대상을 루트로 지정(전체파일)
