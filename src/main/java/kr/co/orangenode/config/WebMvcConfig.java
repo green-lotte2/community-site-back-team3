@@ -13,16 +13,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private AppInfo appInfo;
 
-    // ====== 배포시엔 해당 어노테이션 사용 ======
-    //@Value("${myServerProd.static-resources-path}")
-    // ====== 개발시엔 해당 어노테이션 사용 ======
-    @Value("${localProd.static-resources-pathProd}")
+    @Value("${myServerProd.static-resources-path}")
     private String staticServerPathProd;
 
-    // ====== 배포시엔 해당 어노테이션 사용 ======
-    //@Value("${MyServerImg.static-resources-pathImg}")
-    // ====== 개발시엔 해당 어노테이션 사용 ======
-    @Value("${localImg.static-resources-pathImg}")
+    @Value("${MyServerImg.static-resources-pathImg}")
     private String staticServerPathImg;
 
     @Value("${front.url}")
