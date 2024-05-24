@@ -36,7 +36,6 @@ public class ArticleController {
             log.info("CheckArticleId ERROR!");
             return null;
         }
-
     }
 
     // 게시글 생성
