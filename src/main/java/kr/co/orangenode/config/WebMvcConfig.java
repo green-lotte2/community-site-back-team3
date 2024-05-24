@@ -25,6 +25,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${localImg.static-resources-pathImg}")
     private String staticServerPathImg;
 
+    @Value("${front.url}")
+    private String frontUrl;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 상품 경로
@@ -38,8 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("https://orangenode.netlify.app")
+                .allowedOrigins(frontUrl)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "Origin", "Accept")
                 .allowCredentials(true);

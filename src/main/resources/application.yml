@@ -105,21 +105,6 @@ spring:
                             - email
                             - profile
 
-                    naver:
-                        client-name: naver
-                        authorization-grant-type: authorization_code
-                        client-id: X9jSjtT15GiBMRExXzwb
-                        client-secret: CKcV3cCPV3
-                        # 개발시 사용
-                        # redirect-uri: http://localhost:8080/lotteon/login/oauth2/code/naver
-                        # 배포시 사용
-                        redirect-uri: http://ec2-3-35-92-212.ap-northeast-2.compute.amazonaws.com:8080/lotteon/login/oauth2/code/naver
-                        scope:
-                            - name
-                            - email
-                            - nickname
-                            - profile_image
-
 # 파일 업로드 설정
 file:
     upload:
@@ -155,3 +140,7 @@ logging:
 jwt:
     issuer: gudals9677@gmail.com
     secret: 4XudNUpSmog3lwI9thJFejF7YfBBQnCI
+
+front:
+    #url: "http://localhost:3000"
+    url: "https://orangenode.netlify.app"
