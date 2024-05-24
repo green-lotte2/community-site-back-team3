@@ -1,7 +1,5 @@
 #!/bin/bash
 PROJECT_NAME="orangenode"
-DEPLOY_DIR="/home/$PROJECT_NAME"
-
 BUILD_JAR=$(ls /home/$PROJECT_NAME/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 echo "> build 파일명: $JAR_NAME" >> /home/$PROJECT_NAME/deploy.log
