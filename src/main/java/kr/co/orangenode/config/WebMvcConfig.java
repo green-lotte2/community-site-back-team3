@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,27 +34,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("uploads/**")
                 .addResourceLocations("file:" + staticServerPathImg);
     }
-//    // CORS 방지를 위한 설정
-    /*
-=======
     // CORS 방지를 위한 설정
->>>>>>> 06fe144116f43b4f7f2b6757ad8525a32812e2eb
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("https://orangenode.netlify.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "Origin", "Accept")
                 .allowCredentials(true);
-    }*/
-/*
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AppInfoInterceptor(appInfo));
-
-
-        // myPage 배너 Interceptor 추가
-        registry.addInterceptor(new MyBannerInterceptor(bannerService))
-                .addPathPatterns("/my/**");
-    }*/
+    }
 }
