@@ -35,6 +35,18 @@ spring:
         prefix: classpath:/templates
 
     # 이메일 설정
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: gudals9677@gmail.com
+        password: fxia apsh ihev ctmu
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    timeout: 5000
+                    starttls:
+                        enable: true
 
     #jpa 설정
     jpa:
