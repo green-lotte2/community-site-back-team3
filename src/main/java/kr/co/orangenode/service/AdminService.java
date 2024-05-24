@@ -1,4 +1,4 @@
-package service;
+package kr.co.orangenode.service;
 
 public class AdminService {
 }
