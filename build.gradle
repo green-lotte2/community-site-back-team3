@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.orangenode'
-version = '0.0.5-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
@@ -44,6 +44,9 @@ dependencies {
     // modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.4'
+
     // QueryDsl
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
     annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
@@ -55,13 +58,15 @@ dependencies {
 
     // 상품 카테고리 캐싱처리
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    //소켓
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
