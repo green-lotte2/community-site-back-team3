@@ -10,7 +10,7 @@ on:
 env:  
   PROJECT_NAME: orangenode
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: sun-s3-bucket-github-actions
+  S3_BUCKET_NAME: chlvldzmf-s3-bucket-github-actions
   CODE_DEPLOY_APPLICATION_NAME: chlvldzmf-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: chlvldzmf-codedeploy-deploy-group
   
