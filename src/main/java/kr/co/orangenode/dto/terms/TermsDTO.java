@@ -9,9 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class TermsDTO {
-
     private String terms;
     private String privacy;
-    private String finance;
-    private String location;
+    private String age;
 }
