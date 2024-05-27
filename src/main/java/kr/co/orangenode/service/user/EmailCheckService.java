@@ -72,6 +72,7 @@ public class EmailCheckService {
     // 🎈이메일 인증코드 전송
     public void sendEmailCode(HttpSession session, String receiver){
         log.info("sender : " + sender);
+        log.info("이메일 인증코드 전송 : " + session);
 
         // MimeMessage 생성
         MimeMessage message = javaMailSender.createMimeMessage();

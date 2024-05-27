@@ -39,9 +39,9 @@ public class EmaliCheckController {
     @GetMapping("/member/checkEmailCode/{inputCode}")
     public ResponseEntity<?> checkEmailCode(HttpSession session, @PathVariable("inputCode") String inputCode){
         // 서버에서 발급한 인증 코드
-        log.info("session11111321:" + session.toString());
+        log.info("checkEmailCode:" + session.toString());
         String code = (String) session.getAttribute("code");
-        log.info("session321321321:" + session.toString());
+        log.info("checkEmailCode:" + session.getAttribute("code"));
         log.info("code:" + code);
         // 회원가입하는 사용자가 입력한 코드
         String checkCode = inputCode;
