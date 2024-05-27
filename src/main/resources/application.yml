@@ -150,6 +150,6 @@ jwt:
     secret: 4XudNUpSmog3lwI9thJFejF7YfBBQnCI
 
 front:
-    #url: "http://localhost:3000"
-    url: "http://3.34.204.24/"
+    url: "http://localhost:3000"
+    #url: "http://3.34.204.24/"
 

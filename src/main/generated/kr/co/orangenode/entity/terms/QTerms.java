@@ -19,9 +19,7 @@ public class QTerms extends EntityPathBase<Terms> {
 
     public static final QTerms terms1 = new QTerms("terms1");
 
-    public final StringPath finance = createString("finance");
-
-    public final StringPath location = createString("location");
+    public final StringPath age = createString("age");
 
     public final StringPath privacy = createString("privacy");
 

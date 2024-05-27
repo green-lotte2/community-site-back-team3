@@ -82,7 +82,7 @@ public class EmailCheckService {
 
         log.info("code : " + code);
 
-        String title = "🌻lotteon 인증코드 입니다.";
+        String title = "orangeNode 인증코드 입니다.";
         String content = "<h1>인증코드는" +  code + "입니다.</h1>";
 
         try {
@@ -92,9 +92,11 @@ public class EmailCheckService {
             message.setContent(content, "text/html;charset=UTF-8");
 
             javaMailSender.send(message);
-
+            log.info("세션확인111 : " + session.getAttribute("code"));
         } catch(Exception e){
             log.error("sendEmailCode : " + e.getMessage());
         }
+        log.info("세션확인222 : " + session.getAttribute("code"));
     }
+
 }
