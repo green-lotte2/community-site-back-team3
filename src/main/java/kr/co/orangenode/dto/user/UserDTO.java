@@ -23,6 +23,7 @@ public class UserDTO {
     private String grade;
     private String nick;
     private String profile;
+    private String verificationCode;
 
     @CreationTimestamp
     private LocalDateTime rDate;

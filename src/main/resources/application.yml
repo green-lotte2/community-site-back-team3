@@ -151,5 +151,5 @@ jwt:
 
 front:
     url: "http://localhost:3000"
-    #url: "http://3.34.204.24/"
+    #url: "http://3.34.204.24"
 
