@@ -1,8 +1,6 @@
 package kr.co.orangenode.entity.terms;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -13,9 +11,9 @@ import lombok.*;
 @Entity
 @Table(name = "terms")
 public class Terms {
+
     @Id
     private String terms;
     private String privacy;
-    private String finance;
-    private String location;
+    private String age;
 }
