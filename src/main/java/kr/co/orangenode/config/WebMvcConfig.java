@@ -16,6 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${myServerProd.static-resources-path}")
     private String staticServerPathProd;
 
+    // ====== 배포시엔 해당 어노테이션 사용 ======
     @Value("${MyServerImg.static-resources-pathImg}")
     private String staticServerPathImg;
 
@@ -36,6 +37,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns(frontUrl, "http://3.34.204.24")
+
+
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "Origin", "Accept","Access-Control-Allow-Origin")
                 .allowCredentials(true);
