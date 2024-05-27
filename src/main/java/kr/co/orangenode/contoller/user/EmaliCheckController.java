@@ -26,6 +26,10 @@ public class EmaliCheckController {
         // service에서 중복 체크
         int result = emailCheckService.UserCheck(session, type, value);
         log.info("session :" + session);
+
+        String code = (String) session.getAttribute("code");
+        log.info("session code : " + code);
+
         // json 형식으로 변환
         Map<String, Integer> data = new HashMap<>();
         data.put("result", result);
@@ -35,20 +39,18 @@ public class EmaliCheckController {
     @GetMapping("/member/checkEmailCode/{inputCode}")
     public ResponseEntity<?> checkEmailCode(HttpSession session, @PathVariable("inputCode") String inputCode){
         // 서버에서 발급한 인증 코드
-        log.info("session11111321:" + session.toString());
+        log.info("checkEmailCode:" + session.toString());
         String code = (String) session.getAttribute("code");
-        log.info("session321321321:" + session.toString());
+        log.info("checkEmailCode:" + session.getAttribute("code"));
         log.info("code:" + code);
         // 회원가입하는 사용자가 입력한 코드
         String checkCode = inputCode;
         log.info("CheckCode: " + inputCode);
         Map<String, Integer> data = new HashMap<>();
         if(code != null && code.equals(checkCode)){
-            //json 형식으로 변환
             data.put("result", 0);
             return ResponseEntity.ok().body(data);
         }else {
-            //json 형식으로 변환
             data.put("result", 1);
             return ResponseEntity.ok().body(data);
         }
