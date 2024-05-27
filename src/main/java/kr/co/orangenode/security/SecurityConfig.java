@@ -8,6 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,13 +35,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         // 로그인 설정
-        httpSecurity.formLogin(login -> login
-                                        .loginPage("/member/login")
-                                        .defaultSuccessUrl("/")
-                                        .failureUrl("/member/login?success=100")
-                                        .usernameParameter("uid")
-                                        .passwordParameter("pass"));
-
+        httpSecurity.httpBasic(HttpBasicConfigurer::disable);    // 기본 HTTP 인증 방식 비활성
+        httpSecurity.formLogin(FormLoginConfigurer::disable);
+        httpSecurity.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션 비활성
         httpSecurity.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource())); // CORS 설정
 
         // 자동로그인 설정
