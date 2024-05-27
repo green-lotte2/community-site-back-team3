@@ -15,8 +15,8 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        String uid = (String) headerAccessor.getSessionAttributes().get("uid");
-        chatMessage.setUid(uid);
+
+        chatMessage.setUid(chatMessage.getUid());
         log.info("Received message: " + chatMessage);
         return chatMessage;
     }
