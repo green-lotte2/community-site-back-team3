@@ -26,6 +26,10 @@ public class EmaliCheckController {
         // service에서 중복 체크
         int result = emailCheckService.UserCheck(session, type, value);
         log.info("session :" + session);
+
+        String code = (String) session.getAttribute("code");
+        log.info("session code : " + code);
+
         // json 형식으로 변환
         Map<String, Integer> data = new HashMap<>();
         data.put("result", result);
@@ -44,11 +48,9 @@ public class EmaliCheckController {
         log.info("CheckCode: " + inputCode);
         Map<String, Integer> data = new HashMap<>();
         if(code != null && code.equals(checkCode)){
-            //json 형식으로 변환
             data.put("result", 0);
             return ResponseEntity.ok().body(data);
         }else {
-            //json 형식으로 변환
             data.put("result", 1);
             return ResponseEntity.ok().body(data);
         }

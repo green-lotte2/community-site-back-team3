@@ -49,16 +49,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         // 토큰 검사
         if(token != null){
             try{
-                log.info("doFilterInternal...4");
+                //log.info("doFilterInternal...4");
                 jwtProvider.validateToken(token);
 
-                log.info("doFilterInternal...5");
+                //log.info("doFilterInternal...5");
                 // 시큐리티 인증 처리
                 Authentication authentication = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             }catch (Exception e) {
-                log.info("doFilterInternal...9");
+                //log.info("doFilterInternal...9");
 
                 // 토큰 유효성 검사 실패 응답
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -66,7 +66,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-       // log.info("doFilterInternal...11");
         // 다음 필터 이동
         filterChain.doFilter(request, response);
     }
