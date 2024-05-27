@@ -14,8 +14,10 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        System.out.println("Received message: " + chatMessage);
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
+        String uid = (String) headerAccessor.getSessionAttributes().get("uid");
+        chatMessage.setUid(uid);
+        log.info("Received message: " + chatMessage);
         return chatMessage;
     }
 
