@@ -19,10 +19,15 @@ import java.time.LocalDateTime;
 public class Calendar {
     @Id
     private int calNo;
-    private String uid;
-    private String event;
-    private LocalDateTime date;
-    private Time sdate;
-    private Time edate;
+    private String id;
+    private int calendarId;
+    private String title;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private String location;
+    private String state;
+    private String color;
+    private String isAllDay;
+    private String isReadOnly;
 
 }
