@@ -14,18 +14,19 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @ToString
-@Table(name = "calendar")
+@Table(name = "`calendar`")
 
 public class Calendar {
     @Id
     private int calNo;
-    private String id;
+    private String uid;
     private int calendarId;
     private String title;
     private LocalDateTime start;
     private LocalDateTime end;
     private String location;
     private String state;
+    private String backgroundColor;
     private String color;
     private String isAllDay;
     private String isReadOnly;
