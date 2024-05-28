@@ -22,6 +22,7 @@ public class CalendarDTO {
     private LocalDateTime end;
     private String location;
     private String state;
+    private String backgroundColor;
     private String color;
     private String isAllDay;
     private String isReadOnly;
