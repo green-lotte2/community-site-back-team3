@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @ToString
 public class CalendarDTO {
     private int calNo;
-    private String id;
+    private String uid;
     private int calendarId;
     private String title;
     private LocalDateTime start;
