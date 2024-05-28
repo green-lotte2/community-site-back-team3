@@ -20,4 +20,8 @@ public class ChatRoomService {
     public List<ChatRoom> getAllChatRooms(){
         return chatRoomRepository.findAll();
     }
+
+    public void deleteRoom(int cmNo){
+        chatRoomRepository.deleteById(cmNo);
+    }
 }

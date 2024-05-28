@@ -25,4 +25,10 @@ public class ChatRoomController {
     public ChatRoom createChatRoom(@RequestBody ChatRoom chatRoom) {
         return chatRoomService.createRoom(chatRoom);
     }
+
+    @DeleteMapping("/chatroom/{cmNo}")
+    public List<ChatRoom> deleteChatRoom(@PathVariable int cmNo) {
+        chatRoomService.deleteRoom(cmNo);
+        return chatRoomService.getAllChatRooms();
+    }
 }
