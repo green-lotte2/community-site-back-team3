@@ -21,7 +21,7 @@ public class QCalendar extends EntityPathBase<Calendar> {
 
     public final StringPath backgroundColor = createString("backgroundColor");
 
-    public final NumberPath<Integer> calendarId = createNumber("calendarId", Integer.class);
+    public final StringPath calendarId = createString("calendarId");
 
     public final NumberPath<Integer> calNo = createNumber("calNo", Integer.class);
 
