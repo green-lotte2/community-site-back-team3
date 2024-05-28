@@ -20,7 +20,7 @@ public class Calendar {
     @Id
     private int calNo;
     private String uid;
-    private int calendarId;
+    private String calendarId;
     private String title;
     private LocalDateTime start;
     private LocalDateTime end;
