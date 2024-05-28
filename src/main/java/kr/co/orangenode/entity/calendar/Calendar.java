@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Calendar {
     @Id
     private int calNo;
-    private String id;
+    private String uid;
     private int calendarId;
     private String title;
     private LocalDateTime start;

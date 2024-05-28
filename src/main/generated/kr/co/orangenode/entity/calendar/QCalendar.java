@@ -27,8 +27,6 @@ public class QCalendar extends EntityPathBase<Calendar> {
 
     public final DateTimePath<java.time.LocalDateTime> end = createDateTime("end", java.time.LocalDateTime.class);
 
-    public final StringPath id = createString("id");
-
     public final StringPath isAllDay = createString("isAllDay");
 
     public final StringPath isReadOnly = createString("isReadOnly");
@@ -40,6 +38,8 @@ public class QCalendar extends EntityPathBase<Calendar> {
     public final StringPath state = createString("state");
 
     public final StringPath title = createString("title");
+
+    public final StringPath uid = createString("uid");
 
     public QCalendar(String variable) {
         super(Calendar.class, forVariable(variable));
