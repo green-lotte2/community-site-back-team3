@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @ToString
-@Table(name = "calendar")
+@Table(name = "`calendar`")
 
 public class Calendar {
     @Id
@@ -26,6 +26,7 @@ public class Calendar {
     private LocalDateTime end;
     private String location;
     private String state;
+    private String backgroundColor;
     private String color;
     private String isAllDay;
     private String isReadOnly;
