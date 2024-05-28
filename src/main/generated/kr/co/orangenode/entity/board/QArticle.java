@@ -31,8 +31,6 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final StringPath fontColor = createString("fontColor");
 
-    public final NumberPath<Integer> fontSize = createNumber("fontSize", Integer.class);
-
     public final NumberPath<Integer> hit = createNumber("hit", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> newDate = createDateTime("newDate", java.time.LocalDateTime.class);

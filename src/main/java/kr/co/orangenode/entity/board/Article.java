@@ -21,13 +21,13 @@ public class Article {
     @Id
     private int ano;
     private String uid;
-    private int cno;
+    private Integer cno;
     private String title;
     private String content;
     private int file;
     private String reply;
     private String font;
-    private int fontSize;
+    //private int fontSize;
     private String fontColor;
     private int hit;
     @CreationTimestamp
