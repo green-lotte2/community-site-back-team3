@@ -5,7 +5,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.servlet.http.HttpSession;
 import kr.co.orangenode.entity.user.User;
 import jakarta.mail.internet.MimeMessage;
-import kr.co.orangenode.repository.UserRepository;
+import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +39,7 @@ public class EmailCheckService {
                 sendEmailCode(session, value);
                 return result;
             }
-        } else if (type.equals("userHp")) {
+        } else if (type.equals("hp")) {
             //전화번호 중복검사
             Optional<User> optUser = userRepository.findByHp(value);
             //Optional이 비어있는지 체크
@@ -51,7 +51,7 @@ public class EmailCheckService {
                 // 사용가능
                 return result;
             }
-        }if (type.equals("userId")) {
+        }if (type.equals("uid")) {
             // 아이디 중복 검사
             Optional<User> optUser = userRepository.findById(value);
             // optional이 비어있는지 체크
