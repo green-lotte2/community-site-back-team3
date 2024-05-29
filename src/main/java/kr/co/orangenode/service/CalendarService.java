@@ -3,6 +3,7 @@ package kr.co.orangenode.service;
 import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.calendar.CalendarDTO;
 import kr.co.orangenode.entity.calendar.Calendar;
+import kr.co.orangenode.mapper.CalendarMapper;
 import kr.co.orangenode.repository.CalendarRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 public class CalendarService {
     private final CalendarRepository calendarRepository;
     private final ModelMapper modelMapper;
-
+    private final CalendarMapper calendarMapper;
     public ResponseEntity<?> insertCalendar(CalendarDTO calendarDTO) {
         log.info("캘린더 서비스 : " + calendarDTO);
 
@@ -47,7 +48,14 @@ public class CalendarService {
 
     public ResponseEntity<?> modifyEvent(String id, CalendarDTO calendarDTO) {
         log.info("수정 서비스"+calendarDTO);
-        return null;
+        List<Calendar> calendars = calendarRepository.findById(id);
+        if(calendars.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        }else{
+            calendarMapper.updateEvent(id, calendarDTO);
+            return ResponseEntity.ok().build();
+        }
+
     }
 
     @Transactional
