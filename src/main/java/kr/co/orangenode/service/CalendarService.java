@@ -1,6 +1,6 @@
 package kr.co.orangenode.service;
 
-import com.querydsl.core.Tuple;
+import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.calendar.CalendarDTO;
 import kr.co.orangenode.entity.calendar.Calendar;
 import kr.co.orangenode.repository.CalendarRepository;
@@ -29,6 +29,7 @@ public class CalendarService {
         return ResponseEntity.ok().body(calendar);
     }
 
+
     public ResponseEntity<?> selectsSchedules(String uid) {
 
         List<Calendar> calendars = calendarRepository.findByUid(uid);
@@ -42,7 +43,23 @@ public class CalendarService {
             return ResponseEntity.ok().body(calendars);
         }
 
-
     }
 
+    public ResponseEntity<?> modifyEvent(String id, CalendarDTO calendarDTO) {
+        log.info("수정 서비스"+calendarDTO);
+        return null;
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteEvent(String id) {
+        List<Calendar> calendars = calendarRepository.findById(id);
+        log.info("삭제서비스..1"+id);
+        log.info("삭제서비스..2"+calendars);
+        if(calendars.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        }else{
+            calendarRepository.deleteById(id);
+            return ResponseEntity.ok().body(calendars);
+        }
+    }
 }

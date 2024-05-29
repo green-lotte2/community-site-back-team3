@@ -5,7 +5,6 @@ import kr.co.orangenode.service.CalendarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,14 +31,17 @@ public class CalendarController {
     }
     
     // 캘린더 일정 DB 수정
-    @PostMapping("/calendar/modify")
-    public ResponseEntity<?> modifyEvent(@RequestBody CalendarDTO calendarDTO){
-        return null;
+    @PostMapping("/calendar/modify/{id}")
+    public ResponseEntity<?> modifyEvent(@PathVariable("id") String id, @RequestBody CalendarDTO calendarDTO){
+        log.info("수정 컨트롤러..1"+id);
+        log.info("수정 컨트롤러..2"+calendarDTO);
+        return calendarService.modifyEvent(id, calendarDTO);
     }
     
     // 캘린더 일정 DB에서 삭제
     @GetMapping("/calendar/delete")
-    public ResponseEntity<?> deleteEvent(String uid){
-        return null;
+    public ResponseEntity<?> deleteEvent(String id){
+        log.info("삭제 컨트롤러" + id);
+        return calendarService.deleteEvent(id);
     }
 }
