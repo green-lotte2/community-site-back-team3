@@ -1,6 +1,9 @@
 package kr.co.orangenode.dto.project;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,4 +17,9 @@ public class ProjectDTO {
     private String title;
     private int issue;
     private int status;
+
+    private String []uids;
+
+    @CreationTimestamp
+    private LocalDateTime rdate;
 }

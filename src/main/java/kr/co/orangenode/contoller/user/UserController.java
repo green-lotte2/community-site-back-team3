@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,18 +35,12 @@ public class UserController {
             // Security 인증 처리
             UsernamePasswordAuthenticationToken authToken
                     = new UsernamePasswordAuthenticationToken(userDTO.getUid(), userDTO.getPass());
-
-
             // 사용자 DB 조회
             Authentication authentication = authenticationManager.authenticate(authToken);
-            log.info("login...2");
 
             // 인증된 사용자 가져오기
             MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
             User user = userDetails.getUser();
-
-            log.info("login...3 : " + user);
-
 
             // 토큰 발급(액세스, 리프레쉬)
             String access  = jwtProvider.createToken(user, 1); // 1일
@@ -60,7 +51,18 @@ public class UserController {
             // 액세스 토큰 클라이언트 전송
             Map<String, Object> map = new HashMap<>();
             map.put("grantType", "Bearer");
-            map.put("username", user.getUid());
+            map.put("uid", user.getUid());
+            map.put("name", user.getName());
+            map.put("email", user.getEmail());
+            map.put("hp", user.getHp());
+            map.put("role", user.getRole());
+            map.put("grade", user.getGrade());
+            map.put("nick", user.getNick());
+            map.put("profile", user.getProfile());
+            map.put("rdate", user.getRdate());
+            map.put("company", user.getCompany());
+            map.put("department", user.getDepartment());
+            map.put("position", user.getPosition());
             map.put("accessToken", access);
             map.put("refreshToken", refresh);
 
@@ -71,14 +73,15 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
         }
     }
-
     @PostMapping("/user")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
-
-        log.info(userDTO);
-
         String uid = userService.register(userDTO);
         return Map.of("userid", uid);
     }
-
+    // 회사별로 유저 조회 //
+    @GetMapping("/user/company")
+    public ResponseEntity<?> selectUserByCompany(@RequestParam String company) {
+        log.info("company111  :" + company);
+        return userService.selectUserByCompany(company);
+    }
 }

@@ -2,6 +2,9 @@ package kr.co.orangenode.entity.project;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,4 +22,7 @@ public class Project {
     private String title;
     private int issue;
     private int status;
+
+    @CreationTimestamp
+    private LocalDateTime rdate;
 }

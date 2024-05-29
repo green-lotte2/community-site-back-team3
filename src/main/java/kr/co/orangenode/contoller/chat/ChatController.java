@@ -4,10 +4,11 @@ import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,19 +22,21 @@ import java.util.List;
 public class ChatController {
 
     private final ChatMessageService chatMessageService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+    @MessageMapping("/chat.sendMessage/{chatNo}")
+    public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable int chatNo) {
         chatMessage.setCDate(LocalDateTime.now());
-        return chatMessageService.saveMessage(chatMessage);
+        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessage);
+
+        // 동적으로 경로를 설정하여 메시지 전송
+        messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
     }
 
     @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
+    public void addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getUid());
-        return chatMessage;
+        messagingTemplate.convertAndSend("/topic/public", chatMessage);
     }
 
     @GetMapping("/chat/messages")

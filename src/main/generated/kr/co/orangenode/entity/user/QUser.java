@@ -19,6 +19,10 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final StringPath company = createString("company");
+
+    public final StringPath department = createString("department");
+
     public final StringPath email = createString("email");
 
     public final StringPath grade = createString("grade");
@@ -31,9 +35,11 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath pass = createString("pass");
 
+    public final StringPath position = createString("position");
+
     public final StringPath profile = createString("profile");
 
-    public final DateTimePath<java.time.LocalDateTime> rDate = createDateTime("rDate", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 
     public final StringPath role = createString("role");
 
