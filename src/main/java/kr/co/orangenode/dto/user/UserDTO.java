@@ -23,8 +23,12 @@ public class UserDTO {
     private String grade;
     private String nick;
     private String profile;
-    private String verificationCode;
+    private String verificationCode; // 이메일 인증코드
+    private String company;
+    private String department;
+    private String position;
+
 
     @CreationTimestamp
-    private LocalDateTime rDate;
+    private LocalDateTime rdate;
 }

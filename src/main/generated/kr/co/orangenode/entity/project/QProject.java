@@ -23,6 +23,8 @@ public class QProject extends EntityPathBase<Project> {
 
     public final NumberPath<Integer> proNo = createNumber("proNo", Integer.class);
 
+    public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
     public final StringPath title = createString("title");

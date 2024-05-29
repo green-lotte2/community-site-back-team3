@@ -28,8 +28,11 @@ public class User {
     private String grade;
     private String nick;
     private String profile;
+    private String company;
+    private String department;
+    private String position;
 
     @CreationTimestamp
-    private LocalDateTime rDate;
+    private LocalDateTime rdate;
 }
 
