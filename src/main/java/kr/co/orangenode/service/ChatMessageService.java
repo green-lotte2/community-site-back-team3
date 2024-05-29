@@ -20,7 +20,7 @@ public class ChatMessageService {
     public ChatMessage saveMessage(ChatMessage chatMessage) {
         // chatNo가 유효한지 확인
         if (chatRoomRepository.existsById(chatMessage.getChatNo())) {
-            return chatMessageRepository.save(chatMessage);
+            return chatMessageRepository.saveMessageWithRoom(chatMessage);
         } else {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessage.getChatNo());
         }
