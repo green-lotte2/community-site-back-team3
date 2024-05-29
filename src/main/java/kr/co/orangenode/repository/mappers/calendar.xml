@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.orangenode.mapper.CalendarMapper">
+    <update id="updateEvent">
+        UPDATE calendar
+        <set>
+            <if test="calendarId != null">calendarId = #{calendarId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="start != null">start = #{start},</if>
+            <if test="end != null">end = #{end},</if>
+            <if test="state != null">state = #{state},</if>
+            <!-- 여기에 필드별로 널 체크 및 업데이트할 내용 추가 -->
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

@@ -17,6 +17,7 @@ public class CalendarDTO {
     private int calNo;
     private String uid;
     private String calendarId;
+    private String id;
     private String title;
     private LocalDateTime start;
     private LocalDateTime end;
