@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,13 +23,21 @@ public class AdminService {
 
     // 관리자에서 글 목록 보기
     public ResponseEntity<?> adminArticleList(){
-        if(articleRepository.findAll().isEmpty()){
+
+        if(articleRepository.findAllByOrderByAnoDesc().isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
         }else {
-            return ResponseEntity.ok().body(articleRepository.findAll());
+            return ResponseEntity.ok().body(articleRepository.findAllByOrderByAnoDesc());
         }
 
     }
+
+    // 관리자에서 글 보기
+    public Optional<Article> adminArticleView(int ano){
+        return articleRepository.findById(ano);
+
+    }
+
 
     // 관리자 글 삭제
     public void adminArticleDel(int ano){
