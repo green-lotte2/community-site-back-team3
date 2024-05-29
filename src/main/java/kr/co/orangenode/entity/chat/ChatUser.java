@@ -15,4 +15,5 @@ public class ChatUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cuNo;
     private String uid;
+    private int chatNo;
 }

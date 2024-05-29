@@ -4,6 +4,7 @@ import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -23,9 +24,10 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
 
     @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
+    @SendTo("/topic/chatroom/{chatNo}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         chatMessage.setCDate(LocalDateTime.now());
+        log.info("Sending message to chat room {}: {}" + chatMessage);
         return chatMessageService.saveMessage(chatMessage);
     }
 
