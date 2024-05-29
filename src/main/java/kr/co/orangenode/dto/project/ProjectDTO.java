@@ -18,6 +18,8 @@ public class ProjectDTO {
     private int issue;
     private int status;
 
+    private String []uids;
+
     @CreationTimestamp
     private LocalDateTime rdate;
 }
