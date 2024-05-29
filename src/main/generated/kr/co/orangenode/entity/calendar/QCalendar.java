@@ -19,13 +19,17 @@ public class QCalendar extends EntityPathBase<Calendar> {
 
     public static final QCalendar calendar = new QCalendar("calendar");
 
-    public final NumberPath<Integer> calendarId = createNumber("calendarId", Integer.class);
+    public final StringPath backgroundColor = createString("backgroundColor");
+
+    public final StringPath calendarId = createString("calendarId");
 
     public final NumberPath<Integer> calNo = createNumber("calNo", Integer.class);
 
     public final StringPath color = createString("color");
 
     public final DateTimePath<java.time.LocalDateTime> end = createDateTime("end", java.time.LocalDateTime.class);
+
+    public final StringPath id = createString("id");
 
     public final StringPath isAllDay = createString("isAllDay");
 

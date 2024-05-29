@@ -16,12 +16,14 @@ import java.time.ZonedDateTime;
 public class CalendarDTO {
     private int calNo;
     private String uid;
-    private int calendarId;
+    private String calendarId;
+    private String id;
     private String title;
     private LocalDateTime start;
     private LocalDateTime end;
     private String location;
     private String state;
+    private String backgroundColor;
     private String color;
     private String isAllDay;
     private String isReadOnly;

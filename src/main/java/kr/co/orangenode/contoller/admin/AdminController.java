@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,11 +23,23 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    //글 전체 목록
     @GetMapping("/admin/article")
-    public ResponseEntity<?> adminArticleList(){
-        log.info("!!!FFFf");
-        return adminService.getAdminArticleList();
+    public ResponseEntity<?> getAdminArticleList(){
+
+        return adminService.adminArticleList();
     }
+
+    // 글 삭제
+    @DeleteMapping("/admin/article/{ano}")
+    public void delAdminArticle(@PathVariable int ano){
+        adminService.adminArticleDel(ano);
+
+    }
+
+
+
+
 
 
 }

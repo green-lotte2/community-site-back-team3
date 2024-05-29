@@ -2,7 +2,7 @@ package kr.co.orangenode.service.user;
 
 import kr.co.orangenode.dto.terms.TermsDTO;
 import kr.co.orangenode.entity.terms.Terms;
-import kr.co.orangenode.repository.TermsRepository;
+import kr.co.orangenode.repository.user.TermsRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
