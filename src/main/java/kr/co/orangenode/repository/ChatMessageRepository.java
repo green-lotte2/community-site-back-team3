@@ -1,7 +1,7 @@
 package kr.co.orangenode.repository;
 
 import kr.co.orangenode.entity.chat.ChatMessage;
-import kr.co.orangenode.repository.custom.ChatMessageCustomRepository;
+import kr.co.orangenode.repository.Custom.ChatMessageCustomRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
