@@ -38,6 +38,18 @@ public class AdminService {
 
     }
 
+    // 관리자에서 글 수정하기
+    public Optional<Article> adminArticleUpd(int ano, Article updatedArticle) {
+        return articleRepository.findById(ano).map(article -> {
+            article.setTitle(updatedArticle.getTitle());
+            article.setContent(updatedArticle.getContent());
+            article.setReply(updatedArticle.getReply());
+            // 나중에 필요한거 추가하기
+
+            return articleRepository.save(article);
+        });
+    }
+
 
     // 관리자 글 삭제
     public void adminArticleDel(int ano){
