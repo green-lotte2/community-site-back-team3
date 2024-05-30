@@ -2,7 +2,9 @@ package kr.co.orangenode.service;
 
 import kr.co.orangenode.dto.chat.ChatRoomDTO;
 import kr.co.orangenode.entity.chat.ChatRoom;
+import kr.co.orangenode.entity.chat.ChatUser;
 import kr.co.orangenode.repository.ChatRoomRepository;
+import kr.co.orangenode.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,25 +21,37 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ModelMapper modelMapper;
+    private final ChatUserRepository chatUserRepository;
 
-    public ChatRoom createRoom(ChatRoom chatRoom){
-        ChatRoom aa = chatRoomRepository.save(chatRoom);
-        log.info("aa : " + aa);
-        return aa;
+    public ChatRoom createRoom(ChatRoom chatRoom, String uid){
+        ChatRoom createRoom = chatRoomRepository.save(chatRoom);
+        chatUserRepository.save(new ChatUser(0, uid, createRoom.getChatNo()));
+        return createRoom;
     }
 
     public ResponseEntity<?> getAllChatRooms(){
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
-
         log.info("chatRooms : " + chatRooms);
 
         List<ChatRoomDTO> chatRoomDTOs = chatRooms.stream()
-                .map(chatRoom -> modelMapper.map(chatRoom, ChatRoomDTO.class))
-                .toList();
+                                                    .map(chatRoom -> modelMapper.map(chatRoom, ChatRoomDTO.class))
+                                                    .toList();
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTOs);
     }
 
     public void deleteRoom(int cmNo){
         chatRoomRepository.deleteById(cmNo);
+    }
+
+    public void inviteFriend(int chatNo, String inviteeUid) {
+        ChatUser chatUser = ChatUser.builder()
+                .uid(inviteeUid)
+                .chatNo(chatNo)
+                .build();
+        chatUserRepository.save(chatUser);
+    }
+
+    public List<ChatRoom> getUserChatRooms(String uid){
+        return chatRoomRepository.findChatRoomsByUid(uid);
     }
 }
