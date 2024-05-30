@@ -1,7 +1,7 @@
 package kr.co.orangenode.repository;
 
 import kr.co.orangenode.entity.calendar.Calendar;
-import kr.co.orangenode.repository.custom.CalendarRepositoryCustom;
+import kr.co.orangenode.repository.Custom.CalendarRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

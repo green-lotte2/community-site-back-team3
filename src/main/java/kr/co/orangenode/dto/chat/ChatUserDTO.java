@@ -11,5 +11,6 @@ import lombok.*;
 @ToString
 public class ChatUserDTO {
     private int cuNo;
-    private int uid;
+    private String uid;
+    private int chatNo;
 }

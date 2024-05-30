@@ -2,6 +2,7 @@ package kr.co.orangenode.service;
 
 import kr.co.orangenode.entity.board.Article;
 import kr.co.orangenode.repository.ArticleRepository;
+import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class AdminService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    private UserRepository userRepository;
+
+    ///////////////////////////////////////
+    ////////////////글 관리////////////////
+    ///////////////////////////////////////
+
     // 관리자에서 글 목록 보기
     public ResponseEntity<?> adminArticleList(){
 
@@ -38,11 +45,38 @@ public class AdminService {
 
     }
 
+    // 관리자에서 글 수정하기
+    public Optional<Article> adminArticleUpd(int ano, Article updatedArticle) {
+        return articleRepository.findById(ano).map(article -> {
+            article.setTitle(updatedArticle.getTitle());
+            article.setContent(updatedArticle.getContent());
+            article.setReply(updatedArticle.getReply());
+            // 나중에 필요한거 추가하기
+
+            return articleRepository.save(article);
+        });
+    }
+
 
     // 관리자 글 삭제
     public void adminArticleDel(int ano){
         articleRepository.deleteById(ano);
     }
+
+    ////////////////////////////////////////
+    ////////////////멤버관리////////////////
+    ////////////////////////////////////////
+
+    // 관리자에서 유저 목록 보기
+    /*
+    public ResponseEntity<?> adminUserList(){
+
+    return userRepository.findAllById();
+
+
+
+    }
+         */
 
 
 }

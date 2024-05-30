@@ -1,8 +1,13 @@
 package kr.co.orangenode.service.project;
 
+import com.querydsl.core.Tuple;
 import jakarta.transaction.Transactional;
+import kr.co.orangenode.dto.project.KanListDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
+import kr.co.orangenode.entity.project.Collaborator;
 import kr.co.orangenode.entity.project.Project;
+import kr.co.orangenode.mapper.ProjectMapper;
+import kr.co.orangenode.repository.project.CollaboratorRepository;
 import kr.co.orangenode.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -19,6 +26,8 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final CollaboratorRepository collaboratorRepository;
+    private final ProjectMapper projectMapper;
     private final ModelMapper modelMapper;
 
     /* 프로젝트 생성 */
@@ -28,13 +37,19 @@ public class ProjectService {
             Project project = modelMapper.map(projectDTO, Project.class);
             Project savedProject = projectRepository.save(project);
             for(String uid: projectDTO.getUids()){
-
+                if (uid != null) {
+                    log.info("1번 :" + uid);
+                    Collaborator collaborator = new Collaborator();
+                    collaborator.setUid(uid);
+                    collaborator.setProNo(savedProject.getProNo());
+                    log.info("2번 :" + uid);
+                    collaboratorRepository.save(collaborator);
+                }
             }
             return ResponseEntity.status(HttpStatus.OK).body(savedProject);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("FAIL");
         }
-
     }
     /* 프로젝트 출력 */
     public ResponseEntity<?> selectProjectList(ProjectDTO projectDTO) {
@@ -44,5 +59,64 @@ public class ProjectService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("FAIL");
         }
+    }
+    /* 프로젝트 삭제*/
+    @Transactional
+    public ResponseEntity<?> deleteProject(int proNo) {
+        try {
+            Optional<Project> findProNo = projectRepository.findById(proNo);
+            if(findProNo.isPresent()){
+                collaboratorRepository.deleteAllByProNo(proNo);
+                projectRepository.deleteById(proNo);
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            }
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("FAIL");
+            }catch(Exception e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+        }
+    }
+    /* 프로젝트 수정 */
+    @Transactional
+    public ResponseEntity<?> updateProject(ProjectDTO projectDTO) {
+        try {
+            Optional<Project> proNo = projectRepository.findById(projectDTO.getProNo());
+            if(proNo.isPresent()){
+
+                projectMapper.updateProject(projectDTO);
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Project not found");
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+        }
+    }
+    /* 특정 프로젝트 보기*/
+    public ResponseEntity<?> viewProject(int proNo) {
+        Optional<Project> viewNo = projectRepository.findById(proNo);
+        if(viewNo.isPresent()){
+            Project project = viewNo.get();
+            return ResponseEntity.status(HttpStatus.OK).body(project);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+        }
+    }
+    public ResponseEntity<?> selectKanbanList(int proNo) {
+        List<Tuple> tuples = projectRepository.selectKanban(proNo);
+        log.info("here111 : "+ tuples.toString());
+        List<KanListDTO> kanListDTOS = tuples.stream()
+                .map(tuple -> {
+                    KanListDTO kanListDTO = new KanListDTO();
+                    kanListDTO.setProNo(tuple.get(0, Integer.class));
+                    kanListDTO.setINo(tuple.get(1, Integer.class));
+                    kanListDTO.setIssueTitle(tuple.get(2, String.class));
+                    kanListDTO.setUid(tuple.get(3, String.class));
+                    kanListDTO.setWorkerName(tuple.get(4, String.class));
+                    kanListDTO.setWorkerProfile(tuple.get(5, String.class));
+                    log.info("here222 : "+kanListDTO.toString());
+                    return kanListDTO;
+                }).toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(kanListDTOS);
     }
 }
