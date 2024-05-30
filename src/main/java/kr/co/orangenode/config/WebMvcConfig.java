@@ -25,12 +25,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 상품 경로
-        registry.addResourceHandler("prodImg/**")
-                .addResourceLocations("file:" + staticServerPathProd);
-        // 글 경로
-        registry.addResourceHandler("uploads/**")
-                .addResourceLocations("file:" + staticServerPathImg);
+        // 이미지 경로
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:uploads/");
     }
     // CORS 방지를 위한 설정
     @Override
