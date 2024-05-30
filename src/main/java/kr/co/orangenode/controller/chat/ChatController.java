@@ -1,4 +1,4 @@
-package kr.co.orangenode.contoller.chat;
+package kr.co.orangenode.controller.chat;
 
 import kr.co.orangenode.dto.chat.ChatMessageDTO;
 import kr.co.orangenode.entity.chat.ChatMessage;

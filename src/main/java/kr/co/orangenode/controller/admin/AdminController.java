@@ -1,4 +1,4 @@
-package kr.co.orangenode.contoller.admin;
+package kr.co.orangenode.controller.admin;
 
 import kr.co.orangenode.entity.board.Article;
 import kr.co.orangenode.service.AdminService;

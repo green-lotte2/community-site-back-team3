@@ -1,14 +1,12 @@
-package kr.co.orangenode.contoller.board;
+package kr.co.orangenode.controller.board;
 
 import kr.co.orangenode.entity.board.Article;
 import kr.co.orangenode.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
