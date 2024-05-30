@@ -1,10 +1,9 @@
-package kr.co.orangenode.repository.Impl;
+package kr.co.orangenode.repository.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.co.orangenode.entity.chat.ChatMessage;
-import kr.co.orangenode.entity.chat.ChatRoom;
-import kr.co.orangenode.repository.Custom.ChatMessageCustomRepository;
+import kr.co.orangenode.repository.custom.ChatMessageCustomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
