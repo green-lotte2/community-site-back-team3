@@ -1,4 +1,4 @@
-package kr.co.orangenode.contoller.user;
+package kr.co.orangenode.controller.user;
 
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.user.User;
