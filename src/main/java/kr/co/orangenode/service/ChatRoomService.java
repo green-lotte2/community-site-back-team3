@@ -1,6 +1,7 @@
 package kr.co.orangenode.service;
 
 import kr.co.orangenode.dto.chat.ChatRoomDTO;
+import kr.co.orangenode.dto.chat.ChatUserDTO;
 import kr.co.orangenode.entity.chat.ChatRoom;
 import kr.co.orangenode.entity.chat.ChatUser;
 import kr.co.orangenode.repository.ChatRoomRepository;
@@ -23,10 +24,11 @@ public class ChatRoomService {
     private final ModelMapper modelMapper;
     private final ChatUserRepository chatUserRepository;
 
-    public ChatRoom createRoom(ChatRoom chatRoom, String uid){
-        ChatRoom createRoom = chatRoomRepository.save(chatRoom);
-        chatUserRepository.save(new ChatUser(0, uid, createRoom.getChatNo()));
-        return createRoom;
+    public ChatRoom createRoom(ChatRoomDTO chatRoomDTO, String uid){
+        ChatRoom chatRoom = modelMapper.map(chatRoomDTO, ChatRoom.class);
+        chatRoom = chatRoomRepository.save(chatRoom);
+        chatUserRepository.save(new ChatUser(0, uid, chatRoom.getChatNo()));
+        return chatRoom;
     }
 
     public ResponseEntity<?> getAllChatRooms(){
@@ -43,10 +45,10 @@ public class ChatRoomService {
         chatRoomRepository.deleteById(cmNo);
     }
 
-    public void inviteFriend(int chatNo, String inviteeUid) {
+    public void inviteFriend(ChatUserDTO chatUserDTO) {
         ChatUser chatUser = ChatUser.builder()
-                .uid(inviteeUid)
-                .chatNo(chatNo)
+                .uid(chatUserDTO.getUid())
+                .chatNo(chatUserDTO.getChatNo())
                 .build();
         chatUserRepository.save(chatUser);
     }
