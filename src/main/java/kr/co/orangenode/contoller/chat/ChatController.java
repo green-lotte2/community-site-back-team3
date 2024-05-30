@@ -1,5 +1,6 @@
 package kr.co.orangenode.contoller.chat;
 
+import kr.co.orangenode.dto.chat.ChatMessageDTO;
 import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +26,18 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat.sendMessage/{chatNo}")
-    public void sendMessage(@Payload ChatMessage chatMessage, @DestinationVariable int chatNo) {
-        chatMessage.setCDate(LocalDateTime.now());
-        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessage);
+    public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
+        chatMessageDTO.setCDate(LocalDateTime.now());
+        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessageDTO);
 
         // 동적으로 경로를 설정하여 메시지 전송
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
     }
 
     @MessageMapping("/chat.addUser")
-    public void addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getUid());
-        messagingTemplate.convertAndSend("/topic/public", chatMessage);
+    public void addUser(@Payload ChatMessageDTO chatMessageDTO, SimpMessageHeaderAccessor headerAccessor) {
+        headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getUid());
+        messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
     }
 
     @GetMapping("/chat/messages")
