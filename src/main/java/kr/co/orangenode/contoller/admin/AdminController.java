@@ -18,6 +18,9 @@ public class AdminController {
 
     @Autowired
     private final AdminService adminService;
+    ///////////////////////////////////////
+    ////////////////글 관리////////////////
+    ///////////////////////////////////////
 
     //글 전체 목록
     @GetMapping("/admin/article")
@@ -50,6 +53,20 @@ public class AdminController {
 
     }
 
+    ////////////////////////////////////////
+    ////////////////유저관리////////////////
+    ////////////////////////////////////////
+    
+    //유저 전체 목록
+    /*
+    @GetMapping("/admin/member/list")
+    public ResponseEntity<?> getAdminUserList(){
+        log.info("유저 목록 불러와질까요", getAdminUserList());
+        return adminService.adminUserList();
+    }
+
+
+     */
 
 
 

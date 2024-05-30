@@ -1,7 +1,9 @@
 package kr.co.orangenode.repository.user;
 
+import kr.co.orangenode.entity.board.Article;
 import kr.co.orangenode.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +17,10 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     // 회원 회사별로 출력 //
     List<User> findUserByCompany(String company);
+
+    // 관리자 페이지 유저 가입일 순 정렬
+    //public List<User> findAllByOrderByRdateDesc();
+
+
+
 }
