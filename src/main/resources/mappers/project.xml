@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.orangenode.mapper.ProjectMapper">
+    <update id="updateProject">
+        update project
+        <set>
+            <if test="projectDTO.title != null">title= #{projectDTO.title},</if>
+            <if test="projectDTO.status != null">status= #{projectDTO.status},</if>
+        </set>
+        where proNo=#{projectDTO.proNo}
+    </update>
+</mapper>
