@@ -2,7 +2,7 @@ package kr.co.orangenode.repository;
 
 import kr.co.orangenode.entity.chat.ChatRoom;
 
-import kr.co.orangenode.repository.custom.ChatRoomCustomRepository;
+import kr.co.orangenode.repository.Custom.ChatRoomCustomRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer>, ChatRoomCustomRepository {
