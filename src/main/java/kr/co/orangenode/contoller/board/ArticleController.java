@@ -4,6 +4,7 @@ import kr.co.orangenode.entity.board.Article;
 import kr.co.orangenode.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,9 @@ public class ArticleController {
 
     // 전체 게시글 조회
     @GetMapping("/articles")
-    public String CheckAllArticles(@RequestParam("cno") int cno){
+    public ResponseEntity<?> CheckAllArticles(@RequestParam("cno") int cno){
         log.info("cno : " + cno);
-        return  "article list ";
+        return  ResponseEntity.ok().body("백엔드랑 연결되어있음!!");
         //articleService.checkAllArticles();
     }
 
