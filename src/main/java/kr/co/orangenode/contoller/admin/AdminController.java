@@ -5,6 +5,7 @@ import kr.co.orangenode.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +26,23 @@ public class AdminController {
         return adminService.adminArticleList();
     }
 
-    // 글 보기
+    //글 보기
     @GetMapping("/admin/article/{ano}")
-    public Optional<Article> adminArticleView(@PathVariable int ano) {
-        return adminService.adminArticleView(ano);
+    public ResponseEntity<Article> adminArticleView(@PathVariable int ano) {
+        Optional<Article> article = adminService.adminArticleView(ano);
+        return article.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
-    /*글 수정
+    // 글 수정
     @PutMapping("/admin/article/{ano}")
-    public ResponseEntity<Article> UpdAdminArticle(){
-        return adminService.adminArticleUpdate();
+    public ResponseEntity<Article> adminArticleUpd(@PathVariable int ano,
+                                                   @RequestBody Article updatedArticle) {
+        Optional<Article> updatedArticleOpt = adminService.adminArticleUpd(ano, updatedArticle);
+        return updatedArticleOpt.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-*/
+
     // 글 삭제
     @DeleteMapping("/admin/article/{ano}")
     public void delAdminArticle(@PathVariable int ano){
