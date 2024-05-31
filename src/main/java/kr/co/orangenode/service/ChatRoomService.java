@@ -41,8 +41,8 @@ public class ChatRoomService {
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTOs);
     }
 
-    public void deleteRoom(int cmNo){
-        chatRoomRepository.deleteById(cmNo);
+    public void deleteRoom(String uid, int chatNo){
+        chatUserRepository.deleteChatUserByChatNoAndUid(chatNo, uid);
     }
 
     public void inviteFriend(ChatUserDTO chatUserDTO) {
