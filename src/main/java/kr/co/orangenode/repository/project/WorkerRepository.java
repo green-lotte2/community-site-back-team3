@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WorkerRepository extends JpaRepository<Worker, Integer> {
+
+    // 워커 삭제 //
+    void deleteAllByIno(int ino);
 }

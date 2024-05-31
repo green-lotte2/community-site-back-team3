@@ -35,7 +35,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
                 .select(qProject.proNo, qIssue.iNo, qIssue.title, qUser.uid, qUser.name, qUser.profile)
                 .from(qProject)
                 .leftJoin(qIssue).on(qProject.proNo.eq(qIssue.proNo))
-                .leftJoin(qWorker).on(qIssue.iNo.eq(qWorker.iNo))
+                .leftJoin(qWorker).on(qIssue.iNo.eq(qWorker.ino))
                 .leftJoin(qCollaborator).on(qWorker.colNo.eq(qCollaborator.colNo))
                 .leftJoin(qUser).on(qCollaborator.uid.eq(qUser.uid))
                 .where(qProject.proNo.eq(proNo))
