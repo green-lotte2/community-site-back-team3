@@ -1,11 +1,11 @@
-package kr.co.orangenode.repository.Impl;
+package kr.co.orangenode.repository.impl;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.orangenode.entity.chat.ChatRoom;
 import kr.co.orangenode.entity.chat.QChatRoom;
 import kr.co.orangenode.entity.chat.QChatUser;
-import kr.co.orangenode.repository.Custom.ChatRoomCustomRepository;
+import kr.co.orangenode.repository.custom.ChatRoomRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRoomRepositoryImpl implements ChatRoomCustomRepository {
+public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 

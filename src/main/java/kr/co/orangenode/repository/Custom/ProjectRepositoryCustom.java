@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository.Custom;
+package kr.co.orangenode.repository.custom;
 
 import com.querydsl.core.Tuple;
 
