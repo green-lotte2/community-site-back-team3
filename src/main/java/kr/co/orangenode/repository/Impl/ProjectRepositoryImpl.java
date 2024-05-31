@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository.Impl;
+package kr.co.orangenode.repository.impl;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -7,7 +7,7 @@ import kr.co.orangenode.entity.project.QIssue;
 import kr.co.orangenode.entity.project.QProject;
 import kr.co.orangenode.entity.project.QWorker;
 import kr.co.orangenode.entity.user.QUser;
-import kr.co.orangenode.repository.Custom.ProjectRepositoryCustom;
+import kr.co.orangenode.repository.custom.ProjectRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

@@ -36,9 +36,9 @@ public class ChatRoomController {
         return chatRoomService.createRoom(chatRoomDTO, uid);
     }
 
-    @DeleteMapping("/chatroom/{cmNo}")
-    public ResponseEntity<?> deleteChatRoom(@PathVariable int cmNo) {
-        chatRoomService.deleteRoom(cmNo);
+    @DeleteMapping("/chatroom")
+    public ResponseEntity<?> deleteChatRoom(@PathVariable int chatNo, String uid) {
+        chatRoomService.deleteRoom(uid, chatNo);
         return chatRoomService.getAllChatRooms();
     }
 
