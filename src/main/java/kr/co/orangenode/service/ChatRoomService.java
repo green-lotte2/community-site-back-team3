@@ -32,6 +32,7 @@ public class ChatRoomService {
         return chatRoom;
     }
 
+    // 모든 채팅방 조회
     public ResponseEntity<?> getAllChatRooms(){
         List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         log.info("chatRooms : " + chatRooms);
@@ -42,11 +43,13 @@ public class ChatRoomService {
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTOs);
     }
 
+    // 채팅방 삭제
     @Transactional
     public void deleteRoom(String uid, int chatNo){
         chatUserRepository.deleteChatUserByChatNoAndUid(chatNo, uid);
     }
 
+    // 친구 초대
     public void inviteFriend(ChatUserDTO chatUserDTO) {
         ChatUser chatUser = ChatUser.builder()
                 .uid(chatUserDTO.getUid())

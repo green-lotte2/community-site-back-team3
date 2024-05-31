@@ -25,6 +25,7 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
 
+    // 메시지 전송
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
         chatMessageDTO.setCDate(LocalDateTime.now());
@@ -34,12 +35,14 @@ public class ChatController {
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
     }
 
+    // 채팅방 연결?
     @MessageMapping("/chat.addUser")
     public void addUser(@Payload ChatMessageDTO chatMessageDTO, SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getUid());
         messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
     }
 
+    // 채팅방 입장 시 메세지 조회
     @GetMapping("/chat/messages")
     public List<ChatMessage> getMessages(@RequestParam int chatNo) {
         return chatMessageService.getMessages(chatNo);
