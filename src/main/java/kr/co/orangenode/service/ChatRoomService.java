@@ -1,5 +1,6 @@
 package kr.co.orangenode.service;
 
+import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.chat.ChatRoomDTO;
 import kr.co.orangenode.dto.chat.ChatUserDTO;
 import kr.co.orangenode.entity.chat.ChatRoom;
@@ -41,6 +42,7 @@ public class ChatRoomService {
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomDTOs);
     }
 
+    @Transactional
     public void deleteRoom(String uid, int chatNo){
         chatUserRepository.deleteChatUserByChatNoAndUid(chatNo, uid);
     }
