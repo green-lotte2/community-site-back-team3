@@ -5,10 +5,14 @@ import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.project.KanListDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
 import kr.co.orangenode.entity.project.Collaborator;
+import kr.co.orangenode.entity.project.Issue;
 import kr.co.orangenode.entity.project.Project;
+import kr.co.orangenode.entity.project.Worker;
 import kr.co.orangenode.mapper.ProjectMapper;
 import kr.co.orangenode.repository.project.CollaboratorRepository;
+import kr.co.orangenode.repository.project.IssueRepository;
 import kr.co.orangenode.repository.project.ProjectRepository;
+import kr.co.orangenode.repository.project.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,6 +31,8 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
+    private final IssueRepository issueRepository;
+    private final WorkerRepository workerRepository;
     private final ProjectMapper projectMapper;
     private final ModelMapper modelMapper;
 
@@ -65,7 +71,19 @@ public class ProjectService {
     public ResponseEntity<?> deleteProject(int proNo) {
         try {
             Optional<Project> findProNo = projectRepository.findById(proNo);
+            // Optional<Worker> findINo = workerRepository.findById(ino);
             if(findProNo.isPresent()){
+                // 등록된 이슈가 있으면 먼저 삭제
+                if(findProNo.get().getIssue() > 0) {
+                    List<Issue> issues = issueRepository.findAllByProNo(proNo);
+                    for(Issue issue : issues) {
+                        log.info("here ... 1");
+                        workerRepository.deleteAllByIno(issue.getINo());
+                    }
+                    log.info("here ... 2");
+                    issueRepository.deleteAllByProNo(proNo);
+                }
+                log.info("here ... 3");
                 collaboratorRepository.deleteAllByProNo(proNo);
                 projectRepository.deleteById(proNo);
                 return ResponseEntity.status(HttpStatus.OK).body("success");
@@ -81,7 +99,6 @@ public class ProjectService {
         try {
             Optional<Project> proNo = projectRepository.findById(projectDTO.getProNo());
             if(proNo.isPresent()){
-
                 projectMapper.updateProject(projectDTO);
                 return ResponseEntity.status(HttpStatus.OK).body("success");
             }else {
