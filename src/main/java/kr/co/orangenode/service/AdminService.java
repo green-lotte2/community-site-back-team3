@@ -1,6 +1,7 @@
 package kr.co.orangenode.service;
 
 import kr.co.orangenode.entity.board.Article;
+import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.repository.ArticleRepository;
 import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +22,8 @@ public class AdminService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    private UserRepository userRepository;
+    @Autowired
+    private final UserRepository userRepository;
 
     ///////////////////////////////////////
     ////////////////글 관리////////////////
@@ -68,15 +69,15 @@ public class AdminService {
     ////////////////////////////////////////
 
     // 관리자에서 유저 목록 보기
-    /*
-    public ResponseEntity<?> adminUserList(){
 
-    return userRepository.findAllById();
+    public List<User> adminUserList(){
+        return userRepository.findAll();
+    }
 
 
 
     }
-         */
 
 
-}
+
+
