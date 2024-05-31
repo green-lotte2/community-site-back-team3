@@ -37,7 +37,9 @@ public class ChatRoomController {
     }
 
     @DeleteMapping("/chatroom")
-    public ResponseEntity<?> deleteChatRoom(@PathVariable int chatNo, String uid) {
+    public ResponseEntity<?> deleteChatRoom(@RequestParam int chatNo, @RequestParam String uid) {
+        log.info("이야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ" + chatNo);
+        log.info("UID@@@@@@@@@@@@@" + uid);
         chatRoomService.deleteRoom(uid, chatNo);
         return chatRoomService.getAllChatRooms();
     }
