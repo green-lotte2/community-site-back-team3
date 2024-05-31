@@ -17,5 +17,5 @@ public class Worker {
     private int wNo;
 
     private int colNo;
-    private int iNo;
+    private int ino;
 }

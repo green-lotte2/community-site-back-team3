@@ -1,7 +1,7 @@
 package kr.co.orangenode.repository.project;
 
 import kr.co.orangenode.entity.project.Project;
-import kr.co.orangenode.repository.Custom.ProjectRepositoryCustom;
+import kr.co.orangenode.repository.custom.ProjectRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository.Impl;
+package kr.co.orangenode.repository.impl;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -7,7 +7,7 @@ import kr.co.orangenode.entity.project.QIssue;
 import kr.co.orangenode.entity.project.QProject;
 import kr.co.orangenode.entity.project.QWorker;
 import kr.co.orangenode.entity.user.QUser;
-import kr.co.orangenode.repository.Custom.ProjectRepositoryCustom;
+import kr.co.orangenode.repository.custom.ProjectRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -35,7 +35,7 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
                 .select(qProject.proNo, qIssue.iNo, qIssue.title, qUser.uid, qUser.name, qUser.profile)
                 .from(qProject)
                 .leftJoin(qIssue).on(qProject.proNo.eq(qIssue.proNo))
-                .leftJoin(qWorker).on(qIssue.iNo.eq(qWorker.iNo))
+                .leftJoin(qWorker).on(qIssue.iNo.eq(qWorker.ino))
                 .leftJoin(qCollaborator).on(qWorker.colNo.eq(qCollaborator.colNo))
                 .leftJoin(qUser).on(qCollaborator.uid.eq(qUser.uid))
                 .where(qProject.proNo.eq(proNo))
@@ -43,5 +43,6 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
                 .fetch();
         log.info("222222 = " + result);
         return result;
+
     }
 }

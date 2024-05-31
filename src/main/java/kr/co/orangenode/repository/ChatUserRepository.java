@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ChatUserRepository extends JpaRepository<ChatUser, Integer> {
-    List<ChatUser> findByUid(String uid);
+    public void deleteChatUserByChatNoAndUid( int chatNo, String uid);
 }

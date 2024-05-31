@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CollaboratorRepository extends JpaRepository<Collaborator,Integer> {
 
-    // 프로젝트 삭제 //
+    // 콜라보레이터 삭제 //
     void deleteAllByProNo(int proNo);
 }

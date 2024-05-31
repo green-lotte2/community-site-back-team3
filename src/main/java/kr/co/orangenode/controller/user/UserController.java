@@ -1,4 +1,4 @@
-package kr.co.orangenode.contoller.user;
+package kr.co.orangenode.controller.user;
 
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.user.User;
@@ -26,6 +26,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JWTProvider jwtProvider;
 
+    // 로그인 //
     @PostMapping("/user/login")
     public ResponseEntity login(@RequestBody UserDTO userDTO){
 
@@ -74,6 +75,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
         }
     }
+    // 회원가입 //
     @PostMapping("/user")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
         String uid = userService.register(userDTO);
@@ -84,5 +86,10 @@ public class UserController {
     public ResponseEntity<?> selectUserByCompany(@RequestParam String company) {
         log.info("company111  :" + company);
         return userService.selectUserByCompany(company);
+    }
+    // 계정 설정으로 이동 //
+    @GetMapping("/user/info")
+    public ResponseEntity<?> userInfo(@RequestParam String uid) {
+        return userService.userInfo(uid);
     }
 }

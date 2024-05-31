@@ -1,15 +1,9 @@
-package kr.co.orangenode.contoller.chat;
+package kr.co.orangenode.controller.chat;
 
-import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.chat.ChatRoomDTO;
 import kr.co.orangenode.dto.chat.ChatUserDTO;
-import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.entity.chat.ChatRoom;
-import kr.co.orangenode.entity.chat.ChatUser;
-import kr.co.orangenode.entity.user.User;
-import kr.co.orangenode.repository.ChatMessageRepository;
-import kr.co.orangenode.repository.ChatRoomRepository;
 import kr.co.orangenode.service.ChatMessageService;
 import kr.co.orangenode.service.ChatRoomService;
 import kr.co.orangenode.service.user.UserService;
@@ -20,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -43,9 +36,11 @@ public class ChatRoomController {
         return chatRoomService.createRoom(chatRoomDTO, uid);
     }
 
-    @DeleteMapping("/chatroom/{cmNo}")
-    public ResponseEntity<?> deleteChatRoom(@PathVariable int cmNo) {
-        chatRoomService.deleteRoom(cmNo);
+    @DeleteMapping("/chatroom")
+    public ResponseEntity<?> deleteChatRoom(@RequestParam int chatNo, @RequestParam String uid) {
+        log.info("이야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ" + chatNo);
+        log.info("UID@@@@@@@@@@@@@" + uid);
+        chatRoomService.deleteRoom(uid, chatNo);
         return chatRoomService.getAllChatRooms();
     }
 

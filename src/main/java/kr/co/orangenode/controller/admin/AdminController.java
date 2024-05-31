@@ -1,6 +1,7 @@
-package kr.co.orangenode.contoller.admin;
+package kr.co.orangenode.controller.admin;
 
 import kr.co.orangenode.entity.board.Article;
+import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -58,15 +60,12 @@ public class AdminController {
     ////////////////////////////////////////
     
     //유저 전체 목록
-    /*
+
     @GetMapping("/admin/member/list")
-    public ResponseEntity<?> getAdminUserList(){
-        log.info("유저 목록 불러와질까요", getAdminUserList());
-        return adminService.adminUserList();
+    public ResponseEntity<List<User>> getAdminUserList(){
+        List<User> userList = adminService.adminUserList();
+        return ResponseEntity.ok(userList);
     }
-
-
-     */
 
 
 

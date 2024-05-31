@@ -1,4 +1,4 @@
-package kr.co.orangenode.contoller.user;
+package kr.co.orangenode.controller.user;
 
 import kr.co.orangenode.dto.terms.TermsDTO;
 import kr.co.orangenode.service.user.TermsService;
