@@ -19,13 +19,13 @@ public class QCsEntity extends EntityPathBase<CsEntity> {
 
     public static final QCsEntity csEntity = new QCsEntity("csEntity");
 
-    public final StringPath cate = createString("cate");
+    public final StringPath cateName = createString("cateName");
 
     public final StringPath content = createString("content");
 
     public final NumberPath<Integer> csNo = createNumber("csNo", Integer.class);
 
-    public final StringPath rdate = createString("rdate");
+    public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 
     public final StringPath title = createString("title");
 
