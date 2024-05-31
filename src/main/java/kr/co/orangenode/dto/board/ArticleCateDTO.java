@@ -8,9 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class fileDTO {
-    private int fno;
-    private int ano;
-    private String sName;
-    private String oName;
+public class ArticleCateDTO {
+    private int cNo;
+    private String uid;
+    private String cateName;
+
 }
