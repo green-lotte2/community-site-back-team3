@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserMapper {
 
-    public void updateUser(@Param("userDTO")UserDTO userDTO);
+    public int updateUser(@Param("userDTO")UserDTO userDTO);
 }

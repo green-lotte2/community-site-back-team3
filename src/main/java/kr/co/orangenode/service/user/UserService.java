@@ -5,6 +5,7 @@ import kr.co.orangenode.entity.project.Project;
 import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.mapper.UserMapper;
 import kr.co.orangenode.repository.user.UserRepository;
+import kr.co.orangenode.util.JWTProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -19,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.server.UID;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +31,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserMapper userMapper;
+    private final JWTProvider jwtProvider;
 
     // 회원가입 //
     public String register(UserDTO userDTO) {
@@ -74,12 +73,52 @@ public class UserService {
     /* 내 설정 수정 */
     public ResponseEntity<?> updateUserInfo(UserDTO userDTO) {
 
-        userMapper.updateUser(userDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("success");
+        // 비밀번호 암호화
+        if (userDTO.getPass() != null && !userDTO.getPass().isEmpty()) {
+            String encoded = passwordEncoder.encode(userDTO.getPass());
+            userDTO.setPass(encoded);
+        }
+
+        // 이미지 업로드 처리
+        MultipartFile file = userDTO.getFile();
+        log.info("파일들어오나 ?" + file);
+
+        if (file != null && !file.isEmpty()) {
+            String imgPath = uploadImage(file);
+            if (imgPath != null) {
+                userDTO.setProfile(imgPath);
+            }
+        }
+        int result = userMapper.updateUser(userDTO);
+        User updateUser = null;
+        if(result > 0){
+            log.info("result:"+ result);
+            Optional<User> findUser = userRepository.findById(userDTO.getUid());
+            if(findUser.isPresent()){
+                updateUser = findUser.get();
+            }
+        }
+        UserDTO updateUserDTO = modelMapper.map(updateUser, UserDTO.class);
+        log.info("updateUserDTO ?" + updateUserDTO);
+
+        // 토큰 생성
+        String access = jwtProvider.createToken(updateUser, 1); // 1일
+        String refresh = jwtProvider.createToken(updateUser, 7); // 7일
+
+        log.info("accessToken :" + access);
+        log.info("refreshToken :" + refresh);
+
+        // 회원 정보와 토큰을 함께 반환
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("user", updateUserDTO);
+        responseMap.put("accessToken", access);
+        responseMap.put("refreshToken", refresh);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseMap);
     }
 
     /* 이미지 업로드 */
-    @Value("${file.upload.path}")
+    @Value("${img.upload.path}")
     private String fileUploadPath;
     public String uploadImage(MultipartFile file) {
         String path = new File(fileUploadPath).getAbsolutePath();
