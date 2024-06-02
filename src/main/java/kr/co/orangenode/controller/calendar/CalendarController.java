@@ -1,4 +1,4 @@
-package kr.co.orangenode.controller.Calendar;
+package kr.co.orangenode.controller.calendar;
 
 import kr.co.orangenode.dto.calendar.CalendarDTO;
 import kr.co.orangenode.service.CalendarService;
