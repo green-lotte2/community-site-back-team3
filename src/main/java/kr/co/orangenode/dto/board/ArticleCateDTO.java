@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class articleCateDTO {
+public class ArticleCateDTO {
     private int cNo;
     private String uid;
     private String cateName;
