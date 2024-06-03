@@ -13,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,10 +94,10 @@ public class UserController {
     }
 
     // 회원정보 수정 //
-    @PostMapping("/user/update")
-    public ResponseEntity<?> updateUser(UserDTO userDTO) {
-        log.info("userDto:" + userDTO);
-        log.info("file :" + userDTO.getFile());
+    @PatchMapping("/user/update")
+    public ResponseEntity<?> updateUser(UserDTO userDTO, String originPass) {
+
+        log.info("originPass... : " + originPass);
         return userService.updateUserInfo(userDTO);
     }
 }

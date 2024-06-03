@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.rmi.server.UID;
 import java.util.*;
 
+import static kr.co.orangenode.entity.user.QUser.user;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -73,12 +75,6 @@ public class UserService {
     /* 내 설정 수정 */
     public ResponseEntity<?> updateUserInfo(UserDTO userDTO) {
 
-        // 비밀번호 암호화
-        if (userDTO.getPass() != null && !userDTO.getPass().isEmpty()) {
-            String encoded = passwordEncoder.encode(userDTO.getPass());
-            userDTO.setPass(encoded);
-        }
-
         // 이미지 업로드 처리
         MultipartFile file = userDTO.getFile();
         log.info("파일들어오나 ?" + file);
@@ -89,8 +85,23 @@ public class UserService {
                 userDTO.setProfile(imgPath);
             }
         }
-        int result = userMapper.updateUser(userDTO);
+        int result = 0;
+        Optional<User> originUser = userRepository.findById(userDTO.getUid());
+        if(originUser.get().getPass().equals(userDTO.getPass())){
+            log.info("pass 안바꿈");
+            result = userMapper.updateUserWithoutPass(userDTO);
+        }else {
+            // 비밀번호 암호화
+            if (userDTO.getPass() != null && !userDTO.getPass().isEmpty()) {
+                String encoded = passwordEncoder.encode(userDTO.getPass());
+                userDTO.setPass(encoded);
+            }
+            log.info("pass 바꿈");
+            result = userMapper.updateUser(userDTO);
+        }
+
         User updateUser = null;
+
         if(result > 0){
             log.info("result:"+ result);
             Optional<User> findUser = userRepository.findById(userDTO.getUid());
@@ -98,6 +109,7 @@ public class UserService {
                 updateUser = findUser.get();
             }
         }
+
         UserDTO updateUserDTO = modelMapper.map(updateUser, UserDTO.class);
         log.info("updateUserDTO ?" + updateUserDTO);
 
@@ -110,13 +122,26 @@ public class UserService {
 
         // 회원 정보와 토큰을 함께 반환
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("user", updateUserDTO);
+        responseMap.put("grantType", "Bearer");
+        responseMap.put("uid", updateUserDTO.getUid());
+        responseMap.put("name", updateUserDTO.getName());
+        responseMap.put("email", updateUserDTO.getEmail());
+        responseMap.put("hp", updateUserDTO.getHp());
+        responseMap.put("role", updateUserDTO.getRole());
+        responseMap.put("grade", updateUserDTO.getGrade());
+        responseMap.put("nick", updateUserDTO.getNick());
+        responseMap.put("profile", updateUserDTO.getProfile());
+        responseMap.put("rdate", updateUserDTO.getRdate());
+        responseMap.put("company", updateUserDTO.getCompany());
+        responseMap.put("department", updateUserDTO.getDepartment());
+        responseMap.put("position", updateUserDTO.getPosition());
+        responseMap.put("accessToken", access);
+        responseMap.put("refreshToken", refresh);
         responseMap.put("accessToken", access);
         responseMap.put("refreshToken", refresh);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseMap);
     }
-
     /* 이미지 업로드 */
     @Value("${img.upload.path}")
     private String fileUploadPath;
