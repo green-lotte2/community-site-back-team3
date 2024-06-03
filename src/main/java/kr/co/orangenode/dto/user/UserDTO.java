@@ -2,6 +2,7 @@ package kr.co.orangenode.dto.user;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +29,9 @@ public class UserDTO {
     private String department;
     private String position;
 
-
     @CreationTimestamp
     private LocalDateTime rdate;
+
+    // 파일 업로드 추가 //
+    private MultipartFile file;
 }

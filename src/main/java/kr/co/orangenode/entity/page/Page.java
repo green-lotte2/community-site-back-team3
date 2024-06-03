@@ -5,6 +5,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,8 +21,5 @@ public class Page {
     private String uid;
     private String title;
     private String content;
-    private String font;
-    private int fontSize;
-    private String fontColor;
-
+    private LocalDateTime update;
 }

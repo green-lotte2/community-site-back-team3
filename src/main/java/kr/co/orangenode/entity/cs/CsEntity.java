@@ -2,10 +2,14 @@ package kr.co.orangenode.entity.cs;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @Builder
 @ToString
@@ -17,6 +21,8 @@ public class CsEntity {
     String uid;
     String title;
     String content;
-    String cate;
-    String rdate;
+    String cateName;
+
+    @CreationTimestamp
+    LocalDateTime rdate;
 }

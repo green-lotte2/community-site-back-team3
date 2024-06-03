@@ -96,17 +96,8 @@ public class ProjectService {
     /* 프로젝트 수정 */
     @Transactional
     public ResponseEntity<?> updateProject(ProjectDTO projectDTO) {
-        try {
-            Optional<Project> proNo = projectRepository.findById(projectDTO.getProNo());
-            if(proNo.isPresent()){
-                projectMapper.updateProject(projectDTO);
-                return ResponseEntity.status(HttpStatus.OK).body("success");
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Project not found");
-            }
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
-        }
+        projectMapper.updateProject(projectDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("success");
     }
     /* 특정 프로젝트 보기*/
     public ResponseEntity<?> viewProject(int proNo) {

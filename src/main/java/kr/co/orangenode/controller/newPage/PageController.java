@@ -1,6 +1,7 @@
 package kr.co.orangenode.controller.newPage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.orangenode.service.PageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,12 @@ import java.util.Map;
 public class PageController {
 
     private final ObjectMapper objectMapper;
+    private final PageService pageService;
 
     // 페이지 저장 
     @PostMapping("/savepage")
     public void savePage(@RequestParam("data") String data,
-                         @RequestParam Map<String, MultipartFile> files) throws IOException {
+                         @RequestBody  Map<String, MultipartFile> files) throws IOException {
         log.info("Received data: {}", data);
 
         // JSON 데이터를 역직렬화
@@ -33,36 +35,30 @@ public class PageController {
         for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
             String key = entry.getKey();
             MultipartFile file = entry.getValue();
+
+            // 파일이 있다면
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
-                //File dest = new File("path/to/save/" + fileName);
+                //File dest = new File("path" + fileName);
                 //file.transferTo(dest);
-                log.info("Saved file: {}", fileName);
+                log.info("저장할 파일 : {}", fileName);
 
                 // 블록 데이터에서 해당 이미지 블록의 URL을 업데이트
                 int index = Integer.parseInt(key.split("_")[1]);
                 Map<String, Object> block = blocks.get(index);
                 Map<String, Object> dataMap = (Map<String, Object>) block.get("data");
-                dataMap.put("url", "/path/to/save/" + fileName);
+                dataMap.put("url", "가져온 이미지 경로" + fileName);
             }
         }
 
-        // 업데이트된 데이터를 저장하거나 필요한 처리를 수행
-        // 예: ArticleData updatedArticleData = objectMapper.convertValue(articleData, ArticleData.class);
-        log.info("Updated data: {}", articleData);
+        log.info("수정할 데이터 : {}", articleData);
     }
 
-    private void saveImage(String base64Image) {
-        // Remove the data:image/png;base64, part if present
-        if (base64Image.contains(",")) {
-            base64Image = base64Image.split(",")[1];
-        }
-        byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-        try (FileOutputStream fos = new FileOutputStream("saved_image.png")) {
-            fos.write(imageBytes);
-            log.info("Image saved successfully.");
-        } catch (IOException e) {
-            log.error("Error saving image: ", e);
-        }
+    // 파일 전송 테스트
+    @PostMapping("/page/upload")
+    public void upload(MultipartFile imgFile) {
+        log.info("upload  !!! ");
+        log.info(imgFile.toString());
+        pageService.upload(imgFile);
     }
 }

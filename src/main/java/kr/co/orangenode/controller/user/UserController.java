@@ -92,4 +92,12 @@ public class UserController {
     public ResponseEntity<?> userInfo(@RequestParam String uid) {
         return userService.userInfo(uid);
     }
+
+    // 회원정보 수정 //
+    @PatchMapping("/user/update")
+    public ResponseEntity<?> updateUser(UserDTO userDTO, String originPass) {
+
+        log.info("originPass... : " + originPass);
+        return userService.updateUserInfo(userDTO);
+    }
 }

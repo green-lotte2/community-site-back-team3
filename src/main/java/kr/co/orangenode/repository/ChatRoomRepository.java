@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer>, kr.co.orangenode.repository.custom.ChatRoomRepositoryCustom {
-    // 기본 CRUD 메서드 및 사용자 정의 메서드 포함
+    ChatRoom findByTitle(String title);
 
 }
