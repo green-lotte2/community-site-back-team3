@@ -49,14 +49,13 @@ public class PageController {
             }
         }
 
-
         log.info("수정할 데이터 : {}", articleData);
     }
 
     // 파일 전송 테스트
-    @PostMapping("/testtest")
-    public void testtest(@RequestBody MultipartFile file) {
-        log.info("testtest  !!! ");
+    @PostMapping("/page/upload")
+    public void upload(@RequestBody MultipartFile file) {
+        log.info("upload  !!! ");
         log.info(file.toString());
     }
 }

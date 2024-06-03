@@ -20,5 +20,4 @@ public class Partner {
     private int pageNo;
     private String uid;
 
-
 }
