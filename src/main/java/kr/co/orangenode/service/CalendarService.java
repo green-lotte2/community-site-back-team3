@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.calendar.CalendarDTO;
 import kr.co.orangenode.entity.calendar.Calendar;
 import kr.co.orangenode.mapper.CalendarMapper;
-import kr.co.orangenode.repository.CalendarRepository;
+import kr.co.orangenode.repository.calendar.CalendarRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

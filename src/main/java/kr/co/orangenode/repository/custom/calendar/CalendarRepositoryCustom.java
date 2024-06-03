@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository.custom;
+package kr.co.orangenode.repository.custom.calendar;
 
 import kr.co.orangenode.entity.calendar.Calendar;
 
