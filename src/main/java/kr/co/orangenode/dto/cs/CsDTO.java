@@ -1,6 +1,9 @@
 package kr.co.orangenode.dto.cs;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +16,8 @@ public class CsDTO {
     String uid;
     String title;
     String content;
-    String cate;
-    String rdate;
+    String cateName;
+
+    @CreationTimestamp
+    LocalDateTime rdate;
 }

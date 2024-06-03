@@ -38,7 +38,7 @@ public class ArticleController {
     }
 
     // 게시글 생성
-    @PostMapping("/articles")
+    @PostMapping("/article")
     public Article CreateArticle(@RequestBody Article article){
         return articleService.createArticle(article);
     }
@@ -56,10 +56,6 @@ public class ArticleController {
         }
     }
 
-    @DeleteMapping("/{uid}")
-    public void deleteArticle(@PathVariable int uid) {
-        articleService.deleteArticle(uid);
-    }
 }
 
 
