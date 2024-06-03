@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -56,7 +58,6 @@ public class ChatRoomController {
     // 친구 초대
     @PostMapping("/chatroom/invite")
     public ResponseEntity<?> inviteFriend(@RequestBody ChatUserDTO chatUserDTO) {
-        log.info("친구 초대 !!! : " + chatUserDTO.toString());
         chatRoomService.inviteFriend(chatUserDTO);
         return ResponseEntity.status(HttpStatus.OK).body("친구초대 완료");
     }
@@ -66,10 +67,21 @@ public class ChatRoomController {
     public List<ChatRoom> getUserChatRooms(@PathVariable String uid) {
         return chatRoomService.getUserChatRooms(uid);
     }
-
-    // 초대할 수 있는(같은 회사) 친구 목록 조회
-    @GetMapping("/friends/{company}")
-    public ResponseEntity<?> getFriendsByCompany(@PathVariable String company) {
+    
+    @GetMapping("/friends")
+    public ResponseEntity<?> getFriendsByDepartment(@RequestParam String company) {
+        log.info("aaa");
         return userService.selectUserByCompany(company);
     }
+
+    @PostMapping("/chatRoom/getRoomNo")
+    public ResponseEntity<?> getRoomNo(@RequestBody Map<String, String> request) {
+        String title = request.get("title");
+        ChatRoom chatRoom = chatRoomService.findByTitle(title);
+        if (chatRoom == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Chat room not found");
+        }
+        return ResponseEntity.ok(Collections.singletonMap("chatNo", chatRoom.getChatNo()));
+    }
+
 }

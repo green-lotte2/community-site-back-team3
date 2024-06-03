@@ -61,4 +61,8 @@ public class ChatRoomService {
     public List<ChatRoom> getUserChatRooms(String uid){
         return chatRoomRepository.findChatRoomsByUid(uid);
     }
+
+    public ChatRoom findByTitle(String title) {
+        return chatRoomRepository.findByTitle(title);
+    }
 }
