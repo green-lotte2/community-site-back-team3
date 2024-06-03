@@ -8,4 +8,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
 
     public int updateUser(@Param("userDTO")UserDTO userDTO);
+
+    public int updateUserWithoutPass(@Param("userDTO")UserDTO userDTO);
+
+    public int updatePass(@Param("userDTO")UserDTO userDTO);
 }
