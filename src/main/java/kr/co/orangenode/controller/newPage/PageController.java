@@ -1,6 +1,7 @@
 package kr.co.orangenode.controller.newPage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.orangenode.service.PageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class PageController {
 
     private final ObjectMapper objectMapper;
+    private final PageService pageService;
 
     // 페이지 저장 
     @PostMapping("/savepage")
@@ -54,8 +56,9 @@ public class PageController {
 
     // 파일 전송 테스트
     @PostMapping("/page/upload")
-    public void upload(@RequestBody MultipartFile file) {
+    public void upload(MultipartFile imgFile) {
         log.info("upload  !!! ");
-        log.info(file.toString());
+        log.info(imgFile.toString());
+        pageService.upload(imgFile);
     }
 }
