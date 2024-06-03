@@ -1,9 +1,9 @@
-package kr.co.orangenode.repository.impl;
+package kr.co.orangenode.repository.impl.calendar;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.orangenode.entity.calendar.Calendar;
 import kr.co.orangenode.entity.calendar.QCalendar;
-import kr.co.orangenode.repository.custom.CalendarRepositoryCustom;
+import kr.co.orangenode.repository.custom.calendar.CalendarRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
