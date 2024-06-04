@@ -2,20 +2,17 @@ package kr.co.orangenode.dto.page;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class PageDTO {
-
+public class BlockDTO {
+    private int bno;
     private int pageNo;
-    private String uid;
-    private String title;
     private String content;
-
-    private LocalDateTime update;
+    private String type;
+    private String alignment;
+    private int order;
 }

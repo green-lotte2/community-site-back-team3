@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository;
+package kr.co.orangenode.repository.page;
 
 import kr.co.orangenode.entity.page.Partner;
 import org.springframework.data.jpa.repository.JpaRepository;

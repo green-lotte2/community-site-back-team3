@@ -3,6 +3,7 @@ package kr.co.orangenode.controller.user;
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.security.MyUserDetails;
+import kr.co.orangenode.security.SecurityUserService;
 import kr.co.orangenode.service.user.UserService;
 import kr.co.orangenode.util.JWTProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,6 +28,8 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JWTProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final SecurityUserService securityUserService;
 
     // 로그인 //
     @PostMapping("/user/login")
@@ -67,7 +72,6 @@ public class UserController {
             map.put("accessToken", access);
             map.put("refreshToken", refresh);
 
-
             return ResponseEntity.ok().body(map);
 
         }catch (Exception e){
@@ -92,12 +96,26 @@ public class UserController {
     public ResponseEntity<?> userInfo(@RequestParam String uid) {
         return userService.userInfo(uid);
     }
-
+    // 사용자 비밀번호 검증 //
+    @PostMapping("/user/check")
+    public ResponseEntity<?> userCheck(@RequestBody UserDTO userDTO) {
+        log.info("uid: " + userDTO.getUid());
+        log.info("pass: " + userDTO.getPass());
+        // 사용자 정보 검색
+        UserDetails userDetails = securityUserService.loadUserByUsername(userDTO.getUid());
+        if(passwordEncoder.matches(userDTO.getPass(), userDetails.getPassword())) {
+            log.info("비밀번호 일치");
+            return ResponseEntity.ok().body(1);
+        }else {
+            log.info("비밀번호 불일치 2 :" + userDTO.getPass());
+            log.info("비밀번호 3 : " + userDetails.getUsername());
+            return ResponseEntity.ok().body(0);
+        }
+    }
     // 회원정보 수정 //
     @PatchMapping("/user/update")
-    public ResponseEntity<?> updateUser(UserDTO userDTO, String originPass) {
+    public ResponseEntity<?> updateUser(UserDTO userDTO) {
 
-        log.info("originPass... : " + originPass);
         return userService.updateUserInfo(userDTO);
     }
 }
