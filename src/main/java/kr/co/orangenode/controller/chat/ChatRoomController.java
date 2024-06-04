@@ -77,6 +77,7 @@ public class ChatRoomController {
     @PostMapping("/chatRoom/getRoomNo")
     public ResponseEntity<?> getRoomNo(@RequestBody Map<String, String> request) {
         String title = request.get("title");
+        log.info("title" + title);
         ChatRoom chatRoom = chatRoomService.findByTitle(title);
         if (chatRoom == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Chat room not found");
