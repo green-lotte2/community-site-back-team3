@@ -17,13 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
+
 import java.io.File;
 import java.io.IOException;
-import java.rmi.server.UID;
 import java.util.*;
-
-import static kr.co.orangenode.entity.user.QUser.user;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,6 +70,15 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
         }
     }
+//    /* 사용자 비밀번호 검증 로직 */
+    public boolean userCheck(String uid, String pass){
+        Optional<User> user = userRepository.findById(uid);
+        if(user.isEmpty()){
+            return false;
+        }
+        return user.get().getPass().equals(pass);
+    }
+
     /* 내 설정 수정 */
     public ResponseEntity<?> updateUserInfo(UserDTO userDTO) {
 
@@ -88,7 +94,7 @@ public class UserService {
         }
         int result = 0;
         Optional<User> originUser = userRepository.findById(userDTO.getUid());
-        if(originUser.get().getPass().equals(userDTO.getPass())){
+        if(userDTO.getPass().equals(originUser.get().getPass())){
             log.info("pass 안바꿈");
             result = userMapper.updateUserWithoutPass(userDTO);
         }else {
