@@ -39,7 +39,7 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
         log.info("impl" + chatAndName);
 
 
-        //entityManager.persist(chatMessage);
+        // entityManager.persist(chatMessage);
         return chatAndName;
     }
 
