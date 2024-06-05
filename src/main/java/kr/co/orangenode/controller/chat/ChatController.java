@@ -1,6 +1,7 @@
 package kr.co.orangenode.controller.chat;
 
 import kr.co.orangenode.dto.chat.ChatMessageDTO;
+import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,10 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
         chatMessageDTO.setCDate(LocalDateTime.now());
-        ResponseEntity<?> response = chatMessageService.saveMessage(chatMessageDTO);
+        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessageDTO);
 
-        messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, response.getBody());
+        // 동적으로 경로를 설정하여 메시지 전송
+        messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
     }
 
     @MessageMapping("/chat.addUser")
