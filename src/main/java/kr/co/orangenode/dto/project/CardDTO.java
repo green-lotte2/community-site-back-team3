@@ -8,12 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class IssueDTO {
-
-    private int iNo;
-
-    private int proNo;
+public class CardDTO {
+    private int id;
     private String title;
-    private String content;
-    private String status;
+    private String[] tags;
+    private String task;
+
 }
+

@@ -16,5 +16,5 @@ public class WorkerDTO {
     private int wNo;
 
     private int colNo;
-    private int iNo;
+    private int id;
 }

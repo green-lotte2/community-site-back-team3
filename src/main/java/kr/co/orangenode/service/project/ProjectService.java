@@ -4,15 +4,12 @@ import com.querydsl.core.Tuple;
 import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.project.KanListDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
+import kr.co.orangenode.entity.project.Board;
+import kr.co.orangenode.entity.project.Card;
 import kr.co.orangenode.entity.project.Collaborator;
-import kr.co.orangenode.entity.project.Issue;
 import kr.co.orangenode.entity.project.Project;
-import kr.co.orangenode.entity.project.Worker;
 import kr.co.orangenode.mapper.ProjectMapper;
-import kr.co.orangenode.repository.project.CollaboratorRepository;
-import kr.co.orangenode.repository.project.IssueRepository;
-import kr.co.orangenode.repository.project.ProjectRepository;
-import kr.co.orangenode.repository.project.WorkerRepository;
+import kr.co.orangenode.repository.project.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +27,10 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
-    private final IssueRepository issueRepository;
+    private final CardRepository cardRepository;
     private final WorkerRepository workerRepository;
     private final ProjectMapper projectMapper;
+    private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
 
     /* 프로젝트 생성 */
@@ -71,19 +68,30 @@ public class ProjectService {
     public ResponseEntity<?> deleteProject(int proNo) {
         try {
             Optional<Project> findProNo = projectRepository.findById(proNo);
-            // Optional<Worker> findINo = workerRepository.findById(ino);
             if(findProNo.isPresent()){
-                // 등록된 이슈가 있으면 먼저 삭제
-                if(findProNo.get().getIssue() > 0) {
-                    List<Issue> issues = issueRepository.findAllByProNo(proNo);
-                    for(Issue issue : issues) {
-                        log.info("here ... 1");
-                        workerRepository.deleteAllByIno(issue.getINo());
+
+                // Board 삭제
+                List<Board> boards = boardRepository.findAllByProNo(proNo);
+                log.info(boards.toString());
+
+                for(Board board : boards) {
+                    log.info("here ... 1");
+                    // 등록된 이슈가 있으면 먼저 삭제
+                    if(findProNo.get().getIssue() > 0) {
+                        List<Card> cards = cardRepository.findAllByBoardNo(board.getBoardNo());
+
+                        for(Card issue : cards) {
+                            log.info("here ... 2");
+                            workerRepository.deleteAllById(issue.getId());
+                        }
+                        log.info("here ... 3");
+                        cardRepository.deleteAllByBoardNo(board.getBoardNo());
                     }
-                    log.info("here ... 2");
-                    issueRepository.deleteAllByProNo(proNo);
+
+                    boardRepository.deleteById(board.getBoardNo());
                 }
-                log.info("here ... 3");
+                log.info("here ... 4");
+
                 collaboratorRepository.deleteAllByProNo(proNo);
                 projectRepository.deleteById(proNo);
                 return ResponseEntity.status(HttpStatus.OK).body("success");
@@ -109,6 +117,7 @@ public class ProjectService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
         }
     }
+    /*
     public ResponseEntity<?> selectKanbanList(int proNo) {
         List<Tuple> tuples = projectRepository.selectKanban(proNo);
         log.info("here111 : "+ tuples.toString());
@@ -116,7 +125,7 @@ public class ProjectService {
                 .map(tuple -> {
                     KanListDTO kanListDTO = new KanListDTO();
                     kanListDTO.setProNo(tuple.get(0, Integer.class));
-                    kanListDTO.setINo(tuple.get(1, Integer.class));
+                    kanListDTO.setId(tuple.get(1, Integer.class));
                     kanListDTO.setIssueTitle(tuple.get(2, String.class));
                     kanListDTO.setUid(tuple.get(3, String.class));
                     kanListDTO.setWorkerName(tuple.get(4, String.class));
@@ -126,5 +135,5 @@ public class ProjectService {
                 }).toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(kanListDTOS);
-    }
+    }*/
 }
