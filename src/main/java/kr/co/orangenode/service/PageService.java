@@ -73,10 +73,10 @@ public class PageService {
         return ResponseEntity.ok().body(sName);
     }
     // 페이지 생성
-    public int insertPage(PageDTO pageDTO){
-        pageRepository.save(modelMapper.map(pageDTO, Page.class));
-        // pageNo 리턴
-        return 0;
+    public ResponseEntity<?> insertPage(PageDTO pageDTO){
+        Page page = pageRepository.save(modelMapper.map(pageDTO, Page.class));
+        // page 리턴
+        return ResponseEntity.ok().body(page);
     }
     // 블록 저장
     public int insertBlocks(List<BlockDTO> blockDTOS){

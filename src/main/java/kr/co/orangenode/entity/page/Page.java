@@ -19,7 +19,8 @@ public class Page {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pageNo;
     private String uid;
+    private String title;
 
     @CreationTimestamp
-    private LocalDateTime update;
+    private LocalDateTime uDate;
 }
