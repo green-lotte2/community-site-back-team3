@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor @Slf4j
+@RequiredArgsConstructor
+@Slf4j
 public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
@@ -26,30 +27,24 @@ public class ChatMessageService {
 
     @Transactional
     public ResponseEntity<?> saveMessage(ChatMessageDTO chatMessageDTO) {
-        // chatNo가 유효한지 확인
         if (chatRoomRepository.existsById(chatMessageDTO.getChatNo())) {
-
             ChatMessage chatMessage = modelMapper.map(chatMessageDTO, ChatMessage.class);
+            chatMessage = chatMessageRepository.save(chatMessage);
 
             List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatMessage.getChatNo());
 
             List<ChatMessageDTO> result = tuples.stream()
                     .map(tuple -> {
-
-                        String Name = tuple.get(0,String.class);
-                        ChatMessage chatMessage1 = tuple.get(1, ChatMessage.class);
-                        ChatMessageDTO chatMessageDTO1 = modelMapper.map(chatMessage, ChatMessageDTO.class);
-                        chatMessageDTO.setName(Name);
-
-                        return chatMessageDTO;
-
+                        String userName = tuple.get(0, String.class);
+                        ChatMessage message = tuple.get(1, ChatMessage.class);
+                        ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
+                        dto.setName(userName);
+                        return dto;
                     }).collect(Collectors.toList());
 
-            log.info("챗메세지 서비스"+ result);
+            log.info("챗메세지 서비스" + result);
 
             return ResponseEntity.ok().body(result);
-
-
         } else {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessageDTO.getChatNo());
         }
@@ -58,28 +53,21 @@ public class ChatMessageService {
     public ResponseEntity<?> getMessages(int chatNo) {
         List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);
 
-        if(tuples.isEmpty()){
+        if (tuples.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
-
         } else {
             List<ChatMessageDTO> result = tuples.stream()
                     .map(tuple -> {
-
-                        String Name = tuple.get(0,String.class);
-                        ChatMessage chatMessage = tuple.get(1, ChatMessage.class);
-                        ChatMessageDTO chatMessageDTO = modelMapper.map(chatMessage, ChatMessageDTO.class);
-                        chatMessageDTO.setName(Name);
-
-                        return chatMessageDTO;
-
+                        String userName = tuple.get(0, String.class);
+                        ChatMessage message = tuple.get(1, ChatMessage.class);
+                        ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
+                        dto.setName(userName);
+                        return dto;
                     }).collect(Collectors.toList());
 
-            log.info("챗메세지 서비스"+ result);
+            log.info("챗메세지 서비스" + result);
 
             return ResponseEntity.ok().body(result);
-
         }
-
-
     }
 }
