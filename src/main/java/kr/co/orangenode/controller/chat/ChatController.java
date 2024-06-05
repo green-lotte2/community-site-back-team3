@@ -5,6 +5,8 @@ import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,12 +26,12 @@ public class ChatController {
 
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
-
+    private final ModelMapper modelMapper;
     // 메시지 전송
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
         chatMessageDTO.setCDate(LocalDateTime.now());
-        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessageDTO);
+        ResponseEntity<?> savedMessage = chatMessageService.saveMessage(chatMessageDTO);
 
         // 동적으로 경로를 설정하여 메시지 전송
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
@@ -44,7 +46,7 @@ public class ChatController {
 
     // 채팅방 입장 시 메세지 조회
     @GetMapping("/chat/messages")
-    public List<ChatMessage> getMessages(@RequestParam int chatNo) {
+    public ResponseEntity<?> getMessages(@RequestParam int chatNo) {
         return chatMessageService.getMessages(chatNo);
     }
 }

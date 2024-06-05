@@ -33,7 +33,7 @@ public class PageController {
     @PostMapping("/page")
     public ResponseEntity<?> insertPage(@RequestBody PageDTO pageDTO){
         log.info("pageDTO : " + pageDTO);
-        return null;
+        return pageService.insertPage(pageDTO);
     }
     // 페이지 내용 저장
     @PostMapping("/savepage")
