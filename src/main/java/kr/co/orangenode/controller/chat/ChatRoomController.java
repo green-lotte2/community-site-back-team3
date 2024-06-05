@@ -51,7 +51,7 @@ public class ChatRoomController {
 
     // 이거 안쓰는 거 같아요 chatController에 getMessages()랑 기능 같음
     @GetMapping("/chatroom/{chatno}")
-    public List<ChatMessage> getChatRoomMessage(@PathVariable int chatno) {
+    public ResponseEntity<?> getChatRoomMessage(@PathVariable int chatno) {
         return chatMessageService.getMessages(chatno);
     }
 
@@ -59,6 +59,7 @@ public class ChatRoomController {
     @PostMapping("/chatroom/invite")
     public ResponseEntity<?> inviteFriend(@RequestBody ChatUserDTO chatUserDTO) {
         chatRoomService.inviteFriend(chatUserDTO);
+        log.info("들어오나 : " + chatUserDTO.getChatNo());
         return ResponseEntity.status(HttpStatus.OK).body("친구초대 완료");
     }
 
