@@ -19,4 +19,8 @@ public class ChatMessageDTO {
     private String uid;
     private String oName;
     private String sName;
+
+
+    // user join용
+    private String name;
 }

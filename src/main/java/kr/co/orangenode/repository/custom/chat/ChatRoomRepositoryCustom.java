@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository.custom;
+package kr.co.orangenode.repository.custom.chat;
 
 import kr.co.orangenode.entity.chat.ChatRoom;
 
