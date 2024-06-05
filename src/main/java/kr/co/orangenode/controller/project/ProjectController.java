@@ -1,5 +1,6 @@
 package kr.co.orangenode.controller.project;
 
+import kr.co.orangenode.dto.project.CardDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
 import kr.co.orangenode.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -39,10 +40,21 @@ public class ProjectController {
     /* 프로젝트 특정글 불러오기*/
     @GetMapping("/project/kanban")
     public ResponseEntity<?> viewProjectKanban(@RequestParam int proNo) {
+        log.info("proNo:" + proNo);
         return projectService.viewProject(proNo);
     }
+
+    /*
     @GetMapping("/project/kanban/list")
     public ResponseEntity<?> kanbanList(@RequestParam int proNo) {
         return projectService.selectKanbanList(proNo);
+    }*/
+
+    @PostMapping("/addissue")
+    public ResponseEntity<?> addIssue(@RequestBody CardDTO cardDTO) {
+
+        log.info(" 히히히 ");
+        log.info("issueDTO:" + cardDTO);
+        return null;
     }
 }

@@ -9,15 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "issue")
-public class Issue {
+@Table(name = "board")
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int iNo;
+        private int boardNo;
 
-    private int proNo;
-    private String title;
-    private String content;
-    private String status;
+        private int proNo;
+        private String boardName;
 }

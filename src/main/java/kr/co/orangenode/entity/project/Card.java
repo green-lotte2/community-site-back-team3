@@ -9,13 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "worker")
-public class Worker {
+@Table(name = "card")
+public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int wNo;
+        private int id;
+        private int boardNo;
+        private String title;
+        private String task;
 
-    private int colNo;
-    private int id;
 }
