@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -41,6 +42,15 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
 
         // entityManager.persist(chatMessage);
         return chatAndName;
+    }
+
+    @Override
+    public ChatMessage saveMessageWithRoom2(ChatMessage chatMessage) {
+        chatMessage.setUid(chatMessage.getUid());
+        chatMessage.setCDate(LocalDateTime.now());
+
+        entityManager.persist(chatMessage);
+        return chatMessage;
     }
 
 }
