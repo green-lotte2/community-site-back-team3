@@ -59,6 +59,7 @@ public class ChatRoomController {
     @PostMapping("/chatroom/invite")
     public ResponseEntity<?> inviteFriend(@RequestBody ChatUserDTO chatUserDTO) {
         chatRoomService.inviteFriend(chatUserDTO);
+        log.info("들어오나 : " + chatUserDTO.getChatNo());
         return ResponseEntity.status(HttpStatus.OK).body("친구초대 완료");
     }
 
