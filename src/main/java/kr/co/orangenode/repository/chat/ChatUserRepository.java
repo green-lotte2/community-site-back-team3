@@ -1,4 +1,4 @@
-package kr.co.orangenode.repository;
+package kr.co.orangenode.repository.chat;
 
 import kr.co.orangenode.entity.chat.ChatUser;
 import org.springframework.data.jpa.repository.JpaRepository;
