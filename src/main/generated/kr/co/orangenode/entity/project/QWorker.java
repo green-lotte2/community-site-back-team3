@@ -21,7 +21,7 @@ public class QWorker extends EntityPathBase<Worker> {
 
     public final NumberPath<Integer> colNo = createNumber("colNo", Integer.class);
 
-    public final NumberPath<Integer> ino = createNumber("ino", Integer.class);
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final NumberPath<Integer> wNo = createNumber("wNo", Integer.class);
 
