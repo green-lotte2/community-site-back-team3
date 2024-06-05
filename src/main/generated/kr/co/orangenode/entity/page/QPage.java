@@ -21,9 +21,11 @@ public class QPage extends EntityPathBase<Page> {
 
     public final NumberPath<Integer> pageNo = createNumber("pageNo", Integer.class);
 
-    public final StringPath uid = createString("uid");
+    public final StringPath title = createString("title");
 
-    public final DateTimePath<java.time.LocalDateTime> update = createDateTime("update", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> uDate = createDateTime("uDate", java.time.LocalDateTime.class);
+
+    public final StringPath uid = createString("uid");
 
     public QPage(String variable) {
         super(Page.class, forVariable(variable));
