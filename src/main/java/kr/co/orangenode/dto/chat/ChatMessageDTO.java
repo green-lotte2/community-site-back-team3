@@ -1,5 +1,6 @@
 package kr.co.orangenode.dto.chat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,4 +24,10 @@ public class ChatMessageDTO {
 
     // user join용
     private String name;
+
+    // cDate 필드를 원하는 형식으로 변환
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    public LocalDateTime getCDate() {
+        return cDate;
+    }
 }
