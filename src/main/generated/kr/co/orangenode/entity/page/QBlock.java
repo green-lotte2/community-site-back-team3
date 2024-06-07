@@ -19,13 +19,11 @@ public class QBlock extends EntityPathBase<Block> {
 
     public static final QBlock block = new QBlock("block");
 
-    public final StringPath alignment = createString("alignment");
+    public final NumberPath<Integer> blockOrder = createNumber("blockOrder", Integer.class);
 
     public final NumberPath<Integer> bno = createNumber("bno", Integer.class);
 
     public final StringPath content = createString("content");
-
-    public final NumberPath<Integer> order = createNumber("order", Integer.class);
 
     public final NumberPath<Integer> pageNo = createNumber("pageNo", Integer.class);
 

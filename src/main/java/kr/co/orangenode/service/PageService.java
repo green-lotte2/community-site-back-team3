@@ -2,6 +2,7 @@ package kr.co.orangenode.service;
 
 import kr.co.orangenode.dto.page.BlockDTO;
 import kr.co.orangenode.dto.page.PageDTO;
+import kr.co.orangenode.entity.page.Block;
 import kr.co.orangenode.entity.page.Page;
 import kr.co.orangenode.repository.page.PageFileRepository;
 import kr.co.orangenode.repository.page.BlockRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -43,6 +45,10 @@ public class PageService {
                 })
                 .toList();
         return ResponseEntity.ok().body(pageDTOS);
+    }
+    // 페이지 조회
+    public ResponseEntity<?> selectPage(int pageNo){
+        return ResponseEntity.ok().body(pageRepository.findByPageNo(pageNo));
     }
     // 파일 업로드
     public ResponseEntity<String> upload(MultipartFile pagefile) {
@@ -78,9 +84,30 @@ public class PageService {
         // page 리턴
         return ResponseEntity.ok().body(page);
     }
+    // 페이지 내용 불러오기
+    public ResponseEntity<?> selectBlocks(int pageNo){
+        List<BlockDTO> blocks = blockRepository.findAllByPageNoOrderByBlockOrder(pageNo)
+                .stream()
+                .map(entity -> {
+                    return modelMapper.map(entity, BlockDTO.class);
+                })
+                .toList();
+
+        return ResponseEntity.ok().body(blocks);
+    }
     // 블록 저장
-    public int insertBlocks(List<BlockDTO> blockDTOS){
-        return 0;
+    public void insertBlocks(List<Map<String, Object>> blocks, int pageNo){
+
+        log.info("insertBlocks  pageNo: " + pageNo);
+        for (Map<String, Object> block : blocks) {
+            BlockDTO blockDTO = new BlockDTO();
+            blockDTO.setPageNo(pageNo);
+            blockDTO.setType(block.get("type").toString());
+            blockDTO.setContent(String.valueOf(block.get("data")));
+            blockDTO.setBlockOrder((Integer) block.get("order"));
+
+            blockRepository.save(modelMapper.map(blockDTO, Block.class));
+        }
     }
 }
 
