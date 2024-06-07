@@ -20,7 +20,7 @@ public class Block {
     private String content;
     private String type;
     // 블록의 정렬 방식
-    private String alignment;
+    //private String alignment;
     // 블록의 순서
-    private int order;
+    private int blockOrder;
 }
