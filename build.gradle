@@ -68,6 +68,8 @@ dependencies {
 
     //소켓
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    implementation 'org.springframework:spring-webmvc:6.1.6'
 }
 
 tasks.named('test') {

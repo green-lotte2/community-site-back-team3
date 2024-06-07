@@ -5,7 +5,7 @@ import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,10 +13,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -37,12 +41,28 @@ public class ChatController {
 
     @MessageMapping("/chat.addUser")
     public void addUser(@Payload ChatMessageDTO chatMessageDTO, SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getUid());
+        headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getName());
         messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
     }
 
     @GetMapping("/chat/messages")
     public ResponseEntity<?> getMessages(@RequestParam int chatNo) {
-        return chatMessageService.getMessages(chatNo);
+        ResponseEntity<?> responseEntity = chatMessageService.getMessages(chatNo);
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            List<ChatMessageDTO> messages = (List<ChatMessageDTO>) responseEntity.getBody();
+            if (messages != null) {
+                messages.sort(Comparator.comparing(ChatMessageDTO::getCDate));
+            }
+            return ResponseEntity.ok(messages);
+        } else {
+            return responseEntity;
+        }
+    }
+
+    @PostMapping("/chat/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("chatNo") String chatNo,
+                                             @RequestParam("uid") String uid) {
+        return chatMessageService.uploadFile(file, chatNo, uid);
     }
 }
