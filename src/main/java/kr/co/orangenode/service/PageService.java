@@ -103,7 +103,7 @@ public class PageService {
             BlockDTO blockDTO = new BlockDTO();
             blockDTO.setPageNo(pageNo);
             blockDTO.setType(block.get("type").toString());
-            blockDTO.setContent(String.valueOf(block.get("data")));
+            blockDTO.setData(String.valueOf(block.get("data")));
             blockDTO.setBlockOrder((Integer) block.get("order"));
 
             blockRepository.save(modelMapper.map(blockDTO, Block.class));
