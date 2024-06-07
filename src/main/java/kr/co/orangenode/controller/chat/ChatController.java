@@ -47,16 +47,7 @@ public class ChatController {
 
     @GetMapping("/chat/messages")
     public ResponseEntity<?> getMessages(@RequestParam int chatNo) {
-        ResponseEntity<?> responseEntity = chatMessageService.getMessages(chatNo);
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            List<ChatMessageDTO> messages = (List<ChatMessageDTO>) responseEntity.getBody();
-            if (messages != null) {
-                messages.sort(Comparator.comparing(ChatMessageDTO::getCDate));
-            }
-            return ResponseEntity.ok(messages);
-        } else {
-            return responseEntity;
-        }
+        return chatMessageService.getMessages(chatNo);
     }
 
     @PostMapping("/chat/upload")
