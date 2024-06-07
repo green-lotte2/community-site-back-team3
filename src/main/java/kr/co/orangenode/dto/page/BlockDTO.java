@@ -13,6 +13,6 @@ public class BlockDTO {
     private int pageNo;
     private String content;
     private String type;
-    private String alignment;
-    private int order;
+    //private String alignment;
+    private int blockOrder;
 }

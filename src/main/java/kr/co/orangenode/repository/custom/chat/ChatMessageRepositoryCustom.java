@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ChatMessageRepositoryCustom {
     List<Tuple> saveMessageWithRoom(int chatNo);
+    ChatMessage saveMessageWithRoom2(ChatMessage chatMessage);
 }

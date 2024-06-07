@@ -12,12 +12,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor @Slf4j
+@RequiredArgsConstructor
+@Slf4j
 public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
@@ -25,31 +32,10 @@ public class ChatMessageService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public ResponseEntity<?> saveMessage(ChatMessageDTO chatMessageDTO) {
-        // chatNo가 유효한지 확인
+    public ChatMessage saveMessage(ChatMessageDTO chatMessageDTO) {
         if (chatRoomRepository.existsById(chatMessageDTO.getChatNo())) {
-
             ChatMessage chatMessage = modelMapper.map(chatMessageDTO, ChatMessage.class);
-
-            List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatMessage.getChatNo());
-
-            List<ChatMessageDTO> result = tuples.stream()
-                    .map(tuple -> {
-
-                        String Name = tuple.get(0,String.class);
-                        ChatMessage chatMessage1 = tuple.get(1, ChatMessage.class);
-                        ChatMessageDTO chatMessageDTO1 = modelMapper.map(chatMessage, ChatMessageDTO.class);
-                        chatMessageDTO.setName(Name);
-
-                        return chatMessageDTO;
-
-                    }).collect(Collectors.toList());
-
-            log.info("챗메세지 서비스"+ result);
-
-            return ResponseEntity.ok().body(result);
-
-
+            return chatMessageRepository.saveMessageWithRoom2(chatMessage);
         } else {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessageDTO.getChatNo());
         }
@@ -58,28 +44,52 @@ public class ChatMessageService {
     public ResponseEntity<?> getMessages(int chatNo) {
         List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);
 
-        if(tuples.isEmpty()){
+        if (tuples.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
-
         } else {
             List<ChatMessageDTO> result = tuples.stream()
                     .map(tuple -> {
-
-                        String Name = tuple.get(0,String.class);
-                        ChatMessage chatMessage = tuple.get(1, ChatMessage.class);
-                        ChatMessageDTO chatMessageDTO = modelMapper.map(chatMessage, ChatMessageDTO.class);
-                        chatMessageDTO.setName(Name);
-
-                        return chatMessageDTO;
-
+                        String userName = tuple.get(0, String.class);
+                        ChatMessage message = tuple.get(1, ChatMessage.class);
+                        ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
+                        dto.setName(userName);
+                        return dto;
                     }).collect(Collectors.toList());
 
-            log.info("챗메세지 서비스"+ result);
+            log.info("챗메세지 서비스" + result);
 
             return ResponseEntity.ok().body(result);
-
         }
+    }
 
 
+    @Transactional
+    public ResponseEntity<String> uploadFile(MultipartFile file, String chatNo, String uid) {
+        String fileName = file.getOriginalFilename();
+        String uploadDir = System.getProperty("user.dir") + "/uploads/";
+
+        try {
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // 파일 저장
+            Path filePath = uploadPath.resolve(fileName);
+            file.transferTo(filePath.toFile());
+
+            // 파일 정보를 데이터베이스에 저장
+            ChatMessageDTO chatMessage = new ChatMessageDTO();
+            chatMessage.setMessage(fileName); // 파일 이름을 메시지로 저장
+            chatMessage.setCDate(LocalDateTime.now());
+            chatMessage.setChatNo(Integer.parseInt(chatNo));
+            chatMessage.setUid(uid);
+            saveMessage(chatMessage);
+
+            return ResponseEntity.ok("파일 업로드 성공");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패");
+        }
     }
 }

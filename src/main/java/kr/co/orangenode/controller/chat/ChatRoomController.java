@@ -30,7 +30,6 @@ public class ChatRoomController {
     // 모든 채팅방 조회 : 이거 왜 있는거죠?
     @GetMapping("/chatroom")
     public ResponseEntity<?> getAllChatRooms() {
-        log.info("여기?");
         return chatRoomService.getAllChatRooms();
     }
 
@@ -43,8 +42,6 @@ public class ChatRoomController {
     // 채팅방 삭제
     @DeleteMapping("/chatroom")
     public ResponseEntity<?> deleteChatRoom(@RequestParam int chatNo, @RequestParam String uid) {
-        log.info("이야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ" + chatNo);
-        log.info("UID@@@@@@@@@@@@@" + uid);
         chatRoomService.deleteRoom(uid, chatNo);
         return chatRoomService.getAllChatRooms();
     }
