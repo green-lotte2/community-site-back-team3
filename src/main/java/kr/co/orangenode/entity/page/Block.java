@@ -17,7 +17,7 @@ public class Block {
     private int bno;
 
     private int pageNo;
-    private String content;
+    private String data;
     private String type;
     // 블록의 정렬 방식
     //private String alignment;

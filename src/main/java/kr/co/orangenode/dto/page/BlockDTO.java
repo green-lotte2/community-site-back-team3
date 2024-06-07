@@ -11,7 +11,7 @@ import lombok.*;
 public class BlockDTO {
     private int bno;
     private int pageNo;
-    private String content;
+    private String data;
     private String type;
     //private String alignment;
     private int blockOrder;
