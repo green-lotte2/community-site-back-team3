@@ -1,11 +1,9 @@
 package kr.co.orangenode.controller.chat;
 
 import kr.co.orangenode.dto.chat.ChatMessageDTO;
-import kr.co.orangenode.entity.chat.ChatMessage;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,7 +29,7 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
         chatMessageDTO.setCDate(LocalDateTime.now());
-        ChatMessage savedMessage = chatMessageService.saveMessage(chatMessageDTO);
+        ChatMessageDTO savedMessage = chatMessageService.saveMessage(chatMessageDTO);
 
         // 동적으로 경로를 설정하여 메시지 전송
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
@@ -53,7 +49,11 @@ public class ChatController {
     @PostMapping("/chat/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("chatNo") String chatNo,
-                                             @RequestParam("uid") String uid) {
-        return chatMessageService.uploadFile(file, chatNo, uid);
+                                             @RequestParam("uid") String uid,
+                                             @RequestParam("name") String name) {  // name 필드를 추가로 받습니다.
+        log.info("Received file upload request - file: {}, chatNo: {}, uid: {}, name: {}",
+                file.getOriginalFilename(), chatNo, uid, name);
+        return chatMessageService.uploadFile(file, chatNo, uid, name);  // name 필드를 함께 전달합니다.
     }
+
 }
