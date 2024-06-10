@@ -10,14 +10,16 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * Qquestion is a Querydsl query type for question
+ * QQuestion is a Querydsl query type for Question
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class Qquestion extends EntityPathBase<question> {
+public class QQuestion extends EntityPathBase<Question> {
 
-    private static final long serialVersionUID = -658885316L;
+    private static final long serialVersionUID = -594241188L;
 
-    public static final Qquestion question = new Qquestion("question");
+    public static final QQuestion question = new QQuestion("question");
+
+    public final StringPath cate = createString("cate");
 
     public final StringPath content = createString("content");
 
@@ -27,16 +29,18 @@ public class Qquestion extends EntityPathBase<question> {
 
     public final StringPath title = createString("title");
 
-    public Qquestion(String variable) {
-        super(question.class, forVariable(variable));
+    public final StringPath uid = createString("uid");
+
+    public QQuestion(String variable) {
+        super(Question.class, forVariable(variable));
     }
 
-    public Qquestion(Path<? extends question> path) {
+    public QQuestion(Path<? extends Question> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public Qquestion(PathMetadata metadata) {
-        super(question.class, metadata);
+    public QQuestion(PathMetadata metadata) {
+        super(Question.class, metadata);
     }
 
 }
