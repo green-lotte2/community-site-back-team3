@@ -15,13 +15,11 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @ToString
-@Table(name = "question")
-public class question {
+@Table(name = "questionFile")
+public class QuestionFile {
     @Id
+    private int qfno;
     private int qno;
-    private String title;
-    private String content;
+    private String sname;
 
-    @CreationTimestamp
-    LocalDateTime rdate;
 }
