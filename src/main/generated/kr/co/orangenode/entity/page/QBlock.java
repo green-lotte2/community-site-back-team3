@@ -23,7 +23,7 @@ public class QBlock extends EntityPathBase<Block> {
 
     public final NumberPath<Integer> bno = createNumber("bno", Integer.class);
 
-    public final StringPath content = createString("content");
+    public final StringPath data = createString("data");
 
     public final NumberPath<Integer> pageNo = createNumber("pageNo", Integer.class);
 

@@ -27,11 +27,6 @@ public class ChatRoomController {
     private final UserService userService;
 
 
-    // 모든 채팅방 조회 : 이거 왜 있는거죠?
-    @GetMapping("/chatroom")
-    public ResponseEntity<?> getAllChatRooms() {
-        return chatRoomService.getAllChatRooms();
-    }
 
     // 채팅방 생성
     @PostMapping("/chatroom/{uid}")
