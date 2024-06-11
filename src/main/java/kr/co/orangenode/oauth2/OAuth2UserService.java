@@ -1,0 +1,66 @@
+package kr.co.orangenode.oauth2;
+
+import jakarta.servlet.http.HttpServletRequest;
+import kr.co.orangenode.entity.user.User;
+import kr.co.orangenode.repository.user.UserRepository;
+import kr.co.orangenode.security.MyUserDetails;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.Optional;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class OAuth2UserService extends DefaultOAuth2UserService {
+
+    private final UserRepository userRepository;
+    private final HttpServletRequest request;
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
+        //String accessToken = userRequest.getAccessToken().getTokenValue();
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        OAuth2User oauth2User = super.loadUser(userRequest);
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        OAuth2MemberInfo userInfo = null;
+
+        if (registrationId.equals("google")) {
+            userInfo = new GoogleInfo(attributes);
+        } else if (registrationId.equals("kakao")) {
+            userInfo = new KakaoInfo(attributes);
+        }
+
+        // 사용자 확인 및 회원가입 처리
+        String email = userInfo.getEmail();
+        String uid = email.substring(0, email.lastIndexOf("@"));
+        String name = userInfo.getName();
+        
+        // 소셜 로그인시 이메일 중복되는 오류 수정
+        Optional<User> optUser = userRepository.findByEmail(email);
+        User user=null;
+
+        if(optUser.isEmpty()){
+            user=User.builder()
+                    .uid(uid)
+                    .email(email)
+                    .name(name)
+                    .grade("FREE")
+                    .build();
+
+            userRepository.save(user);
+        }else{
+            user=optUser.get();
+        }
+        return MyUserDetails.builder()
+                .user(user)
+                .build();
+    }
+}

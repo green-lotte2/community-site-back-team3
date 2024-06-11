@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,7 +30,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final SecurityUserService securityUserService;
-
+    private final OAuth2UserService oauth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,7 +41,10 @@ public class SecurityConfig {
                     .csrf(CsrfConfigurer::disable)
                     .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성
                     .httpBasic(HttpBasicConfigurer::disable)    // 기본 HTTP 인증 방식 비활성
-                    .csrf(CsrfConfigurer::disable); // 사이트 위변조 방지 설정
+                    .csrf(CsrfConfigurer::disable) // 사이트 위변조 방지 설정
+                    .oauth2Login(oauth2Login -> oauth2Login // OAuth2 로그인 설정
+                        .userInfoEndpoint(userInfo -> userInfo // 사용자 정보 엔드포인트 설정
+                                .userService(oauth2UserService))); // 사용자 정보 서비스 설정
 
 
 
@@ -56,8 +60,6 @@ public class SecurityConfig {
                                                       //  .requestMatchers("/admin/js/**").hasAnyAuthority("ROLE_7","ROLE_5")
                                                         .requestMatchers("/admin/**").permitAll()
                                                         .anyRequest().permitAll());
-
-
         return httpSecurity.build();
 
     }
