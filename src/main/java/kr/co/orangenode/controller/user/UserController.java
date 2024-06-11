@@ -118,4 +118,14 @@ public class UserController {
 
         return userService.updateUserInfo(userDTO);
     }
+    // 요금제 가입 grade 업데이트
+    @PatchMapping("/user/updateGrade")
+    public ResponseEntity<?> updateGrade(@RequestBody UserDTO userDTO) {
+        boolean result = userService.updateUserGrade(userDTO);
+        if(result) {
+            return ResponseEntity.ok().body(1);
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 유저");
+        }
+    }
 }
