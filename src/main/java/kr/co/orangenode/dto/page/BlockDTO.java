@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class BlockDTO {
-    private int bno;
+    private String id;
     private int pageNo;
     private String data;
     private String type;

@@ -1,5 +1,6 @@
 package kr.co.orangenode.service.user;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.project.Project;
 import kr.co.orangenode.entity.user.User;
@@ -177,5 +178,17 @@ public class UserService {
                 .size(100,100)
                 .toFile(new File(path, "myImg" + sName));
         return "myImg" + sName;
+    }
+    // 요금제 가입 grade 업데이트
+    public boolean updateUserGrade(UserDTO userDTO){
+        Optional<User> optUser = userRepository.findById(userDTO.getUid());
+        if(optUser.isPresent()){
+            User user = optUser.get();
+            user.setGrade("MVP");
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -4,6 +4,7 @@ import kr.co.orangenode.dto.page.BlockDTO;
 import kr.co.orangenode.dto.page.PageDTO;
 import kr.co.orangenode.entity.page.Block;
 import kr.co.orangenode.entity.page.Page;
+import kr.co.orangenode.mapper.PageMapper;
 import kr.co.orangenode.repository.page.PageFileRepository;
 import kr.co.orangenode.repository.page.BlockRepository;
 import kr.co.orangenode.repository.page.PageRepository;
@@ -29,6 +30,7 @@ public class PageService {
     private final PageRepository pageRepository;
     private final BlockRepository blockRepository;
     private final PageFileRepository pageFileRepository;
+    private final PageMapper pageMapper;
 
     private final ModelMapper modelMapper;
 
@@ -84,6 +86,7 @@ public class PageService {
         // page 리턴
         return ResponseEntity.ok().body(page);
     }
+
     // 페이지 내용 불러오기
     public ResponseEntity<?> selectBlocks(int pageNo){
         List<BlockDTO> blocks = blockRepository.findAllByPageNoOrderByBlockOrder(pageNo)
@@ -95,12 +98,24 @@ public class PageService {
 
         return ResponseEntity.ok().body(blocks);
     }
+    // 제목 저장
+    public void updateTitle(String title, int pageNo){
+        log.info("update Title Serv");
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setPageNo(pageNo);
+        pageDTO.setTitle(title);
+        log.info("제목 저장 title : "+ pageDTO.getTitle());
+
+        pageMapper.updateTitle(pageDTO);
+    }
     // 블록 저장
     public void insertBlocks(List<Map<String, Object>> blocks, int pageNo){
 
         log.info("insertBlocks  pageNo: " + pageNo);
         for (Map<String, Object> block : blocks) {
+
             BlockDTO blockDTO = new BlockDTO();
+            blockDTO.setId(block.get("id").toString());
             blockDTO.setPageNo(pageNo);
             blockDTO.setType(block.get("type").toString());
             blockDTO.setData(String.valueOf(block.get("data")));

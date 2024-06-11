@@ -23,6 +23,8 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public final StringPath content = createString("content");
 
+    public final StringPath ip = createString("ip");
+
     public final NumberPath<Integer> qno = createNumber("qno", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
