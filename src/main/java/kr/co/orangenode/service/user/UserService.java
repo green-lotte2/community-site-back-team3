@@ -1,5 +1,6 @@
 package kr.co.orangenode.service.user;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.project.Project;
 import kr.co.orangenode.entity.user.User;

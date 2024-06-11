@@ -1,6 +1,5 @@
 package kr.co.orangenode.repository.impl;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.orangenode.entity.project.QCollaborator;
 import kr.co.orangenode.entity.project.QProject;

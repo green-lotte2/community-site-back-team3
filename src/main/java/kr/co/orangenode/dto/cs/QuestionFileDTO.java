@@ -1,6 +1,5 @@
 package kr.co.orangenode.dto.cs;
 
-import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,11 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-public class questionDTO {
+public class QuestionFileDTO {
+    private int qfno;
     private int qno;
-    private String title;
-    private String content;
+    private String sname;
 
-    @CreationTimestamp
-    LocalDateTime rdate;
 }

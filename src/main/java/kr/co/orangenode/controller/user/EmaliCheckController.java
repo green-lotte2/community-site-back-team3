@@ -2,6 +2,7 @@ package kr.co.orangenode.controller.user;
 
 
 import jakarta.servlet.http.HttpSession;
+import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.service.user.EmailCheckService;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -56,5 +58,43 @@ public class EmaliCheckController {
         }
     }
 
+    // userId찾기
+    @GetMapping("/member/findUserId")
+    public ResponseEntity<?> findUserId(@RequestParam String name, @RequestParam String email, HttpSession session) {
+        Optional<User> user = emailCheckService.findUserIdByUserNameAndUserEmail(name, email, session);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(404).body("유저가 없습니다.");
+        }
+    }
 
+    // userPass수정
+    @GetMapping("/member/changePass")
+    public ResponseEntity<?> changePass(@RequestParam String uid, @RequestParam String pass, @RequestParam String email, HttpSession session) {
+        long result = emailCheckService.updatePw(uid, pass, email, session);
+        if (result > 0) {
+            return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+        } else {
+            return ResponseEntity.status(500).body("비밀번호 변경에 실패했습니다.");
+        }
+    }
+
+    // 이메일 코드 발송
+    @PostMapping("/member/sendEmailCode")
+    public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> request, HttpSession session) {
+        String email = request.get("email");
+
+        int result = emailCheckService.findIdCheckEmail(session, email);
+        log.info("session :" + session);
+
+        String code = (String) session.getAttribute("code");
+        log.info("session code : " + code);
+
+        if (result == 0) {
+            return ResponseEntity.ok("이메일 코드 전송 완료");
+        } else {
+            return ResponseEntity.status(400).body("에러");
+        }
+    }
 }

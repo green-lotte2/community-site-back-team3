@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EmailCheckService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // email 전송
     private final JavaMailSender javaMailSender;
@@ -100,4 +102,31 @@ public class EmailCheckService {
         log.info("세션확인222 : " + session.getAttribute("code"));
     }
 
+    // UserId 찾기
+    public Optional<User> findUserIdByUserNameAndUserEmail(String name, String email, HttpSession session) {
+        return userRepository.findUserIdByUserNameAndUserEmail(name, email);
+    }
+    // 아이디찾기 이메일 확인/발송
+    public int findIdCheckEmail(HttpSession session, String email) {
+        int result = 0;
+
+        //이메일 확인
+        Optional<User> optUser = userRepository.findByEmail(email);
+        //Optional이 비어있는지 체크
+        if (optUser.isPresent()) {
+            //사용 가능
+            // 인증코드 발송
+            sendEmailCode(session, email);
+            return result;
+        } else {
+            // 사용 불가능
+            result = 1;
+            return result;
+        }
+    }
+    // userPass 수정
+    public long updatePw(String uid,String pass, String email, HttpSession session) {
+        String encodedPassword = passwordEncoder.encode(pass);
+        return userRepository.updateUserPwByUserIdAndUserEmail(uid, encodedPassword, email);
+    }
 }
