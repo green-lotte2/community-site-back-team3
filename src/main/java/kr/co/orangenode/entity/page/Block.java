@@ -13,7 +13,6 @@ import lombok.*;
 public class Block {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     private int pageNo;
