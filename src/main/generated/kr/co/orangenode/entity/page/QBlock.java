@@ -21,9 +21,9 @@ public class QBlock extends EntityPathBase<Block> {
 
     public final NumberPath<Integer> blockOrder = createNumber("blockOrder", Integer.class);
 
-    public final NumberPath<Integer> bno = createNumber("bno", Integer.class);
-
     public final StringPath data = createString("data");
+
+    public final StringPath id = createString("id");
 
     public final NumberPath<Integer> pageNo = createNumber("pageNo", Integer.class);
 
