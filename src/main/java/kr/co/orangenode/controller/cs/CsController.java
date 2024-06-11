@@ -32,6 +32,9 @@ public class CsController {
 
     @PostMapping("/cs/upload")
     public ResponseEntity<?> upload(@RequestParam MultipartFile file) {
-        return null;
+
+        log.info(file.toString());
+
+        return csService.uploadFile(file);
     }
 }

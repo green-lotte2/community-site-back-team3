@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,5 +43,9 @@ public class CsService {
             return ResponseEntity.ok().body(result);
         }
 
+    }
+
+    public ResponseEntity<?> uploadFile(MultipartFile file){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
     }
 }
