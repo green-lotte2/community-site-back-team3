@@ -14,7 +14,7 @@ public class Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bno;
+    private String id;
 
     private int pageNo;
     private String data;
