@@ -10,7 +10,6 @@ import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -45,34 +44,10 @@ public class ChatMessageService {
             ChatMessage savedMessage = chatMessageRepository.saveMessageWithRoom2(chatMessage);
             chatMessageDTO.setCmNo(savedMessage.getCmNo());
             chatMessageDTO.setCDate(savedMessage.getCDate());
-            chatMessageDTO.setSName(savedMessage.getSName());  // sName 설정
+            messagingTemplate.convertAndSend("/topic/chatroom/" + chatMessageDTO.getChatNo(), chatMessageDTO);
             return chatMessageDTO;
         } else {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessageDTO.getChatNo());
-        }
-    }
-
-    public ResponseEntity<?> getMessages(int chatNo) {
-        List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);
-
-        if (tuples.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
-        } else {
-            List<ChatMessageDTO> result = tuples.stream()
-                    .map(tuple -> {
-                        String userName = tuple.get(0, String.class);
-                        ChatMessage message = tuple.get(1, ChatMessage.class);
-                        ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
-                        dto.setName(userName);
-                        dto.setSName(message.getSName());  // sName 설정
-                        return dto;
-                    })
-                    .sorted(Comparator.comparing(ChatMessageDTO::getCDate))
-                    .collect(Collectors.toList());
-
-            log.info("챗메세지 서비스" + result);
-
-            return ResponseEntity.ok().body(result);
         }
     }
 
@@ -134,6 +109,29 @@ public class ChatMessageService {
         } catch (Exception e) {
             log.error("알 수 없는 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 오류 발생");
+        }
+    }
+
+    public ResponseEntity<?> getMessages(int chatNo) {
+        List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);
+
+        if (tuples.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        } else {
+            List<ChatMessageDTO> result = tuples.stream()
+                    .map(tuple -> {
+                        String userName = tuple.get(0, String.class);
+                        ChatMessage message = tuple.get(1, ChatMessage.class);
+                        ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
+                        dto.setName(userName);
+                        return dto;
+                    })
+                    .sorted(Comparator.comparing(ChatMessageDTO::getCDate))
+                    .collect(Collectors.toList());
+
+            log.info("챗메세지 서비스" + result);
+
+            return ResponseEntity.ok().body(result);
         }
     }
 }

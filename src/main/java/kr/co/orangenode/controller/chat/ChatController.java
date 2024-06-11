@@ -46,6 +46,8 @@ public class ChatController {
         return chatMessageService.getMessages(chatNo);
     }
 
+
+
     @PostMapping("/chat/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("chatNo") String chatNo,
