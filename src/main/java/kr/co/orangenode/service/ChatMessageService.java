@@ -10,12 +10,14 @@ import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,13 +54,13 @@ public class ChatMessageService {
     }
 
     @Transactional
-    public ResponseEntity<String> uploadFile(MultipartFile file, String chatNo, String uid, String name) {
+    public ResponseEntity<String> uploadFile(MultipartFile file, String chatNo, String uid) {
         String oName = file.getOriginalFilename();
         String ext = oName.substring(oName.lastIndexOf("."));
         String sName = UUID.randomUUID().toString() + ext;
         String uploadDir = System.getProperty("user.dir") + "/uploads/";
 
-        log.info("파일 업로드 시작 - 파일 이름: {}, 채팅방 번호: {}, 사용자 ID: {}, 사용자 이름: {}", oName, chatNo, uid, name);
+        log.info("파일 업로드 시작 - 파일 이름: {}, 채팅방 번호: {}, 사용자 ID: {}", oName, chatNo, uid);
 
         try {
             Path uploadPath = Paths.get(uploadDir);
@@ -88,7 +90,6 @@ public class ChatMessageService {
             chatMessage.setCDate(LocalDateTime.now());
             chatMessage.setChatNo(Integer.parseInt(chatNo));
             chatMessage.setUid(uid);
-            chatMessage.setName(name); // 파일 업로드 시 사용자의 이름 설정
             chatMessage.setSName(sName); // 저장된 파일 이름 설정
 
             log.info("파일 정보 저장 시작 - {}", chatMessage);

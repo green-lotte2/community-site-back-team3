@@ -51,11 +51,10 @@ public class ChatController {
     @PostMapping("/chat/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("chatNo") String chatNo,
-                                             @RequestParam("uid") String uid,
-                                             @RequestParam("name") String name) {  // name 필드를 추가로 받습니다.
-        log.info("Received file upload request - file: {}, chatNo: {}, uid: {}, name: {}",
-                file.getOriginalFilename(), chatNo, uid, name);
-        return chatMessageService.uploadFile(file, chatNo, uid, name);  // name 필드를 함께 전달합니다.
+                                             @RequestParam("uid") String uid) {
+        log.info("Received file upload request - file: {}, chatNo: {}, uid: {}",
+                file.getOriginalFilename(), chatNo, uid);
+        return chatMessageService.uploadFile(file, chatNo, uid);
     }
 
 }
