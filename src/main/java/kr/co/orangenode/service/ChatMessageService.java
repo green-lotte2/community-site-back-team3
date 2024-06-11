@@ -11,14 +11,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,11 +41,14 @@ public class ChatMessageService {
     private final UserRepository userRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
+    @Value("${file.upload.path}")
+    private String fileUploadPath;
+
     @Transactional
     public ChatMessageDTO saveMessage(ChatMessageDTO chatMessageDTO) {
         if (chatRoomRepository.existsById(chatMessageDTO.getChatNo())) {
             ChatMessage chatMessage = modelMapper.map(chatMessageDTO, ChatMessage.class);
-            ChatMessage savedMessage = chatMessageRepository.saveMessageWithRoom2(chatMessage);
+            ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
             chatMessageDTO.setCmNo(savedMessage.getCmNo());
             chatMessageDTO.setCDate(savedMessage.getCDate());
             messagingTemplate.convertAndSend("/topic/chatroom/" + chatMessageDTO.getChatNo(), chatMessageDTO);
@@ -58,18 +63,20 @@ public class ChatMessageService {
         String oName = file.getOriginalFilename();
         String ext = oName.substring(oName.lastIndexOf("."));
         String sName = UUID.randomUUID().toString() + ext;
-        String uploadDir = System.getProperty("user.dir") + "/uploads/";
 
         log.info("파일 업로드 시작 - 파일 이름: {}, 채팅방 번호: {}, 사용자 ID: {}", oName, chatNo, uid);
 
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get(fileUploadPath).toAbsolutePath().normalize(); // 경로를 절대 경로로 설정하고 정규화
+            log.info("파일 업로드 경로: {}", uploadPath.toString());
             if (!Files.exists(uploadPath)) {
+                log.info("디렉토리가 존재하지 않습니다. 디렉토리를 생성합니다.");
                 Files.createDirectories(uploadPath);
             }
 
             // 파일 저장
             Path filePath = uploadPath.resolve(sName);
+            log.info("파일을 저장할 경로: {}", filePath.toString());
             file.transferTo(filePath.toFile());
 
             // chat room이 존재하는지 확인
@@ -87,10 +94,14 @@ public class ChatMessageService {
             // 파일 정보를 데이터베이스에 저장
             ChatMessageDTO chatMessage = new ChatMessageDTO();
             chatMessage.setMessage(oName); // 파일 이름을 메시지로 저장
+            chatMessage.setOName(oName);
             chatMessage.setCDate(LocalDateTime.now());
             chatMessage.setChatNo(Integer.parseInt(chatNo));
             chatMessage.setUid(uid);
             chatMessage.setSName(sName); // 저장된 파일 이름 설정
+
+            // 유저 이름 설정
+            chatMessage.setName(userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("User not found")).getName());
 
             log.info("파일 정보 저장 시작 - {}", chatMessage);
 
@@ -112,6 +123,39 @@ public class ChatMessageService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 오류 발생");
         }
     }
+
+    // 파일 다운로드 메서드 수정
+    public ResponseEntity<?> fileDownload(String sName){
+        ChatMessage file = chatMessageRepository.findBysName(sName);
+        log.info("파일 다운로드...1 " + file);
+
+        try{
+            Path path = Paths.get(fileUploadPath).resolve(file.getSName()).normalize();
+            log.info("파일 다운로드...2 " + path);
+
+            String contentType = Files.probeContentType(path);
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+            log.info("파일 다운로드...3 " + contentType);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(
+                    ContentDisposition.builder("attachment")
+                            .filename(file.getOName(), StandardCharsets.UTF_8).build());
+
+            headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+            Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        }catch (Exception e){
+            log.error("fileDownload : "+e.getMessage());
+            return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
     public ResponseEntity<?> getMessages(int chatNo) {
         List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);

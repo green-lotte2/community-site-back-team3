@@ -4,16 +4,14 @@ import kr.co.orangenode.dto.chat.ChatMessageDTO;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -46,8 +44,6 @@ public class ChatController {
         return chatMessageService.getMessages(chatNo);
     }
 
-
-
     @PostMapping("/chat/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("chatNo") String chatNo,
@@ -57,4 +53,8 @@ public class ChatController {
         return chatMessageService.uploadFile(file, chatNo, uid);
     }
 
+    @GetMapping("/chat/download/{sName}")
+    public ResponseEntity<?> downloadFile(@PathVariable String sName) {
+        return chatMessageService.fileDownload(sName);
+    }
 }
