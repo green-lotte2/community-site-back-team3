@@ -12,11 +12,12 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class CsDTO {
-    int csNo;
-    String uid;
-    String title;
-    String content;
-    String cateName;
+    private int csNo;
+    private String uid;
+    private String title;
+    private String content;
+    private String cateName;
+    private String ip;
 
     @CreationTimestamp
     LocalDateTime rdate;
