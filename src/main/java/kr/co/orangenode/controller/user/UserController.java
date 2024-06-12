@@ -82,7 +82,7 @@ public class UserController {
     // 회원가입 //
     @PostMapping("/user")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
-        String uid = userService.register(userDTO);
+        String uid = userService.register(userDTO).getUid();
         return Map.of("userid", uid);
     }
     // 회사별로 유저 조회 //
@@ -127,5 +127,15 @@ public class UserController {
         } else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 유저");
         }
+    }
+
+    // 사용자 등급 조회 //
+    @GetMapping("/user/grade/{uid}")
+    public ResponseEntity<String> getUserGrade(@PathVariable String uid) {
+        User user = userService.findByUid(uid);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.getGrade());
     }
 }

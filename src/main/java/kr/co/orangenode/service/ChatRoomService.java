@@ -5,8 +5,10 @@ import kr.co.orangenode.dto.chat.ChatRoomDTO;
 import kr.co.orangenode.dto.chat.ChatUserDTO;
 import kr.co.orangenode.entity.chat.ChatRoom;
 import kr.co.orangenode.entity.chat.ChatUser;
+import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.repository.chat.ChatRoomRepository;
 import kr.co.orangenode.repository.chat.ChatUserRepository;
+import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,13 +26,21 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ModelMapper modelMapper;
     private final ChatUserRepository chatUserRepository;
+    private final UserRepository userRepository;
 
-    public ChatRoom createRoom(ChatRoomDTO chatRoomDTO, String uid){
+    public ChatRoom createRoom(ChatRoomDTO chatRoomDTO, String uid) {
+        User user = userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!"MVP".equals(user.getGrade())) {
+            throw new IllegalArgumentException("무료 회원은 채팅방을 생성할 수 없습니다.");
+        }
+
         ChatRoom chatRoom = modelMapper.map(chatRoomDTO, ChatRoom.class);
         chatRoom = chatRoomRepository.save(chatRoom);
         chatUserRepository.save(new ChatUser(0, uid, chatRoom.getChatNo()));
         return chatRoom;
     }
+
 
     // 모든 채팅방 조회
     public ResponseEntity<?> getAllChatRooms(){

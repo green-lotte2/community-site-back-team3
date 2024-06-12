@@ -26,7 +26,6 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
-        chatMessageDTO.setCDate(LocalDateTime.now());
         ChatMessageDTO savedMessage = chatMessageService.saveMessage(chatMessageDTO);
 
         // 동적으로 경로를 설정하여 메시지 전송

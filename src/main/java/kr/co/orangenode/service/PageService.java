@@ -60,11 +60,8 @@ public class PageService {
 
         // oName, sName 구하기
         String oName = pagefile.getOriginalFilename();
-        log.info("파일 업로드 ... 2 " + oName);
         String ext = oName.substring(oName.lastIndexOf("."));
-        log.info("파일 업로드 ... 3 " + ext);
         String sName = UUID.randomUUID().toString() + ext;
-        log.info("파일 업로드 ... 4 path : " + path);
 
         // upload
         File destinationFile = new File(path, sName);
@@ -77,7 +74,7 @@ public class PageService {
             log.error("파일 업로드 실패", e);
             throw new RuntimeException("파일 업로드 실패", e);
         }
-
+        log.info("sName : " +sName);
         return ResponseEntity.ok().body(sName);
     }
     // 페이지 생성

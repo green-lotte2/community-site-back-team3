@@ -35,14 +35,20 @@ public class UserService {
     private final JWTProvider jwtProvider;
 
     // 회원가입 //
-    public String register(UserDTO userDTO) {
-        String encoded = passwordEncoder.encode(userDTO.getPass());
-        userDTO.setPass(encoded);
+    public User register(UserDTO userDTO) {
+        log.info("Registering user: {}", userDTO);
+        if(userDTO.getPass() != null) {
+            String encoded = passwordEncoder.encode(userDTO.getPass());
+            userDTO.setPass(encoded);
+        }else{
+            String encoded = passwordEncoder.encode("kakao");
+            userDTO.setPass(encoded);
+        }
 
         User user = modelMapper.map(userDTO, User.class);
         User savedUser = userRepository.save(user);
 
-        return savedUser.getUid();
+        return savedUser;
     }
     // 회원 회사별로 조회 //
     public ResponseEntity<?> selectUserByCompany(String company) {
@@ -85,18 +91,20 @@ public class UserService {
 
         // 이미지 업로드 처리
         MultipartFile file = userDTO.getFile();
-        log.info("파일들어오나 ?" + file);
+        log.info("파일들어오나 1  ?" + file);
 
         if (file != null && !file.isEmpty()) {
             String imgPath = uploadImage(file);
+            log.info("imgPath 2  : "+imgPath);
             if (imgPath != null) {
                 userDTO.setProfile(imgPath);
             }
         }
         int result = 0;
         Optional<User> originUser = userRepository.findById(userDTO.getUid());
+
         if(userDTO.getPass().equals(originUser.get().getPass())){
-            log.info("pass 안바꿈");
+            log.info("pass 3 안바꿈");
             result = userMapper.updateUserWithoutPass(userDTO);
         }else {
             // 비밀번호 암호화
@@ -190,5 +198,8 @@ public class UserService {
         } else {
             return false;
         }
+    }
+    public User findByUid(String uid) {
+        return userRepository.findById(uid).orElse(null);
     }
 }

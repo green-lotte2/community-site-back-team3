@@ -48,9 +48,15 @@ public class ChatMessageService {
     public ChatMessageDTO saveMessage(ChatMessageDTO chatMessageDTO) {
         if (chatRoomRepository.existsById(chatMessageDTO.getChatNo())) {
             ChatMessage chatMessage = modelMapper.map(chatMessageDTO, ChatMessage.class);
+            chatMessage.setCDate(chatMessageDTO.getCDate());
             ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
+            String userProfile = userRepository.findById(chatMessageDTO.getUid())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found")).getProfile();
+
+
             chatMessageDTO.setCmNo(savedMessage.getCmNo());
             chatMessageDTO.setCDate(savedMessage.getCDate());
+            chatMessageDTO.setProfile(userProfile);
             messagingTemplate.convertAndSend("/topic/chatroom/" + chatMessageDTO.getChatNo(), chatMessageDTO);
             return chatMessageDTO;
         } else {
@@ -67,7 +73,7 @@ public class ChatMessageService {
         log.info("파일 업로드 시작 - 파일 이름: {}, 채팅방 번호: {}, 사용자 ID: {}", oName, chatNo, uid);
 
         try {
-            Path uploadPath = Paths.get(fileUploadPath).toAbsolutePath().normalize(); // 경로를 절대 경로로 설정하고 정규화
+            Path uploadPath = Paths.get(fileUploadPath).toAbsolutePath().normalize();
             log.info("파일 업로드 경로: {}", uploadPath.toString());
             if (!Files.exists(uploadPath)) {
                 log.info("디렉토리가 존재하지 않습니다. 디렉토리를 생성합니다.");
@@ -95,10 +101,10 @@ public class ChatMessageService {
             ChatMessageDTO chatMessage = new ChatMessageDTO();
             chatMessage.setMessage(oName); // 파일 이름을 메시지로 저장
             chatMessage.setOName(oName);
+            chatMessage.setSName(sName); // 저장된 파일 이름 설정
             chatMessage.setCDate(LocalDateTime.now());
             chatMessage.setChatNo(Integer.parseInt(chatNo));
             chatMessage.setUid(uid);
-            chatMessage.setSName(sName); // 저장된 파일 이름 설정
 
             // 유저 이름 설정
             chatMessage.setName(userRepository.findById(uid).orElseThrow(() -> new IllegalArgumentException("User not found")).getName());
@@ -125,36 +131,36 @@ public class ChatMessageService {
     }
 
     // 파일 다운로드 메서드 수정
-    public ResponseEntity<?> fileDownload(String sName){
-        ChatMessage file = chatMessageRepository.findBysName(sName);
-        log.info("파일 다운로드...1 " + file);
+    public ResponseEntity<?> fileDownload(String sName) {
+        try {
+            ChatMessage file = chatMessageRepository.findBysName(sName);
+            if (file == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+            }
 
-        try{
             Path path = Paths.get(fileUploadPath).resolve(file.getSName()).normalize();
-            log.info("파일 다운로드...2 " + path);
+            Resource resource = new UrlResource(path.toUri());
+            if (!resource.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+            }
 
             String contentType = Files.probeContentType(path);
             if (contentType == null) {
                 contentType = "application/octet-stream";
             }
-            log.info("파일 다운로드...3 " + contentType);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentDisposition(
-                    ContentDisposition.builder("attachment")
-                            .filename(file.getOName(), StandardCharsets.UTF_8).build());
-
+            headers.setContentDisposition(ContentDisposition.builder("attachment")
+                    .filename(file.getOName(), StandardCharsets.UTF_8)
+                    .build());
             headers.add(HttpHeaders.CONTENT_TYPE, contentType);
 
-            Resource resource = new InputStreamResource(Files.newInputStream(path));
-
             return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-        }catch (Exception e){
-            log.error("fileDownload : "+e.getMessage());
-            return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("Error occurred while downloading file", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while downloading file");
         }
     }
-
 
 
     public ResponseEntity<?> getMessages(int chatNo) {
@@ -169,6 +175,11 @@ public class ChatMessageService {
                         ChatMessage message = tuple.get(1, ChatMessage.class);
                         ChatMessageDTO dto = modelMapper.map(message, ChatMessageDTO.class);
                         dto.setName(userName);
+
+                        String userProfile = userRepository.findById(message.getUid())
+                                .orElseThrow(() -> new IllegalArgumentException("User not found")).getProfile();
+                        dto.setProfile(userProfile); // 프로필 정보 설정
+
                         return dto;
                     })
                     .sorted(Comparator.comparing(ChatMessageDTO::getCDate))
