@@ -18,6 +18,7 @@ public class QuestionDTO {
     private String title;
     private String content;
     private String ip;
+    private String status;
 
     @CreationTimestamp
     LocalDateTime rdate;

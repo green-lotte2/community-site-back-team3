@@ -29,6 +29,8 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 
+    public final StringPath status = createString("status");
+
     public final StringPath title = createString("title");
 
     public final StringPath uid = createString("uid");
