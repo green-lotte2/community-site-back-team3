@@ -30,9 +30,15 @@ public class ChatRoomController {
 
     // 채팅방 생성
     @PostMapping("/chatroom/{uid}")
-    public ChatRoom createChatRoom(@RequestBody ChatRoomDTO chatRoomDTO, @PathVariable String uid) {
-        return chatRoomService.createRoom(chatRoomDTO, uid);
+    public ResponseEntity<?> createChatRoom(@RequestBody ChatRoomDTO chatRoomDTO, @PathVariable String uid) {
+        try {
+            ChatRoom chatRoom = chatRoomService.createRoom(chatRoomDTO, uid);
+            return ResponseEntity.ok(chatRoom);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
     }
+
 
     // 채팅방 삭제
     @DeleteMapping("/chatroom")
