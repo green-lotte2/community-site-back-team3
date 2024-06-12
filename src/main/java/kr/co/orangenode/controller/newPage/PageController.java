@@ -72,9 +72,9 @@ public class PageController {
 
     // 파일 전송 테스트
     @PostMapping("/page/upload")
-    public ResponseEntity<String> upload(MultipartFile imgFile) {
+    public ResponseEntity<String> upload(MultipartFile file) {
         log.info("upload  !!! ");
-        log.info(imgFile.toString());
-        return pageService.upload(imgFile);
+        log.info(file.toString());
+        return pageService.upload(file);
     }
 }
