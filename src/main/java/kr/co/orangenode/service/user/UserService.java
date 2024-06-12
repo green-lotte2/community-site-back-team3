@@ -85,18 +85,20 @@ public class UserService {
 
         // 이미지 업로드 처리
         MultipartFile file = userDTO.getFile();
-        log.info("파일들어오나 ?" + file);
+        log.info("파일들어오나 1  ?" + file);
 
         if (file != null && !file.isEmpty()) {
             String imgPath = uploadImage(file);
+            log.info("imgPath 2  : "+imgPath);
             if (imgPath != null) {
                 userDTO.setProfile(imgPath);
             }
         }
         int result = 0;
         Optional<User> originUser = userRepository.findById(userDTO.getUid());
+
         if(userDTO.getPass().equals(originUser.get().getPass())){
-            log.info("pass 안바꿈");
+            log.info("pass 3 안바꿈");
             result = userMapper.updateUserWithoutPass(userDTO);
         }else {
             // 비밀번호 암호화

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @ToString
 @Table(name = "question")
 public class Question {
+
     @Id
     private int qno;
     private String uid;
@@ -24,6 +25,7 @@ public class Question {
     private String title;
     private String content;
     private String ip;
+    private String status;
 
     @CreationTimestamp
     LocalDateTime rdate;
