@@ -82,7 +82,7 @@ public class UserController {
     // 회원가입 //
     @PostMapping("/user")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
-        String uid = userService.register(userDTO);
+        String uid = userService.register(userDTO).getUid();
         return Map.of("userid", uid);
     }
     // 회사별로 유저 조회 //

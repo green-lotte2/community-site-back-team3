@@ -35,14 +35,20 @@ public class UserService {
     private final JWTProvider jwtProvider;
 
     // 회원가입 //
-    public String register(UserDTO userDTO) {
-        String encoded = passwordEncoder.encode(userDTO.getPass());
-        userDTO.setPass(encoded);
+    public User register(UserDTO userDTO) {
+        log.info("Registering user: {}", userDTO);
+        if(userDTO.getPass() != null) {
+            String encoded = passwordEncoder.encode(userDTO.getPass());
+            userDTO.setPass(encoded);
+        }else{
+            String encoded = passwordEncoder.encode("kakao");
+            userDTO.setPass(encoded);
+        }
 
         User user = modelMapper.map(userDTO, User.class);
         User savedUser = userRepository.save(user);
 
-        return savedUser.getUid();
+        return savedUser;
     }
     // 회원 회사별로 조회 //
     public ResponseEntity<?> selectUserByCompany(String company) {
