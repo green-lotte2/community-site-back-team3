@@ -26,8 +26,12 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        log.info("loadUser...1");
         //String accessToken = userRequest.getAccessToken().getTokenValue();
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        log.info("loadUser...2 : " + registrationId);
+
         OAuth2User oauth2User = super.loadUser(userRequest);
         Map<String, Object> attributes = oauth2User.getAttributes();
         OAuth2MemberInfo userInfo = null;
@@ -37,6 +41,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         } else if (registrationId.equals("kakao")) {
             userInfo = new KakaoInfo(attributes);
         }
+
+        log.info("loadUser...3 : " + userInfo);
 
         // 사용자 확인 및 회원가입 처리
         String email = userInfo.getEmail();
