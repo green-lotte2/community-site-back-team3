@@ -193,4 +193,7 @@ public class UserService {
             return false;
         }
     }
+    public User findByUid(String uid) {
+        return userRepository.findById(uid).orElse(null);
+    }
 }
