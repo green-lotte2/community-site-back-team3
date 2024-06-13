@@ -5,7 +5,6 @@ import kr.co.orangenode.dto.page.PageDTO;
 import kr.co.orangenode.entity.page.Block;
 import kr.co.orangenode.entity.page.Page;
 import kr.co.orangenode.mapper.PageMapper;
-import kr.co.orangenode.repository.page.PageFileRepository;
 import kr.co.orangenode.repository.page.BlockRepository;
 import kr.co.orangenode.repository.page.PageRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,6 @@ public class PageService {
 
     private final PageRepository pageRepository;
     private final BlockRepository blockRepository;
-    private final PageFileRepository pageFileRepository;
     private final PageMapper pageMapper;
 
     private final ModelMapper modelMapper;
@@ -95,15 +93,11 @@ public class PageService {
 
         return ResponseEntity.ok().body(blocks);
     }
-    // 제목 저장
-    public void updateTitle(String title, int pageNo){
-        log.info("update Title Serv");
-        PageDTO pageDTO = new PageDTO();
-        pageDTO.setPageNo(pageNo);
-        pageDTO.setTitle(title);
-        log.info("제목 저장 title : "+ pageDTO.getTitle());
+    // 페이지 저장
+    public void updateTitle(PageDTO pageDTO){
+        log.info("update PAge Serv");
 
-        pageMapper.updateTitle(pageDTO);
+        pageRepository.save(modelMapper.map(pageDTO, Page.class));
     }
     // 블록 저장
     public void insertBlocks(List<Map<String, Object>> blocks, int pageNo){
