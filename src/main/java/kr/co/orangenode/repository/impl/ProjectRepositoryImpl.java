@@ -3,7 +3,6 @@ package kr.co.orangenode.repository.impl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.orangenode.entity.project.QCollaborator;
 import kr.co.orangenode.entity.project.QProject;
-import kr.co.orangenode.entity.project.QWorker;
 import kr.co.orangenode.entity.user.QUser;
 import kr.co.orangenode.repository.custom.ProjectRepositoryCustom;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     private final QProject qProject = QProject.project;
-    private final QWorker qWorker = QWorker.worker;
     private final QCollaborator qCollaborator = QCollaborator.collaborator;
     private final QUser qUser = QUser.user;
 

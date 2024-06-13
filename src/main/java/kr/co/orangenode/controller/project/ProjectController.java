@@ -1,6 +1,5 @@
 package kr.co.orangenode.controller.project;
 
-import kr.co.orangenode.dto.project.CardDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
 import kr.co.orangenode.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -43,18 +42,11 @@ public class ProjectController {
         log.info("proNo:" + proNo);
         return projectService.viewProject(proNo);
     }
-
-    /*
-    @GetMapping("/project/kanban/list")
-    public ResponseEntity<?> kanbanList(@RequestParam int proNo) {
-        return projectService.selectKanbanList(proNo);
-    }*/
-
-    @PostMapping("/addissue")
-    public ResponseEntity<?> addIssue(@RequestBody CardDTO cardDTO) {
+    @PostMapping("/dddd")
+    public ResponseEntity<?> addIssue(@RequestBody String data) {
 
         log.info(" 히히히 ");
-        log.info("issueDTO:" + cardDTO);
+        log.info("data @@ :" + data);
         return null;
     }
 }

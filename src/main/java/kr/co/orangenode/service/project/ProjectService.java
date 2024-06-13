@@ -1,11 +1,8 @@
 package kr.co.orangenode.service.project;
 
-import com.querydsl.core.Tuple;
 import jakarta.transaction.Transactional;
-import kr.co.orangenode.dto.project.KanListDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
 import kr.co.orangenode.entity.project.Board;
-import kr.co.orangenode.entity.project.Card;
 import kr.co.orangenode.entity.project.Collaborator;
 import kr.co.orangenode.entity.project.Project;
 import kr.co.orangenode.mapper.ProjectMapper;
@@ -27,8 +24,6 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
-    private final CardRepository cardRepository;
-    private final WorkerRepository workerRepository;
     private final ProjectMapper projectMapper;
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
@@ -76,18 +71,6 @@ public class ProjectService {
 
                 for(Board board : boards) {
                     log.info("here ... 1");
-                    // 등록된 이슈가 있으면 먼저 삭제
-                    if(findProNo.get().getIssue() > 0) {
-                        List<Card> cards = cardRepository.findAllByBoardNo(board.getBoardNo());
-
-                        for(Card issue : cards) {
-                            log.info("here ... 2");
-                            workerRepository.deleteAllById(issue.getId());
-                        }
-                        log.info("here ... 3");
-                        cardRepository.deleteAllByBoardNo(board.getBoardNo());
-                    }
-
                     boardRepository.deleteById(board.getBoardNo());
                 }
                 log.info("here ... 4");
