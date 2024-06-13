@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -53,16 +54,19 @@ public class ChatMessageService {
             String userProfile = userRepository.findById(chatMessageDTO.getUid())
                     .orElseThrow(() -> new IllegalArgumentException("User not found")).getProfile();
 
-
             chatMessageDTO.setCmNo(savedMessage.getCmNo());
             chatMessageDTO.setCDate(savedMessage.getCDate());
-            chatMessageDTO.setProfile(userProfile);
+            chatMessageDTO.setProfile(userProfile != null ? userProfile : "default"); // 프로필 설정, 기본값으로 "default" 사용
+
+            // 중복 전송 방지
             messagingTemplate.convertAndSend("/topic/chatroom/" + chatMessageDTO.getChatNo(), chatMessageDTO);
             return chatMessageDTO;
         } else {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessageDTO.getChatNo());
         }
     }
+
+
 
     @Transactional
     public ResponseEntity<String> uploadFile(MultipartFile file, String chatNo, String uid) {
@@ -102,7 +106,7 @@ public class ChatMessageService {
             chatMessage.setMessage(oName); // 파일 이름을 메시지로 저장
             chatMessage.setOName(oName);
             chatMessage.setSName(sName); // 저장된 파일 이름 설정
-            chatMessage.setCDate(LocalDateTime.now());
+            chatMessage.setCDate(LocalDateTime.now()); // 현재 날짜와 시간을 설정
             chatMessage.setChatNo(Integer.parseInt(chatNo));
             chatMessage.setUid(uid);
 
@@ -129,6 +133,7 @@ public class ChatMessageService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알 수 없는 오류 발생");
         }
     }
+
 
     // 파일 다운로드 메서드 수정
     public ResponseEntity<?> fileDownload(String sName) {
@@ -163,13 +168,14 @@ public class ChatMessageService {
     }
 
 
-    public ResponseEntity<?> getMessages(int chatNo) {
+    @Transactional
+    public ResponseEntity<List<ChatMessageDTO>> getMessages(int chatNo) {
         List<Tuple> tuples = chatMessageRepository.saveMessageWithRoom(chatNo);
 
         if (tuples.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+            return ResponseEntity.ok(Collections.emptyList());
         } else {
-            List<ChatMessageDTO> result = tuples.stream()
+            List<ChatMessageDTO> messages = tuples.stream()
                     .map(tuple -> {
                         String userName = tuple.get(0, String.class);
                         ChatMessage message = tuple.get(1, ChatMessage.class);
@@ -178,16 +184,16 @@ public class ChatMessageService {
 
                         String userProfile = userRepository.findById(message.getUid())
                                 .orElseThrow(() -> new IllegalArgumentException("User not found")).getProfile();
-                        dto.setProfile(userProfile); // 프로필 정보 설정
+                        dto.setProfile(userProfile != null ? userProfile : "default"); // 프로필 정보 설정
 
                         return dto;
                     })
                     .sorted(Comparator.comparing(ChatMessageDTO::getCDate))
                     .collect(Collectors.toList());
 
-            log.info("챗메세지 서비스" + result);
-
-            return ResponseEntity.ok().body(result);
+            System.out.println("Messages fetched from DB: " + messages);
+            return ResponseEntity.ok(messages);
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package kr.co.orangenode.oauth2;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.orangenode.dto.user.UserDTO;
 import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.service.user.UserService;
@@ -28,6 +29,7 @@ public class OAuth2TokenController {
     private final UserService userService;
     private final JWTProvider jwtProvider;
     private final ModelMapper modelMapper;
+    private final HttpSession httpSession;
 
     @GetMapping("/oauth/callback/kakao")
     public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code) {
@@ -41,16 +43,25 @@ public class OAuth2TokenController {
         log.info("Kakao access token: {}", kakaoAccessToken);
         log.info("Kakao access userEmail: {}", userEmail);
 
-        User user = User.builder()
-                        .uid(userEmail)
-                        .email(userEmail)
-                .role("USER")
-                .build();
+        // 데이터베이스에서 사용자 정보 조회 또는 등록
+        User user = userService.findByUid(userEmail);
+        if (user == null) {
+            user = User.builder()
+                    .uid(userEmail)
+                    .name(userEmail)
+                    //.pass("kakao")
+                    .grade("FREE")
+                    .email(userEmail)
+                    .role("USER")
+                    // 추가 필드 설정
+                    .build();
+            user = userService.register(modelMapper.map(user, UserDTO.class));
+        }
+//        // DB 전송
+//        User savedUser = userService.register(modelMapper.map(user, UserDTO.class));
 
-        // DB 전송
-        User savedUser = userService.register(modelMapper.map(user, UserDTO.class));
-
-
+        // 세션에 사용자 정보 저장 (예시로 HttpSession을 사용)
+        httpSession.setAttribute("user", user);
 
         String accessToken = jwtProvider.createToken(user, 1);
 
@@ -60,18 +71,18 @@ public class OAuth2TokenController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("grantType", "Bearer");
-        map.put("uid", savedUser.getUid());
-        map.put("name", "카카오 유저");
-        map.put("email", savedUser.getEmail());
-        map.put("hp", savedUser.getHp());
-        map.put("role", savedUser.getRole());
-        map.put("grade", savedUser.getGrade());
-        map.put("nick", savedUser.getNick());
-        map.put("profile", savedUser.getProfile());
-        map.put("rdate", savedUser.getRdate());
-        map.put("company", savedUser.getCompany());
-        map.put("department", savedUser.getDepartment());
-        map.put("position", savedUser.getPosition());
+        map.put("uid", user.getUid());
+        map.put("name", user.getName());
+        map.put("email", user.getEmail());
+        map.put("hp", user.getHp());
+        map.put("role", user.getRole());
+        map.put("grade", user.getGrade());
+        map.put("nick", user.getNick());
+        map.put("profile", user.getProfile());
+        map.put("rdate", user.getRdate());
+        map.put("company", user.getCompany());
+        map.put("department", user.getDepartment());
+        map.put("position", user.getPosition());
         map.put("accessToken", accessToken);
 
         return ResponseEntity.ok().body(map);

@@ -57,6 +57,25 @@ public class CsService {
 
     }
 
+    /** cs내용 가져오기 Admin*/
+    public ResponseEntity<?> csSelects(){
+        List<CsEntity> csEntities = csRepository.findAll();
+        return ResponseEntity.ok().body(csEntities);
+    }
+
+    /** cs내용 삭제하기 Admin*/
+    public ResponseEntity<?> deleteCs(int[] csNo){
+
+        if(csNo.length == 0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+
+        }else{
+            for(int num : csNo){
+                csRepository.deleteById(num);
+            }
+        }
+        return ResponseEntity.ok().body("DELETED");
+    }
     // 문의하기 글 작성하기
     public ResponseEntity<?> insertQuestion(QuestionDTO questionDTO){
 

@@ -192,12 +192,17 @@ public class UserService {
         Optional<User> optUser = userRepository.findById(userDTO.getUid());
         if(optUser.isPresent()){
             User user = optUser.get();
-            user.setGrade("MVP");
-            userRepository.save(user);
-            return true;
-        } else {
-            return false;
+            if(user.getGrade().equals("FREE")){
+                user.setGrade("MVP");
+                userRepository.save(user);
+                return true;
+            } else if(user.getGrade().equals("MVP")){
+                user.setGrade("FREE");
+                userRepository.save(user);
+                return true;
+            }
         }
+        return false;
     }
     public User findByUid(String uid) {
         return userRepository.findById(uid).orElse(null);

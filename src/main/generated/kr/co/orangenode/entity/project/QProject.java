@@ -19,7 +19,7 @@ public class QProject extends EntityPathBase<Project> {
 
     public static final QProject project = new QProject("project");
 
-    public final NumberPath<Integer> issue = createNumber("issue", Integer.class);
+    public final StringPath content = createString("content");
 
     public final NumberPath<Integer> proNo = createNumber("proNo", Integer.class);
 

@@ -19,6 +19,8 @@ public class QPage extends EntityPathBase<Page> {
 
     public static final QPage page = new QPage("page");
 
+    public final StringPath content = createString("content");
+
     public final NumberPath<Integer> pageNo = createNumber("pageNo", Integer.class);
 
     public final StringPath title = createString("title");

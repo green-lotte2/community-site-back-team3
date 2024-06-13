@@ -45,22 +45,20 @@ public class PageController {
     }
     // 페이지 내용 저장
     @PostMapping("/savepage")
-    public void savePage(@RequestParam("data") String data, @RequestParam("pageNo") int pageNo, @RequestParam("title") String title) throws IOException {
-        log.info("받은 데이터 : {}", data);
-        log.info("받은 제목 : {}", title);
+    public void savePage(@RequestBody PageDTO pageDTO) throws IOException {
+        log.info("받은 데이터 : {}", pageDTO.getContent());
+        log.info("받은 제목 : {}", pageDTO.getTitle());
 
         // JSON 데이터를 역직렬화
-        Map<String, Object> articleData = objectMapper.readValue(data, Map.class);
-        List<Map<String, Object>> blocks = (List<Map<String, Object>>) articleData.get("blocks");
-        log.info("pageNo : "+ pageNo);
-        log.info("저장할 데이터 : {}", articleData);
-        log.info("저장할 블록들 : {}", blocks);
+        // Map<String, Object> articleData = objectMapper.readValue(data, Map.class);
+        //List<Map<String, Object>> blocks = (List<Map<String, Object>>) articleData.get("blocks");
+        log.info("pageNo : "+ pageDTO.getPageNo());
 
 
         // 제목 저장
-        pageService.updateTitle(title, pageNo);
+        pageService.updateTitle(pageDTO);
         // 블록 저장
-        pageService.insertBlocks(blocks, pageNo);
+        //pageService.insertBlocks(blocks, pageNo);
 
     }
     // 페이지 내용 불러오기
