@@ -57,6 +57,12 @@ public class CsService {
 
     }
 
+    /** cs내용 가져오기 Admin*/
+    public ResponseEntity<?> csSelects(){
+        List<CsEntity> csEntities = csRepository.findAll();
+        return ResponseEntity.ok().body(csEntities);
+    }
+
     // 문의하기 글 작성하기
     public ResponseEntity<?> insertQuestion(QuestionDTO questionDTO){
 

@@ -50,4 +50,10 @@ public class CsController {
 
         return csService.insertQuestion(questionDTO);
     }
+
+    @GetMapping("/cs/selects")
+    public ResponseEntity<?> csSelects() {
+        log.info("admin cs 내용 가져오기");
+        return csService.csSelects();
+    }
 }
