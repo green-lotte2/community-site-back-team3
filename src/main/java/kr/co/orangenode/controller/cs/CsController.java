@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -55,5 +56,12 @@ public class CsController {
     public ResponseEntity<?> csSelects() {
         log.info("admin cs 내용 가져오기");
         return csService.csSelects();
+    }
+
+    @GetMapping("/cs/delete")
+    public ResponseEntity<?> csDelete(@RequestParam int[] csNo) {
+        log.info("admin cs 삭제하기" + Arrays.toString(csNo));
+
+        return csService.deleteCs(csNo);
     }
 }
