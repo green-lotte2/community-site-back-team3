@@ -2,10 +2,8 @@ package kr.co.orangenode.service;
 
 import kr.co.orangenode.dto.page.BlockDTO;
 import kr.co.orangenode.dto.page.PageDTO;
-import kr.co.orangenode.entity.page.Block;
 import kr.co.orangenode.entity.page.Page;
 import kr.co.orangenode.mapper.PageMapper;
-import kr.co.orangenode.repository.page.BlockRepository;
 import kr.co.orangenode.repository.page.PageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +25,6 @@ import java.util.UUID;
 public class PageService {
 
     private final PageRepository pageRepository;
-    private final BlockRepository blockRepository;
     private final PageMapper pageMapper;
 
     private final ModelMapper modelMapper;
@@ -82,38 +79,11 @@ public class PageService {
         return ResponseEntity.ok().body(page);
     }
 
-    // 페이지 내용 불러오기
-    public ResponseEntity<?> selectBlocks(int pageNo){
-        List<BlockDTO> blocks = blockRepository.findAllByPageNoOrderByBlockOrder(pageNo)
-                .stream()
-                .map(entity -> {
-                    return modelMapper.map(entity, BlockDTO.class);
-                })
-                .toList();
-
-        return ResponseEntity.ok().body(blocks);
-    }
     // 페이지 저장
     public void updateTitle(PageDTO pageDTO){
         log.info("update PAge Serv");
 
         pageRepository.save(modelMapper.map(pageDTO, Page.class));
-    }
-    // 블록 저장
-    public void insertBlocks(List<Map<String, Object>> blocks, int pageNo){
-
-        log.info("insertBlocks  pageNo: " + pageNo);
-        for (Map<String, Object> block : blocks) {
-
-            BlockDTO blockDTO = new BlockDTO();
-            blockDTO.setId(block.get("id").toString());
-            blockDTO.setPageNo(pageNo);
-            blockDTO.setType(block.get("type").toString());
-            blockDTO.setData(String.valueOf(block.get("data")));
-            blockDTO.setBlockOrder((Integer) block.get("order"));
-
-            blockRepository.save(modelMapper.map(blockDTO, Block.class));
-        }
     }
 }
 
