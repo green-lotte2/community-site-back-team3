@@ -21,7 +21,7 @@ public class Project {
     private int proNo;
     private String uid;
     private String title;
-    private int issue;
+    private String content;
     private int status;
 
     @CreationTimestamp
