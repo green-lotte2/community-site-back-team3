@@ -4,7 +4,7 @@ import kr.co.orangenode.dto.chat.ChatMessageDTO;
 import kr.co.orangenode.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,7 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,19 +27,17 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage/{chatNo}")
     public void sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable int chatNo) {
         ChatMessageDTO savedMessage = chatMessageService.saveMessage(chatMessageDTO);
-
-        // 동적으로 경로를 설정하여 메시지 전송
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatNo, savedMessage);
     }
 
     @MessageMapping("/chat.addUser")
     public void addUser(@Payload ChatMessageDTO chatMessageDTO, SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getName());
-        messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
+        // 메시지를 브로드캐스트하지 않습니다.
     }
 
     @GetMapping("/chat/messages")
-    public ResponseEntity<?> getMessages(@RequestParam int chatNo) {
+    public ResponseEntity<List<ChatMessageDTO>> getMessages(@RequestParam int chatNo) {
         return chatMessageService.getMessages(chatNo);
     }
 
