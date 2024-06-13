@@ -20,6 +20,7 @@ public class Page {
     private int pageNo;
     private String uid;
     private String title;
+    private String content;
 
     @CreationTimestamp
     private LocalDateTime uDate;
