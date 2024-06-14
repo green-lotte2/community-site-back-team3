@@ -83,7 +83,9 @@ public class PageService {
     public void updateTitle(PageDTO pageDTO){
         log.info("update PAge Serv");
 
-        pageRepository.save(modelMapper.map(pageDTO, Page.class));
+        // pageRepository.save(modelMapper.map(pageDTO, Page.class));
+        pageMapper.updateTitle(pageDTO);
+
     }
 }
 
