@@ -30,11 +30,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 이미지 경로
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
+                .addResourceLocations("file:"+ staticServerPathProd);
 
         // 이미지 경로
         registry.addResourceHandler("/prodImg/**")
-                .addResourceLocations("file:prodImg/"); // file => C://
+                .addResourceLocations("file:" + staticServerPathImg); // file => C://
 
         // 추가할 새로운 리소스 핸들러
         registry.addResourceHandler("/newStaticResources/**")
