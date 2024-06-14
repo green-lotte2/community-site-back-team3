@@ -17,7 +17,6 @@ import java.util.Queue;
 @RequiredArgsConstructor
 @Component
 public class WebsocketHandler extends TextWebSocketHandler {
-    private final Map<String, WebSocketSession> sessionMap = new HashMap<>(); // 웹소켓 세션을 담아둘 맵
     private final Map<String, Queue<String>> messageQueueMap = new HashMap<>(); // 메시지 큐를 담아둘 맵
 
     @Override
@@ -47,20 +46,12 @@ public class WebsocketHandler extends TextWebSocketHandler {
         }
     }
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // 소켓 연결
-        log.info("here//");
-        super.afterConnectionEstablished(session);
-        sessionMap.put(session.getId(), session);
-        log.info("here2//");
-    }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 소켓 종료
+        log.info("here3333333//");
         String sessionId = session.getId();
-        sessionMap.remove(sessionId);
         messageQueueMap.remove(sessionId);
         super.afterConnectionClosed(session, status);
     }
