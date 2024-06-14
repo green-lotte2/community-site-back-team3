@@ -5,8 +5,14 @@
 
 <mapper namespace="kr.co.orangenode.mapper.PageMapper">
     <update id="updateTitle">
-        UPDATE page SET title = #{pageDTO.title}
+        UPDATE page
+        <set>
+            <if test="pageDTO.title != null and pageDTO.title.trim() != ''">title = #{pageDTO.title},</if>
+            <if test="pageDTO.content != null and pageDTO.content.trim() != ''">content = #{pageDTO.content},</if>
+            <if test="pageDTO.uid != null and pageDTO.uid.trim() != ''">uid = #{pageDTO.uid},</if>
+            <if test="pageDTO.uDate != null">uDate = #{pageDTO.uDate},</if>
+        </set>
         WHERE pageNo = #{pageDTO.pageNo};
-
     </update>
 </mapper>
+
