@@ -33,7 +33,9 @@ public class ProjectService {
     @Transactional
     public ResponseEntity<?> createProject(ProjectDTO projectDTO) {
         try {
+
             Project project = modelMapper.map(projectDTO, Project.class);
+            project.setContent("");
             Project savedProject = projectRepository.save(project);
             for(String uid: projectDTO.getUids()){
                 if (uid != null) {
@@ -96,19 +98,21 @@ public class ProjectService {
         Optional<Project> viewNo = projectRepository.findById(proNo);
         if(viewNo.isPresent()){
             Project project = viewNo.get();
+            log.info("도꺠비참수" +project);
             return ResponseEntity.status(HttpStatus.OK).body(project);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
         }
     }
     /* 칸반보드 생성 */
-    public ResponseEntity<?> createKanban(ProjectDTO projectDTO, CollaboratorDTO collaboratorDTO) {
+    public ResponseEntity<?> createKanban(ProjectDTO projectDTO) {
 
         Optional<Project> optProject = projectRepository.findById(projectDTO.getProNo());
         if(optProject.isPresent()){
             Project project = optProject.get();
             project.setContent(projectDTO.getContent());
             projectRepository.save(project);
+            log.info("proect체크:" + project);
             return ResponseEntity.status(HttpStatus.OK).body(1);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
