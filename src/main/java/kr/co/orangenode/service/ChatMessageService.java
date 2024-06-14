@@ -25,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +51,7 @@ public class ChatMessageService {
     public ChatMessageDTO saveMessage(ChatMessageDTO chatMessageDTO) {
         if (chatRoomRepository.existsById(chatMessageDTO.getChatNo())) {
             ChatMessage chatMessage = modelMapper.map(chatMessageDTO, ChatMessage.class);
-            chatMessage.setCDate(chatMessageDTO.getCDate());
+            chatMessage.setCDate(LocalDateTime.now(ZoneOffset.UTC)); // UTC 시간으로 설정
             ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
             String userProfile = userRepository.findById(chatMessageDTO.getUid())
                     .orElseThrow(() -> new IllegalArgumentException("User not found")).getProfile();
@@ -65,6 +67,8 @@ public class ChatMessageService {
             throw new IllegalArgumentException("Invalid chat room id: " + chatMessageDTO.getChatNo());
         }
     }
+
+
 
 
 
