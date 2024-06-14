@@ -1,12 +1,10 @@
 package kr.co.orangenode.entity.chat;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,5 +23,16 @@ public class ChatMessage {
     private String uid;
     private String oName;
     private String sName;
+
+    @PrePersist
+    protected void onCreate() {
+        this.cDate = LocalDateTime.now(ZoneOffset.UTC);
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.cDate = LocalDateTime.now(ZoneOffset.UTC);
+    }
+
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.server.UID;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -49,23 +50,13 @@ public class PageController {
         log.info("받은 데이터 : {}", pageDTO.getContent());
         log.info("받은 제목 : {}", pageDTO.getTitle());
 
-        // JSON 데이터를 역직렬화
-        // Map<String, Object> articleData = objectMapper.readValue(data, Map.class);
-        //List<Map<String, Object>> blocks = (List<Map<String, Object>>) articleData.get("blocks");
         log.info("pageNo : "+ pageDTO.getPageNo());
 
+        // 현재 시간 설정
+        pageDTO.setUDate(LocalDateTime.now());
 
-        // 제목 저장
+        // 페이지 저장
         pageService.updateTitle(pageDTO);
-        // 블록 저장
-        //pageService.insertBlocks(blocks, pageNo);
-
-    }
-    // 페이지 내용 불러오기
-    @GetMapping("/block")
-    public ResponseEntity<?> selectBlocks(@RequestParam("pageNo") int pageNo){
-        log.info("페이지 내용 Cont : " + pageNo);
-        return pageService.selectBlocks(pageNo);
     }
 
     // 파일 전송 테스트

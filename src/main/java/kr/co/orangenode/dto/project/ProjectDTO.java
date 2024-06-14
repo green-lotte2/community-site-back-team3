@@ -15,6 +15,7 @@ public class ProjectDTO {
     private int proNo;
     private String uid;
     private String title;
+    private String content;
     private int status;
 
     private String[] uids;
