@@ -1,6 +1,7 @@
 package kr.co.orangenode.service.project;
 
 import jakarta.transaction.Transactional;
+import kr.co.orangenode.dto.project.CollaboratorDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
 import kr.co.orangenode.entity.project.Board;
 import kr.co.orangenode.entity.project.Collaborator;
@@ -100,6 +101,20 @@ public class ProjectService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
         }
     }
+    /* 칸반보드 생성 */
+    public ResponseEntity<?> createKanban(ProjectDTO projectDTO, CollaboratorDTO collaboratorDTO) {
+
+        Optional<Project> optProject = projectRepository.findById(projectDTO.getProNo());
+        if(optProject.isPresent()){
+            Project project = optProject.get();
+            project.setContent(projectDTO.getContent());
+            projectRepository.save(project);
+            return ResponseEntity.status(HttpStatus.OK).body(1);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
+        }
+    }
+
     /*
     public ResponseEntity<?> selectKanbanList(int proNo) {
         List<Tuple> tuples = projectRepository.selectKanban(proNo);
