@@ -48,7 +48,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String email = userInfo.getEmail();
         String uid = email.substring(0, email.lastIndexOf("@"));
         String name = userInfo.getName();
-        
+
         // 소셜 로그인시 이메일 중복되는 오류 수정
         Optional<User> optUser = userRepository.findByEmail(email);
         User user=null;

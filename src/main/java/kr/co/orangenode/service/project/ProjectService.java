@@ -109,6 +109,7 @@ public class ProjectService {
         }
     }
     /* 칸반보드 생성 */
+    @Transactional
     public ResponseEntity<?> createKanban(ProjectDTO projectDTO) {
 
         Optional<Project> optProject = projectRepository.findById(projectDTO.getProNo());

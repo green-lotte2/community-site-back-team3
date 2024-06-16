@@ -37,12 +37,13 @@ public class ProjectController {
     public ResponseEntity<?> updateProject(@RequestBody ProjectDTO projectDTO) {
         return projectService.updateProject(projectDTO);
     }
-    /* 프로젝트 특정글 불러오기*/
+    /* 칸반보드 불러오기*/
     @GetMapping("/project/kanban")
     public ResponseEntity<?> viewProjectKanban(@RequestParam int proNo) {
         log.info("proNo:" + proNo);
         return projectService.viewKanban(proNo);
     }
+    // 칸반보드 생성 //
     @PostMapping("/kanban/create")
     public ResponseEntity<?> addKanban(@RequestBody ProjectDTO projectDTO) {
         log.info("projectDTO @@ :" + projectDTO);
