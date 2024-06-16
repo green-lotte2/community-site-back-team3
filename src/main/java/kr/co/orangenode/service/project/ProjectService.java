@@ -1,5 +1,7 @@
 package kr.co.orangenode.service.project;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import kr.co.orangenode.dto.project.CollaboratorDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
@@ -15,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -118,24 +122,30 @@ public class ProjectService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
         }
     }
+    // 칸반보드 출력
+    public ResponseEntity<?> viewKanban(int proNo) {
+        Optional<Project> viewNo = projectRepository.findById(proNo);
+        if (viewNo.isPresent()) {
+            Project project = viewNo.get();
+            String content = project.getContent();
 
-    /*
-    public ResponseEntity<?> selectKanbanList(int proNo) {
-        List<Tuple> tuples = projectRepository.selectKanban(proNo);
-        log.info("here111 : "+ tuples.toString());
-        List<KanListDTO> kanListDTOS = tuples.stream()
-                .map(tuple -> {
-                    KanListDTO kanListDTO = new KanListDTO();
-                    kanListDTO.setProNo(tuple.get(0, Integer.class));
-                    kanListDTO.setId(tuple.get(1, Integer.class));
-                    kanListDTO.setIssueTitle(tuple.get(2, String.class));
-                    kanListDTO.setUid(tuple.get(3, String.class));
-                    kanListDTO.setWorkerName(tuple.get(4, String.class));
-                    kanListDTO.setWorkerProfile(tuple.get(5, String.class));
-                    log.info("here222 : "+kanListDTO.toString());
-                    return kanListDTO;
-                }).toList();
+            if (content == null || content.trim().isEmpty()) {
+                // Return an empty list if content is empty
+                return ResponseEntity.status(HttpStatus.OK).body(Collections.emptyList());
+            }
 
-        return ResponseEntity.status(HttpStatus.OK).body(kanListDTOS);
-    }*/
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> kanbanData = null;
+
+            try {
+                kanbanData = objectMapper.readValue(content, new TypeReference<List<Map<String, Object>>>() {});
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("content 파싱 에러");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(kanbanData);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("데이터를 찾지 못했습니다.");
+        }
+    }
 }

@@ -41,7 +41,7 @@ public class ProjectController {
     @GetMapping("/project/kanban")
     public ResponseEntity<?> viewProjectKanban(@RequestParam int proNo) {
         log.info("proNo:" + proNo);
-        return projectService.viewProject(proNo);
+        return projectService.viewKanban(proNo);
     }
     @PostMapping("/kanban/create")
     public ResponseEntity<?> addKanban(@RequestBody ProjectDTO projectDTO) {
