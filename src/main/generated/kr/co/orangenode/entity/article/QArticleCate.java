@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.entity.article;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QArticleCate extends EntityPathBase<ArticleCate> {
 
-    private static final long serialVersionUID = -742721067L;
+    private static final long serialVersionUID = -1564755483L;
 
     public static final QArticleCate articleCate = new QArticleCate("articleCate");
 

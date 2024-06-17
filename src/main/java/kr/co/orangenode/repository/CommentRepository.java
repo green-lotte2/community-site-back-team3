@@ -1,7 +1,6 @@
 package kr.co.orangenode.repository;
 
-import kr.co.orangenode.entity.board.Article;
-import kr.co.orangenode.entity.board.Comment;
+import kr.co.orangenode.entity.article.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
