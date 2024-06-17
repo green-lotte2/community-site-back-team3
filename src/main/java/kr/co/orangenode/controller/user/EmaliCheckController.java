@@ -22,46 +22,58 @@ public class EmaliCheckController {
 
     private final EmailCheckService emailCheckService;
 
-    // 회원가입 유저 정보 중복 체크 (아이디, 전화번호, 이메일)
-    @GetMapping("/member/checkUser/{type}/{value}")
-    public ResponseEntity<?> registerUserCheck(HttpSession session, @PathVariable("type") String type, @PathVariable("value") String value){
-        // service에서 중복 체크
-        int result = emailCheckService.UserCheck(session, type, value);
-        log.info("session :" + session);
+    // Check user and send email code for registration
+    @PostMapping("/member/sendEmailCode")
+    public ResponseEntity<?> sendEmailCodeForRegistration(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
 
-        String code = (String) session.getAttribute("code");
-        log.info("session code : " + code);
-
-        // json 형식으로 변환
-        Map<String, Integer> data = new HashMap<>();
-        data.put("result", result);
-        return ResponseEntity.ok().body(data);
-    }
-
-    @GetMapping("/member/checkEmailCode/{inputCode}")
-    public ResponseEntity<?> checkEmailCode(HttpSession session, @PathVariable("inputCode") String inputCode){
-        // 서버에서 발급한 인증 코드
-        log.info("checkEmailCode:" + session.toString());
-        String code = (String) session.getAttribute("code");
-        log.info("checkEmailCode:" + session.getAttribute("code"));
-        log.info("code:" + code);
-        // 회원가입하는 사용자가 입력한 코드
-        String checkCode = inputCode;
-        log.info("CheckCode: " + inputCode);
-        Map<String, Integer> data = new HashMap<>();
-        if(code != null && code.equals(checkCode)){
-            data.put("result", 0);
-            return ResponseEntity.ok().body(data);
-        }else {
-            data.put("result", 1);
-            return ResponseEntity.ok().body(data);
+        if (emailCheckService.isUserExistByEmail(email)) {
+            return ResponseEntity.status(400).body("이메일이 이미 사용 중입니다.");
+        } else {
+            String encryptedCode = emailCheckService.sendEmailCode(email);
+            log.info("이메일 코드 전송 완료, encryptedCode: " + encryptedCode);
+            return ResponseEntity.ok().body(Map.of("code", encryptedCode, "message", "이메일 코드 전송 완료"));
         }
     }
 
-    // userId찾기
+    // Send email code for ID retrieval
+    @PostMapping("/member/sendEmailCodeForFindId")
+    public ResponseEntity<?> sendEmailCodeForFindId(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+
+        if (!emailCheckService.isUserExistByEmail(email)) {
+            return ResponseEntity.status(400).body("이메일이 등록되어 있지 않습니다.");
+        } else {
+            String encryptedCode = emailCheckService.sendEmailCode(email);
+            log.info("이메일 코드 전송 완료, encryptedCode: " + encryptedCode);
+            return ResponseEntity.ok().body(Map.of("code", encryptedCode, "message", "이메일 코드 전송 완료"));
+        }
+    }
+
+    @PostMapping("/member/checkEmailCode")
+    public ResponseEntity<?> checkEmailCode(@RequestBody Map<String, String> request) {
+        String encryptedCode = request.get("code");
+        String inputCode = request.get("inputCode");
+
+        String decodedInputCode = new String(java.util.Base64.getDecoder().decode(inputCode));
+        String decodedServerCode = new String(java.util.Base64.getDecoder().decode(encryptedCode));
+
+        log.info("이메일 인증코드 확인, decodedServerCode: " + decodedServerCode + ", decodedInputCode: " + decodedInputCode);
+
+        Map<String, Integer> data = new HashMap<>();
+        if (decodedServerCode.equals(decodedInputCode)) {
+            data.put("result", 0);
+            return ResponseEntity.ok().body(data);
+        } else {
+            data.put("result", 1);
+            return ResponseEntity.status(400).body(data);
+        }
+    }
+
+    // userId 찾기
     @GetMapping("/member/findUserId")
-    public ResponseEntity<?> findUserId(@RequestParam String name, @RequestParam String email, HttpSession session) {
-        Optional<User> user = emailCheckService.findUserIdByUserNameAndUserEmail(name, email, session);
+    public ResponseEntity<?> findUserId(@RequestParam String name, @RequestParam String email) {
+        Optional<User> user = emailCheckService.findUserIdByUserNameAndUserEmail(name, email);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
@@ -69,32 +81,14 @@ public class EmaliCheckController {
         }
     }
 
-    // userPass수정
+    // userPass 수정
     @GetMapping("/member/changePass")
-    public ResponseEntity<?> changePass(@RequestParam String uid, @RequestParam String pass, @RequestParam String email, HttpSession session) {
-        long result = emailCheckService.updatePw(uid, pass, email, session);
+    public ResponseEntity<?> changePass(@RequestParam String uid, @RequestParam String pass, @RequestParam String email) {
+        long result = emailCheckService.updatePw(uid, pass, email);
         if (result > 0) {
             return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
         } else {
             return ResponseEntity.status(500).body("비밀번호 변경에 실패했습니다.");
-        }
-    }
-
-    // 이메일 코드 발송
-    @PostMapping("/member/sendEmailCode")
-    public ResponseEntity<?> checkEmail(@RequestBody Map<String, String> request, HttpSession session) {
-        String email = request.get("email");
-
-        int result = emailCheckService.findIdCheckEmail(session, email);
-        log.info("session :" + session);
-
-        String code = (String) session.getAttribute("code");
-        log.info("session code : " + code);
-
-        if (result == 0) {
-            return ResponseEntity.ok("이메일 코드 전송 완료");
-        } else {
-            return ResponseEntity.status(400).body("에러");
         }
     }
 }
