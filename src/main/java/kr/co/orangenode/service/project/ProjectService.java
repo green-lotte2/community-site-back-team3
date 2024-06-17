@@ -131,7 +131,6 @@ public class ProjectService {
             String content = project.getContent();
 
             if (content == null || content.trim().isEmpty()) {
-                // Return an empty list if content is empty
                 return ResponseEntity.status(HttpStatus.OK).body(Collections.emptyList());
             }
 
