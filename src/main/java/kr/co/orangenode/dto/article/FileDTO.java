@@ -1,4 +1,4 @@
-package kr.co.orangenode.dto.board;
+package kr.co.orangenode.dto.article;
 
 import lombok.*;
 

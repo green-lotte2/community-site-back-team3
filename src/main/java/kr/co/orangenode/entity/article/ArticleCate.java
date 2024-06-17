@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.entity.article;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 @Builder
 @ToString
-@Table(name = "articlecate")
+@Table(name = "articleCate")
 public class ArticleCate {
     @Id
     private int cNo;

@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.entity.article;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QFile extends EntityPathBase<File> {
 
-    private static final long serialVersionUID = 623766284L;
+    private static final long serialVersionUID = -857858820L;
 
     public static final QFile file = new QFile("file");
 
