@@ -40,6 +40,9 @@ public class OAuth2TokenController {
 
         Map<String, Object> userMap = kakaoTokenService.getUser(kakaoAccessToken);
         String userEmail = (String) userMap.get("email");
+        String nick = (String) ((Map<String, Object>) userMap.get("profile")).get("nickname");
+        log.info("userMap체크 {}", userMap);
+        log.info("usernick체크 {}", nick);
         log.info("Kakao access token: {}", kakaoAccessToken);
         log.info("Kakao access userEmail: {}", userEmail);
 
@@ -48,8 +51,7 @@ public class OAuth2TokenController {
         if (user == null) {
             user = User.builder()
                     .uid(userEmail)
-                    .name(userEmail)
-                    //.pass("kakao")
+                    .name(nick)
                     .grade("FREE")
                     .email(userEmail)
                     .role("USER")
@@ -57,8 +59,6 @@ public class OAuth2TokenController {
                     .build();
             user = userService.register(modelMapper.map(user, UserDTO.class));
         }
-//        // DB 전송
-//        User savedUser = userService.register(modelMapper.map(user, UserDTO.class));
 
         // 세션에 사용자 정보 저장 (예시로 HttpSession을 사용)
         httpSession.setAttribute("user", user);

@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.entity.article;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,11 +15,13 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QArticle extends EntityPathBase<Article> {
 
-    private static final long serialVersionUID = -1579405978L;
+    private static final long serialVersionUID = -1293978250L;
 
     public static final QArticle article = new QArticle("article");
 
     public final NumberPath<Integer> ano = createNumber("ano", Integer.class);
+
+    public final StringPath cateName = createString("cateName");
 
     public final NumberPath<Integer> cno = createNumber("cno", Integer.class);
 

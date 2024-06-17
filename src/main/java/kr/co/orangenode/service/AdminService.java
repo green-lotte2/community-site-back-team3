@@ -1,8 +1,8 @@
 package kr.co.orangenode.service;
 
-import kr.co.orangenode.entity.board.Article;
+import kr.co.orangenode.entity.article.Article;
 import kr.co.orangenode.entity.user.User;
-import kr.co.orangenode.repository.ArticleRepository;
+import kr.co.orangenode.repository.article.ArticleRepository;
 import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

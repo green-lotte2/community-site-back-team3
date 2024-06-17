@@ -1,4 +1,4 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.entity.article;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QComment extends EntityPathBase<Comment> {
 
-    private static final long serialVersionUID = 103370447L;
+    private static final long serialVersionUID = 388798175L;
 
     public static final QComment comment = new QComment("comment");
 
