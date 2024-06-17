@@ -39,8 +39,6 @@ public class WebsocketHandler2 extends TextWebSocketHandler {
         log.info("here//");
         super.afterConnectionEstablished(session);
         sessionMap.put(session.getId(), session);
-        log.info("session : " + session);
-        log.info("session.getId() : " + session.getId());
     }
 
     @Override

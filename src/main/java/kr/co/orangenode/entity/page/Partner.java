@@ -1,8 +1,6 @@
 package kr.co.orangenode.entity.page;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -16,6 +14,7 @@ import lombok.*;
 public class Partner {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int partNo;
     private int pageNo;
     private String uid;
