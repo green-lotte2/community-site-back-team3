@@ -22,6 +22,7 @@ public class ProjectController {
     /* 프로젝트 리스트 출력 */
     @GetMapping("/project/list")
     public ResponseEntity<?> selectProjectList(@RequestParam String uid) {
+        log.info("uid 들어옴 ? "+ uid);
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setUid(uid);
         return projectService.selectProjectList(projectDTO);
@@ -36,17 +37,16 @@ public class ProjectController {
     public ResponseEntity<?> updateProject(@RequestBody ProjectDTO projectDTO) {
         return projectService.updateProject(projectDTO);
     }
-    /* 프로젝트 특정글 불러오기*/
+    /* 칸반보드 불러오기*/
     @GetMapping("/project/kanban")
     public ResponseEntity<?> viewProjectKanban(@RequestParam int proNo) {
         log.info("proNo:" + proNo);
-        return projectService.viewProject(proNo);
+        return projectService.viewKanban(proNo);
     }
-    @PostMapping("/dddd")
-    public ResponseEntity<?> addIssue(@RequestBody String data) {
-
-        log.info(" 히히히 ");
-        log.info("data @@ :" + data);
-        return null;
+    // 칸반보드 생성 //
+    @PostMapping("/kanban/create")
+    public ResponseEntity<?> addKanban(@RequestBody ProjectDTO projectDTO) {
+        log.info("projectDTO @@ :" + projectDTO);
+        return projectService.createKanban(projectDTO);
     }
 }

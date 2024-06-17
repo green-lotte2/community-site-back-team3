@@ -5,6 +5,10 @@ server:
     port: 8080
     servlet:
         context-path: /
+        session:
+            timeout: 30m
+            cookie:
+                same-site: Lax
 
 spring:
     application:

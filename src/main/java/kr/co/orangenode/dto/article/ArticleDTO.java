@@ -1,24 +1,18 @@
-package kr.co.orangenode.entity.board;
+package kr.co.orangenode.dto.article;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import kr.co.orangenode.entity.article.Article;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Entity
 @Builder
 @ToString
-@Table(name = "article")
-public class Article {
-
-    @Id
+@AllArgsConstructor
+@NoArgsConstructor
+public class ArticleDTO {
     private int ano;
     private String uid;
     private Integer cno;
@@ -34,5 +28,7 @@ public class Article {
     private LocalDateTime rdate;
     @CreationTimestamp
     private LocalDateTime newDate;
+    private String cateName;
+
 
 }

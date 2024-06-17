@@ -1,9 +1,11 @@
-package kr.co.orangenode.controller.board;
+package kr.co.orangenode.controller.article;
 
-import kr.co.orangenode.entity.board.Article;
+import kr.co.orangenode.dto.article.PageRequestDTO;
+import kr.co.orangenode.entity.article.Article;
 import kr.co.orangenode.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleController {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
 
     // 전체 게시글 조회
@@ -56,6 +58,16 @@ public class ArticleController {
         }
     }
 
+    @GetMapping("/article/list")
+    public ResponseEntity<?> selectList(@RequestParam PageRequestDTO pageRequestDTO, Pageable pageable){
+        return articleService.getArticleList(pageRequestDTO, pageable);
+    }
+
+    @GetMapping("/article/cate")
+    public ResponseEntity<?> selectCate(){
+        log.info("야야ㅑ야야");
+        return articleService.getCateList();
+    }
 }
 
 

@@ -15,5 +15,6 @@ public class PartnerDTO {
     private int pageNo;
     private String uid;
 
+    private String name;
 
 }

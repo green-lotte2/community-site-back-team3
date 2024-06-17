@@ -1,6 +1,6 @@
 package kr.co.orangenode.controller.admin;
 
-import kr.co.orangenode.entity.board.Article;
+import kr.co.orangenode.entity.article.Article;
 import kr.co.orangenode.entity.user.User;
 import kr.co.orangenode.service.AdminService;
 import lombok.RequiredArgsConstructor;

@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,106 +27,62 @@ public class EmailCheckService {
 
     // email 전송
     private final JavaMailSender javaMailSender;
-    private final HttpSession httpSession;
-
-    public int UserCheck(HttpSession session, String type, String value) {
-        int result = 0;
-        if (type.equals("email")) {
-            Optional<User> optUser = userRepository.findByEmail(value);
-            if (optUser.isPresent()) {
-                //사용 불가능
-                result = 1;
-                return result;
-            } else {
-                // 사용 가능
-                sendEmailCode(session, value);
-                return result;
-            }
-        } else if (type.equals("hp")) {
-            //전화번호 중복검사
-            Optional<User> optUser = userRepository.findByHp(value);
-            //Optional이 비어있는지 체크
-            if (optUser.isPresent()) {
-                // 사용 불가능
-                result = 1;
-                return result;
-            } else {
-                // 사용가능
-                return result;
-            }
-        }if (type.equals("uid")) {
-            // 아이디 중복 검사
-            Optional<User> optUser = userRepository.findById(value);
-            // optional이 비어있는지 체크
-            if (optUser.isPresent()) {
-                // 사용 불가능
-                result = 1;
-                return result;
-            } else {
-                // 사용 가능
-                return result;
-            }
-        }
-        return result;
-    }
 
     @Value("${spring.mail.username}")
     private String sender;
-    // 🎈이메일 인증코드 전송
-    public void sendEmailCode(HttpSession session, String receiver){
-        log.info("sender : " + sender);
-        log.info("이메일 인증코드 전송 : " + session);
+    // Check if the user exists by email
+    public boolean isUserExistByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 
-        // MimeMessage 생성
-        MimeMessage message = javaMailSender.createMimeMessage();
+    // Check if the user exists by phone number
+    public boolean isUserExistByHp(String hp) {
+        return userRepository.findByHp(hp).isPresent();
+    }
 
-        // 인증코드 생성 후 세션 저장
+    // Check if the user exists by user ID
+    public boolean isUserExistByUid(String uid) {
+        return userRepository.findById(uid).isPresent();
+    }
+
+    // 이메일 코드 전송
+    public String sendEmailCode(String receiver) {
+        log.info("sender: " + sender);
+
+        // 인증코드 생성
         int code = ThreadLocalRandom.current().nextInt(100000, 1000000);
-        session.setAttribute("code", String.valueOf(code));
+        String codeStr = String.valueOf(code);
 
-        log.info("code : " + code);
+        // 인증코드를 Base64로 암호화
+        String encryptedCode = Base64.getEncoder().encodeToString(codeStr.getBytes());
 
         String title = "orangeNode 인증코드 입니다.";
-        String content = "<h1>인증코드는" +  code + "입니다.</h1>";
+        String content = "<h1>인증코드는 " + codeStr + " 입니다.</h1>"; // 실제 코드 전송
+        log.info("encryptedContent 체크 : " + encryptedCode);
 
         try {
+            MimeMessage message = javaMailSender.createMimeMessage();
             message.setFrom(new InternetAddress(sender, "보내는 사람", "UTF-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
             message.setSubject(title);
-            message.setContent(content, "text/html;charset=UTF-8");
+            message.setContent(content, "text/html;charset=UTF-8"); // 암호화된 코드로 내용 설정
 
             javaMailSender.send(message);
-            log.info("세션확인111 : " + session.getAttribute("code"));
-        } catch(Exception e){
-            log.error("sendEmailCode : " + e.getMessage());
+            log.info("이메일 전송 완료, 인증코드: " + encryptedCode);
+        } catch (Exception e) {
+            log.error("sendEmailCode: " + e.getMessage());
         }
-        log.info("세션확인222 : " + session.getAttribute("code"));
+
+        return encryptedCode;
     }
 
     // UserId 찾기
-    public Optional<User> findUserIdByUserNameAndUserEmail(String name, String email, HttpSession session) {
+    public Optional<User> findUserIdByUserNameAndUserEmail(String name, String email) {
         return userRepository.findUserIdByUserNameAndUserEmail(name, email);
     }
-    // 아이디찾기 이메일 확인/발송
-    public int findIdCheckEmail(HttpSession session, String email) {
-        int result = 0;
 
-        //이메일 확인
-        Optional<User> optUser = userRepository.findByEmail(email);
-        //Optional이 비어있는지 체크
-        if (optUser.isPresent()) {
-            //사용 가능
-            // 인증코드 발송
-            sendEmailCode(session, email);
-            return result;
-        } else {
-            // 사용 불가능
-            result = 1;
-            return result;
-        }
-    }
     // userPass 수정
-    public long updatePw(String uid,String pass, String email, HttpSession session) {
+    public long updatePw(String uid, String pass, String email) {
         String encodedPassword = passwordEncoder.encode(pass);
         return userRepository.updateUserPwByUserIdAndUserEmail(uid, encodedPassword, email);
     }
