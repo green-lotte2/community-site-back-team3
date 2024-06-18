@@ -27,7 +27,6 @@ public class AdminController {
     //글 전체 목록
     @GetMapping("/admin/article")
     public ResponseEntity<?> getAdminArticleList(){
-
         return adminService.adminArticleList();
     }
 

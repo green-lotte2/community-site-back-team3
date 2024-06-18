@@ -89,7 +89,15 @@ spring:
                         # REST API KEY
                         client-id: 8412b8200aef151b8d5e19641b967e1b
                         # 카카오 > 내 애플리케이션 > 카카오 로그인 > 등록된 Redirect URI 사용
-                        redirect-uri: http://localhost:3000/main
+
+                        # 개발시 사용
+                        redirect-uri: http://localhost:3000/oauth/callback/kakao
+
+                        # 배포시 사용
+                        #redirect-uri: http://ec2-3-35-92-212.ap-northeast-2.compute.amazonaws.com:8080/main
+                        # 배포시 사용 (이거먼저 확인)
+                        #redirect-uri: http://3:34:204:24:3000/oauth/callback/kakao
+
                         authorization-grant-type: authorization_code
                         client-authentication-method: POST
                         client-name: kakao
@@ -99,23 +107,6 @@ spring:
                             - account_email
                         # 카카오 > 내 애플리케이션 > 카카오로그인 > 보안 > Client Secret
                         client-secret: MLJBEAg6jItFD1ykjdZ7NhhFMwl62HsQ
-
-                        # 개발시 사용
-                        # redirect-uri: http://localhost:8080/lotteon/login/oauth2/code/kakao
-                        # 배포시 사용
-
-
-
-                    google:
-                        client-id: 224975630827-8nl3vpsfn2uve9q1hsna5ao3lnj6452b.apps.googleusercontent.com
-                        client-secret: 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
-                        # 개발시 사용
-                        # redirect-uri: http://localhost:8080/lotteon/login/oauth2/code/google
-                        # 배포시 사용
-                        redirect-uri: http://ec2-3-35-92-212.ap-northeast-2.compute.amazonaws.com:8080/lotteon/login/oauth2/code/google
-                        scope:
-                            - email
-                            - profile
 
 # 파일 업로드 설정
 file:
