@@ -36,6 +36,7 @@ public class KakaoTokenService {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> responseBody = response.getBody();
+            log.info("response1111111 :" +  response.getBody());
 
             log.info(responseBody);
 
@@ -69,7 +70,7 @@ public class KakaoTokenService {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> responseBody = response.getBody();
-
+            log.info("222222:" + response.getBody());
             log.info(responseBody);
 
             if (responseBody != null && responseBody.containsKey("kakao_account")) {
