@@ -1,5 +1,6 @@
 package kr.co.orangenode.service;
 
+import kr.co.orangenode.dto.cs.CsDTO;
 import kr.co.orangenode.dto.cs.QuestionDTO;
 import kr.co.orangenode.entity.cs.CsEntity;
 import kr.co.orangenode.entity.cs.Question;
@@ -19,6 +20,7 @@ import java.io.Console;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +65,20 @@ public class CsService {
         return ResponseEntity.ok().body(csEntities);
     }
 
+    /** cs 내용 한개 가져오기 Admin(수정용)*/
+    public ResponseEntity<?> csSelect(int csNo) {
+        Optional<CsEntity> result = csRepository.findById(csNo);
+
+        CsEntity cs = modelMapper.map(result, CsEntity.class);
+        log.info("글 하나 가져오기 서비스 " + cs);
+
+        if(result.isPresent()){
+            log.info("됐음");
+            return ResponseEntity.ok().body(cs);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        }
+    }
     /** cs내용 삭제하기 Admin*/
     public ResponseEntity<?> deleteCs(int[] csNo){
 
