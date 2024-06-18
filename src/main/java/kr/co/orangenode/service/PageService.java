@@ -51,12 +51,12 @@ public class PageService {
                 .map(entity -> modelMapper.map(entity, PageDTO.class))
                 .toList();
 
-        // 중복 제거를 위해 Set 사용
-        Set<PageDTO> allPagesSet = new HashSet<>(myPages);
+        // 중복 제거를 위해 LinkedHashSet 사용 (입력 순서 유지)
+        Set<PageDTO> allPagesSet = new LinkedHashSet<>(myPages);
         allPagesSet.addAll(partnerPages);
 
         // Set을 List로 변환
-        List<PageDTO> allPages = allPagesSet.stream().collect(Collectors.toList());
+        List<PageDTO> allPages = new ArrayList<>(allPagesSet);
         return ResponseEntity.ok().body(allPages);
     }
 

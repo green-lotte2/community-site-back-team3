@@ -8,6 +8,7 @@ import kr.co.orangenode.entity.article.Article;
 import kr.co.orangenode.entity.article.ArticleCate;
 import kr.co.orangenode.repository.article.ArticleCateRepository;
 import kr.co.orangenode.repository.article.ArticleRepository;
+import kr.co.orangenode.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleCateRepository articleCateRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
 
     public List<Article> checkAllArticles() {
         return articleRepository.findAll();
@@ -69,13 +71,19 @@ public class ArticleService {
 
     public ResponseEntity<?> getArticleList(PageRequestDTO pageRequestDTO, Pageable pageable){
         Page<Article> getArticleList = articleRepository.getArticleList(pageRequestDTO, pageable);
+        log.info("카테별 게시글 서비스...1" + getArticleList);
+        
         if(getArticleList.isEmpty()){
+            log.info("카테별 게시글 서비스...2 오류" );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR!!!!");
         }else{
 
             List<ArticleDTO> articleDTOS = getArticleList.getContent().stream()
                     .map(article -> modelMapper.map(article, ArticleDTO.class))
                     .toList();
+
+            log.info("카테별 게시글 서비스...3"+ articleDTOS);
+
             int total = (int) getArticleList.getTotalElements();
 
             PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
@@ -87,6 +95,10 @@ public class ArticleService {
             return ResponseEntity.ok().body(pageResponseDTO);
 
         }
+    }
+
+    public ResponseEntity<?> getUserInfo(String uid) {
+        return userService.userInfo(uid);
     }
 
 

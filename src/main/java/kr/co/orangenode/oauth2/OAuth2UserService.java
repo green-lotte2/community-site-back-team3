@@ -36,9 +36,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = oauth2User.getAttributes();
         OAuth2MemberInfo userInfo = null;
 
-        if (registrationId.equals("google")) {
-            userInfo = new GoogleInfo(attributes);
-        } else if (registrationId.equals("kakao")) {
+        if (registrationId.equals("kakao")) {
             userInfo = new KakaoInfo(attributes);
         }
 
