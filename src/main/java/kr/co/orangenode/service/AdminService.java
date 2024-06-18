@@ -7,6 +7,8 @@ import kr.co.orangenode.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -74,7 +76,15 @@ public class AdminService {
         return userRepository.findAll();
     }
 
-
+    // 관리자 유저 검색 메서드
+    public List<User> getUsers(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        if (search == null || search.isEmpty()) {
+            return userRepository.findAll(pageable).getContent();
+        } else {
+            return userRepository.findUsers(search, pageable).getContent();
+        }
+    }
 
     }
 

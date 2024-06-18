@@ -67,7 +67,11 @@ public class AdminController {
         return ResponseEntity.ok(userList);
     }
 
-
+    // 유저 리스트에서 검색
+    @GetMapping("/admin/member/search")
+    public List<User> getUsers(@RequestParam int page, @RequestParam int size, @RequestParam(required = false) String search) {
+        return adminService.getUsers(page, size, search);
+    }
 
 
 
