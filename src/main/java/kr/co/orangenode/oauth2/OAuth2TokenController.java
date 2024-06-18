@@ -33,11 +33,10 @@ public class OAuth2TokenController {
 
     @GetMapping("/oauth/callback/kakao")
     public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code) {
-        // 카카오 인증 코드로부터 액세스 토큰을 받아옴
-        log.info("code {}", code);
-
+        // 카카오에 인가코드를 전달하고 토큰을받는 코드
         String kakaoAccessToken = kakaoTokenService.getAccessToken(code);
 
+        // 카카오 토큰을 통해 유저 정보 조회
         Map<String, Object> userMap = kakaoTokenService.getUser(kakaoAccessToken);
         String userEmail = (String) userMap.get("email");
         String nick = (String) ((Map<String, Object>) userMap.get("profile")).get("nickname");
@@ -46,7 +45,7 @@ public class OAuth2TokenController {
         log.info("Kakao access token: {}", kakaoAccessToken);
         log.info("Kakao access userEmail: {}", userEmail);
 
-        // 데이터베이스에서 사용자 정보 조회 또는 등록
+        // DB에서 사용자를 조회하고 사용자가 없다면 새로운 사용자를 등록
         User user = userService.findByUid(userEmail);
         if (user == null) {
             user = User.builder()
@@ -61,8 +60,9 @@ public class OAuth2TokenController {
         }
 
         // 세션에 사용자 정보 저장 (예시로 HttpSession을 사용)
-        httpSession.setAttribute("user", user);
+        //httpSession.setAttribute("user", user);
 
+        // jwt토큰 생성
         String accessToken = jwtProvider.createToken(user, 1);
 
         log.info("accessToken : {}", accessToken);

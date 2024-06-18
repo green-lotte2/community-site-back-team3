@@ -29,7 +29,7 @@ public class PageResponseDTO {
         this.cateName = pageRequestDTO.getCateName();
         this.sort = pageRequestDTO.getSort();
         this.how = pageRequestDTO.getHow();
-
+        this.dtoList = dtoList;
         this.end = (int) (Math.ceil(this.pg / 10.0)) * 10;
         this.start = this.end - 9;
 
