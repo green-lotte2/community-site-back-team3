@@ -95,6 +95,7 @@ spring:
 
                         # 배포시 사용
                         #redirect-uri: http://ec2-3-35-92-212.ap-northeast-2.compute.amazonaws.com:8080/main
+                        #redirect-uri: http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com:3000/oauth/callback/kakao
                         # 배포시 사용 (이거먼저 확인)
                         #redirect-uri: http://3:34:204:24:3000/oauth/callback/kakao
 

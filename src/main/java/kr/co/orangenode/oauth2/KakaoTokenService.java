@@ -1,6 +1,7 @@
 package kr.co.orangenode.oauth2;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,8 +15,8 @@ public class KakaoTokenService {
     private static final String TOKEN_ENDPOINT = "https://kauth.kakao.com/oauth/token";
     private static final String CLIENT_ID = "8412b8200aef151b8d5e19641b967e1b";
     private static final String CLIENT_SECRET = "MLJBEAg6jItFD1ykjdZ7NhhFMwl62HsQ";
-    private static final String REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao";
-    //  private static final String REDIRECT_URI = "http://3:34:204:24:3000/oauth/callback/kakao";
+    //private static final String REDIRECT_URI = "http://127.0.0.1:3000/oauth/callback/kakao";
+    private static final String REDIRECT_URI = "http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com:3000/oauth/callback/kakao";
     private static final String GRANT_TYPE = "authorization_code";
 
     public String getAccessToken(String authorizationCode) {
