@@ -149,4 +149,24 @@ public class CsService {
 
         return ResponseEntity.ok().body(filesNames);
     }
+
+    /** 관리자 cs 글 수정*/
+    public ResponseEntity<?> csModify(CsDTO csDTO){
+        
+        log.info("cs 수정..1" + csDTO.getCsNo());
+        Optional<CsEntity> cs = csRepository.findById(csDTO.getCsNo());
+
+        if(cs.isPresent()){
+            CsEntity updateCs = modelMapper.map(csDTO, CsEntity.class);
+            log.info("cs 수정..2" + updateCs);
+
+            CsEntity result = csRepository.save(updateCs);
+            log.info("cs 수정..3" + result);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+
+        }else{
+            log.info("cs 수정..4");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        }
+    }
 }
