@@ -1,6 +1,7 @@
 package kr.co.orangenode.controller.cs;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.orangenode.dto.cs.CsDTO;
 import kr.co.orangenode.dto.cs.QuestionDTO;
 import kr.co.orangenode.service.CsService;
 import lombok.RequiredArgsConstructor;
@@ -71,5 +72,11 @@ public class CsController {
         log.info("글 하나 가져오기" + csNo);
 
         return csService.csSelect(csNo);
+    }
+
+    @PostMapping("/cs/modify")
+    public ResponseEntity<?> csModify(@RequestBody CsDTO csDTO) {
+        log.info("cs글 수정"+csDTO);
+        return csService.csModify(csDTO);
     }
 }
