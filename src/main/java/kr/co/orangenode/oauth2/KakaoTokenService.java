@@ -14,8 +14,8 @@ public class KakaoTokenService {
     private static final String TOKEN_ENDPOINT = "https://kauth.kakao.com/oauth/token";
     private static final String CLIENT_ID = "8412b8200aef151b8d5e19641b967e1b";
     private static final String CLIENT_SECRET = "MLJBEAg6jItFD1ykjdZ7NhhFMwl62HsQ";
-    private static final String REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao";
-    //  private static final String REDIRECT_URI = "http://3:34:204:24:3000/oauth/callback/kakao";
+    //private static final String REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao";
+    private static final String REDIRECT_URI = "http://3:34:204:24:3000/oauth/callback/kakao";
     private static final String GRANT_TYPE = "authorization_code";
 
     public String getAccessToken(String authorizationCode) {
