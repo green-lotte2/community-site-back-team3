@@ -33,16 +33,19 @@ public class OAuth2TokenController {
 
     @GetMapping("/oauth/callback/kakao")
     public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code) {
+
+        log.info("kakaoCallback 컨트롤러 : " +code);
         // 카카오에 인가코드를 전달하고 토큰을받는 코드
         String kakaoAccessToken = kakaoTokenService.getAccessToken(code);
 
+        log.info("kakaoCallback 컨트롤러 2 : " +kakaoAccessToken);
         // 카카오 토큰을 통해 유저 정보 조회
         Map<String, Object> userMap = kakaoTokenService.getUser(kakaoAccessToken);
+
+        log.info("userMap체크 {}", userMap);
         String userEmail = (String) userMap.get("email");
         String nick = (String) ((Map<String, Object>) userMap.get("profile")).get("nickname");
-        log.info("userMap체크 {}", userMap);
         log.info("usernick체크 {}", nick);
-        log.info("Kakao access token: {}", kakaoAccessToken);
         log.info("Kakao access userEmail: {}", userEmail);
 
         // DB에서 사용자를 조회하고 사용자가 없다면 새로운 사용자를 등록
