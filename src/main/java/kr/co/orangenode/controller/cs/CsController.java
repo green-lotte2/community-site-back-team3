@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,5 +64,12 @@ public class CsController {
         log.info("admin cs 삭제하기" + Arrays.toString(csNo));
 
         return csService.deleteCs(csNo);
+    }
+
+    @GetMapping("/cs/select")
+    public ResponseEntity<?> csSelect(@RequestParam int csNo) {
+        log.info("글 하나 가져오기" + csNo);
+
+        return csService.csSelect(csNo);
     }
 }
