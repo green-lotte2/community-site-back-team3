@@ -37,6 +37,8 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final DateTimePath<java.time.LocalDateTime> newDate = createDateTime("newDate", java.time.LocalDateTime.class);
 
+    public final StringPath parent = createString("parent");
+
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 
     public final StringPath reply = createString("reply");
