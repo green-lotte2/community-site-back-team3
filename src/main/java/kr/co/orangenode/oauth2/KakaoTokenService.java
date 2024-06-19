@@ -16,7 +16,7 @@ public class KakaoTokenService {
     private static final String CLIENT_ID = "8412b8200aef151b8d5e19641b967e1b";
     private static final String CLIENT_SECRET = "MLJBEAg6jItFD1ykjdZ7NhhFMwl62HsQ";
     //private static final String REDIRECT_URI = "http://127.0.0.1:3000/oauth/callback/kakao";
-    private static final String REDIRECT_URI = "http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com:3000/oauth/callback/kakao";
+    private static final String REDIRECT_URI = "http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com/oauth/callback/kakao";
     private static final String GRANT_TYPE = "authorization_code";
 
     public String getAccessToken(String authorizationCode) {
