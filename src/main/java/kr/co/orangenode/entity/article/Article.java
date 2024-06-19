@@ -35,5 +35,6 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime newDate;
     private String cateName;
+    private String parent;
 
 }

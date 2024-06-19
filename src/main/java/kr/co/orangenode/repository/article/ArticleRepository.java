@@ -11,5 +11,7 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<Article, Integer>, ArticleRepositoryCustom {
     public List<Article> findAllByOrderByAnoDesc();
 
+    List<Article> findByParent(Article article);
+
 
 }
