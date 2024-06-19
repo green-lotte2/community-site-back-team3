@@ -95,7 +95,7 @@ spring:
 
                         # 배포시 사용
                         #redirect-uri: http://ec2-3-35-92-212.ap-northeast-2.compute.amazonaws.com:8080/main
-                        redirect-uri: http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com/oauth/callback/kakao
+                        redirect-uri: http://3.34.204.24/oauth/callback/kakao
 
                         authorization-grant-type: authorization_code
                         client-authentication-method: POST
@@ -120,7 +120,7 @@ img:
 
 
 custom:
-    path: http://ec2-3-34-204-24.ap-northeast-2.compute.amazonaws.com/oauth/callback/kakao
+    path: http://3.34.204.24/oauth/callback/kakao
 
 # ======= 배포 시 정적 리소스의 경로 설정 ========
 myServerProd:
