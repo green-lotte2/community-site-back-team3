@@ -29,8 +29,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
 
     @Override
-    public Page<Article> getArticleList (PageRequestDTO pageRequestDTO, Pageable pageable) {
-
+    public Page<Article> getArticleList(PageRequestDTO pageRequestDTO, Pageable pageable) {
         QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

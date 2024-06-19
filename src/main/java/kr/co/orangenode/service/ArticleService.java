@@ -49,7 +49,6 @@ public class ArticleService {
         return articleRepository.findById(uid).map(article -> {
             article.setTitle(articleDetails.getTitle());
             article.setContent(articleDetails.getContent());
-            // 기타 필드 업데이트
             return articleRepository.save(article);
         });
     }
@@ -110,6 +109,10 @@ public class ArticleService {
         }
     }
 
+    public ArticleCate getCategoryByCno(int cno) {
+        return articleCateRepository.findById(cno).orElse(null);
+    }
+
     public ResponseEntity<ArticleDTO> getArticle(int ano) {
         Optional<Article> articleOptional = articleRepository.findById(ano);
 
@@ -121,7 +124,6 @@ public class ArticleService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
 
     public ArticleDTO addComment(int parentAno, String content, String uid) {
         Optional<Article> parentArticle = articleRepository.findById(parentAno);
