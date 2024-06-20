@@ -3,7 +3,7 @@ package kr.co.orangenode.controller.cs;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.orangenode.dto.cs.CsDTO;
 import kr.co.orangenode.dto.cs.QuestionDTO;
-import kr.co.orangenode.service.CsService;
+import kr.co.orangenode.service.cs.CsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -78,5 +75,15 @@ public class CsController {
     public ResponseEntity<?> csModify(@RequestBody CsDTO csDTO) {
         log.info("cs글 수정"+csDTO);
         return csService.csModify(csDTO);
+    }
+
+    @PostMapping("/cs/write")
+    public ResponseEntity<?> csWrite(@RequestBody CsDTO csDTO, HttpServletRequest req) {
+        String ip = req.getRemoteAddr();
+        csDTO.setIp(ip);
+
+        log.info("관리자 cs 글 쓰기" + csDTO);
+
+        return csService.csWrite(csDTO);
     }
 }

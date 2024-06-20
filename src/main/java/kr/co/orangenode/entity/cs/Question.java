@@ -25,7 +25,7 @@ public class Question {
     private String title;
     private String content;
     private String ip;
-    private String status;
+    private int status;
 
     @CreationTimestamp
     LocalDateTime rdate;
