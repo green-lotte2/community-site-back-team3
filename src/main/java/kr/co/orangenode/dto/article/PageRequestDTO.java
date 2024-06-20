@@ -23,7 +23,7 @@ public class PageRequestDTO {
     private int size = 10;
 
     @Builder.Default
-    private String how = "ASC";
+    private String how = "desc";
 
 
     private String sort = "rdate";
