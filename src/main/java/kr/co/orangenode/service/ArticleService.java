@@ -73,7 +73,8 @@ public class ArticleService {
 
         Pageable pageable = pageRequestDTO.getPageable("ano");
 
-        Page<Article> getArticleList = articleRepository.getArticleList(pageRequestDTO, pageable);
+        Page<Article> getArticleList = articleRepository.findByCateNameOrderByAnoDesc(pageRequestDTO.getCateName(), pageable);
+
         log.info("카테별 게시글 서비스...1" + getArticleList);
 
         List<ArticleDTO> articleDTOS = getArticleList.getContent().stream()
@@ -125,6 +126,11 @@ public class ArticleService {
 
         if (articleOptional.isPresent()) {
             Article article = articleOptional.get();
+
+            // 조회수 증가 로직 추가
+            article.setHit(article.getHit() + 1);
+            articleRepository.save(article); // 변경된 조회수를 저장
+
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
             return ResponseEntity.ok(articleDTO);
         } else {
