@@ -41,26 +41,37 @@ public class ArticleController {
 
     // 게시글 생성
     @PostMapping("/article")
-    public ResponseEntity<?> CreateArticle(@RequestBody ArticleDTO articleDTO){
+    public ResponseEntity<?> CreateArticle(@RequestBody ArticleDTO articleDTO) {
         try {
+            log.info("Received articleDTO: " + articleDTO); // articleDTO 로그 출력
+            log.info("Received cNo: " + articleDTO.getCno()); // cNo 로그 출력
+
             ArticleCate category = articleService.getCategoryByCno(articleDTO.getCno());
             if (category == null) {
+                log.info("Invalid category ID: " + articleDTO.getCno()); // Invalid category ID 로그 출력
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid category ID");
             }
 
             Article article = Article.builder()
                     .uid(articleDTO.getUid())
-                    .cno(articleDTO.getCno())
+                    .cNo(articleDTO.getCno()) // 유효한 cNo 설정
                     .title(articleDTO.getTitle())
                     .content(articleDTO.getContent())
+                    .cateName(category.getCateName())
                     .build();
+
+            log.info("Saving article: " + article); // article 로그 출력
 
             Article createdArticle = articleService.createArticle(article);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdArticle);
         } catch (Exception e) {
+            e.printStackTrace(); // 에러 로그 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating article");
         }
     }
+
+
+
 
     // 게시글 업데이트
     @PutMapping("/articles/{uid}")
@@ -85,10 +96,10 @@ public class ArticleController {
     }
 
     // 카테고리별 게시글 목록 조회
-    @GetMapping("/article/list")
-    public ResponseEntity<?> selectList(PageRequestDTO pageRequestDTO, Pageable pageable){
-        log.info("게시판 카테별 가져오기" + pageRequestDTO.getCateName());
-        return articleService.getArticleList(pageRequestDTO, pageable);
+    @PostMapping("/article/list")
+    public ResponseEntity<?> selectList(@RequestBody PageRequestDTO pageRequestDTO){
+        log.info("게시판 카테별 가져오기" + pageRequestDTO.toString());
+        return articleService.getArticleList(pageRequestDTO);
     }
 
     // 게시글 카테고리 조회

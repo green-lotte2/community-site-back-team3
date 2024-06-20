@@ -1,8 +1,6 @@
 package kr.co.orangenode.entity.article;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -19,9 +17,10 @@ import java.time.LocalDateTime;
 public class Article {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ano;
     private String uid;
-    private Integer cno;
+    private Integer cNo;
     private String title;
     private String content;
     private int file;

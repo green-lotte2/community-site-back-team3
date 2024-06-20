@@ -69,30 +69,29 @@ public class ArticleService {
         }
     }
 
-    public ResponseEntity<?> getArticleList(PageRequestDTO pageRequestDTO, Pageable pageable){
+    public ResponseEntity<?> getArticleList(PageRequestDTO pageRequestDTO){
+
+        Pageable pageable = pageRequestDTO.getPageable("ano");
+
         Page<Article> getArticleList = articleRepository.getArticleList(pageRequestDTO, pageable);
         log.info("카테별 게시글 서비스...1" + getArticleList);
 
-        if (getArticleList.isEmpty()) {
-            log.info("카테별 게시글 서비스...2 오류" );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR!!!!");
-        } else {
-            List<ArticleDTO> articleDTOS = getArticleList.getContent().stream()
-                    .map(article -> modelMapper.map(article, ArticleDTO.class))
-                    .collect(Collectors.toList());
+        List<ArticleDTO> articleDTOS = getArticleList.getContent().stream()
+                .map(article -> modelMapper.map(article, ArticleDTO.class))
+                .collect(Collectors.toList());
 
-            log.info("카테별 게시글 서비스...3" + articleDTOS);
+        log.info("카테별 게시글 서비스...3" + articleDTOS);
 
-            int total = (int) getArticleList.getTotalElements();
+        int total = (int) getArticleList.getTotalElements();
 
-            PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
-                    .pageRequestDTO(pageRequestDTO)
-                    .dtoList(articleDTOS)
-                    .total(total)
-                    .build();
+        PageResponseDTO pageResponseDTO = PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(articleDTOS)
+                .total(total)
+                .build();
 
-            return ResponseEntity.ok().body(pageResponseDTO);
-        }
+        return ResponseEntity.ok().body(pageResponseDTO);
+
     }
 
     public ResponseEntity<?> getUserInfo(String uid) {
@@ -110,8 +109,16 @@ public class ArticleService {
     }
 
     public ArticleCate getCategoryByCno(int cno) {
-        return articleCateRepository.findById(cno).orElse(null);
+        log.info("Fetching category with cNo: " + cno); // cNo 로그 출력
+        Optional<ArticleCate> category = articleCateRepository.findById(cno);
+        if (category.isPresent()) {
+            log.info("Category found: " + category.get()); // 카테고리 로그 출력
+        } else {
+            log.info("Category not found with cNo: " + cno); // 카테고리 없음 로그 출력
+        }
+        return category.orElse(null);
     }
+
 
     public ResponseEntity<ArticleDTO> getArticle(int ano) {
         Optional<Article> articleOptional = articleRepository.findById(ano);
