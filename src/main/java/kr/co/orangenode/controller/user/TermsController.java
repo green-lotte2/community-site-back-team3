@@ -15,6 +15,7 @@ public class TermsController {
 
     private final TermsService termsService;
 
+    // 이용 약관 조회
     @GetMapping("/user/terms")
     public ResponseEntity<?> getTerms() {
         List<TermsDTO> termsList  = termsService.getAllTerms();

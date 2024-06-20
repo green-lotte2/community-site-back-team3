@@ -22,11 +22,11 @@ public class EmaliCheckController {
 
     private final EmailCheckService emailCheckService;
 
-    // Check user and send email code for registration
+    // 회원가입 이메일 중복체크 및 인증코드 전송
     @PostMapping("/member/sendEmailCode")
     public ResponseEntity<?> sendEmailCodeForRegistration(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-
+        log.info("회원가입 이메일: " + email);
         if (emailCheckService.isUserExistByEmail(email)) {
             return ResponseEntity.status(400).body("이메일이 이미 사용 중입니다.");
         } else {
@@ -36,11 +36,11 @@ public class EmaliCheckController {
         }
     }
 
-    // Send email code for ID retrieval
+    // 회원 ID 찾기 이메일 중복체크 및 인증코드 전송
     @PostMapping("/member/sendEmailCodeForFindId")
     public ResponseEntity<?> sendEmailCodeForFindId(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-
+        log.info("id찾기 이메일: " + email);
         if (!emailCheckService.isUserExistByEmail(email)) {
             return ResponseEntity.status(400).body("이메일이 등록되어 있지 않습니다.");
         } else {
@@ -50,18 +50,21 @@ public class EmaliCheckController {
         }
     }
 
+    // 이메일 인증코드 일치한지 확인
     @PostMapping("/member/checkEmailCode")
     public ResponseEntity<?> checkEmailCode(@RequestBody Map<String, String> request) {
         String encryptedCode = request.get("code");
         String inputCode = request.get("inputCode");
-
-        String decodedInputCode = new String(java.util.Base64.getDecoder().decode(inputCode));
+        log.info("이메일 인증코드 확인 request:" + request);
+        log.info("이메일 인증코드 확인 code:" + request.get("code"));
+        log.info("이메일 인증코드 확인 inputCode:" + request.get("inputCode"));
+        //String decodedInputCode = new String(java.util.Base64.getDecoder().decode(inputCode));
         String decodedServerCode = new String(java.util.Base64.getDecoder().decode(encryptedCode));
 
-        log.info("이메일 인증코드 확인, decodedServerCode: " + decodedServerCode + ", decodedInputCode: " + decodedInputCode);
+        log.info("이메일 인증코드 확인, decodedServerCode: " + decodedServerCode);
 
         Map<String, Integer> data = new HashMap<>();
-        if (decodedServerCode.equals(decodedInputCode)) {
+        if (decodedServerCode.equals(inputCode)) {
             data.put("result", 0);
             return ResponseEntity.ok().body(data);
         } else {
