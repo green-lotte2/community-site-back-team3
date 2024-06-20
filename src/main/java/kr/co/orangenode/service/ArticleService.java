@@ -73,7 +73,7 @@ public class ArticleService {
 
         Pageable pageable = pageRequestDTO.getPageable("ano");
 
-        Page<Article> getArticleList = articleRepository.findByCateNameOrderByAnoDesc(pageRequestDTO.getCateName(), pageable);
+        Page<Article> getArticleList = articleRepository.getArticleList(pageRequestDTO, pageable);
 
         log.info("카테별 게시글 서비스...1" + getArticleList);
 
