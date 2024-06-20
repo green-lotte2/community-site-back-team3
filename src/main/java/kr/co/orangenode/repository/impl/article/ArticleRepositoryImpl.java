@@ -2,6 +2,7 @@ package kr.co.orangenode.repository.impl.article;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import kr.co.orangenode.dto.article.PageRequestDTO;
 import kr.co.orangenode.entity.article.Article;
 import kr.co.orangenode.entity.article.QArticle;
@@ -24,19 +25,46 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QArticle qArticle = QArticle.article;
+    private final EntityManager entityManager;
 
 
     @Override
-    public Page<Article> getArticleList (PageRequestDTO pageRequestDTO, Pageable pageable) {
+    public Page<Article> getArticleList(PageRequestDTO pageRequestDTO, Pageable pageable) {
+        // 검색이 아닐때
+        if(pageRequestDTO.getSearchType() == null && pageRequestDTO.getSearchKeyword() == null) {
+            QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
+                    .fetchResults();
+            return new PageImpl<>(article.getResults(), pageable, (int)article.getTotal());
+        } else{
+            QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
+                    .where(qArticle.title.contains(pageRequestDTO.getSearchKeyword())) // contains는 포함만해도 찾음
+                    .fetchResults();
+            return new PageImpl<>(article.getResults(), pageable, (int)article.getTotal());
+        }
+    }
 
-        QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
-                .fetchResults();
+    @Override
+    public Article updateArticle(int uid, Article articleDetails){
+        Article article = entityManager.find(Article.class, uid);
+        if(article != null){
+            article.setTitle(articleDetails.getTitle());
+            article.setContent(articleDetails.getContent());
+            entityManager.merge(article);
+        }
+        return article;
+    }
 
-        return new PageImpl<>(article.getResults(), pageable, article.getTotal());
-
+    @Override
+    public List<Article> findByParent(String parent) {
+        return jpaQueryFactory.selectFrom(qArticle)
+                .where(qArticle.parent.eq(parent))
+                .fetch();
     }
 
 }

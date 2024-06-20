@@ -23,7 +23,7 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final StringPath cateName = createString("cateName");
 
-    public final NumberPath<Integer> cno = createNumber("cno", Integer.class);
+    public final NumberPath<Integer> cNo = createNumber("cNo", Integer.class);
 
     public final StringPath content = createString("content");
 
@@ -36,6 +36,8 @@ public class QArticle extends EntityPathBase<Article> {
     public final NumberPath<Integer> hit = createNumber("hit", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> newDate = createDateTime("newDate", java.time.LocalDateTime.class);
+
+    public final StringPath parent = createString("parent");
 
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 
