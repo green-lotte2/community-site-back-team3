@@ -1,4 +1,4 @@
-package kr.co.orangenode.service;
+package kr.co.orangenode.service.cs;
 
 import kr.co.orangenode.dto.cs.CsDTO;
 import kr.co.orangenode.dto.cs.QuestionDTO;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,5 +166,19 @@ public class CsService {
             log.info("cs 수정..4");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
         }
+    }
+
+
+    /*관리자 Cs 글 쓰기*/
+    public ResponseEntity<?> csWrite(CsDTO csDTO){
+
+        if(csDTO.getContent().isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND");
+        }else{
+            CsEntity csEntity = modelMapper.map(csDTO, CsEntity.class);
+            csRepository.save(csEntity);
+            return ResponseEntity.status(HttpStatus.OK).body(csEntity);
+        }
+
     }
 }
