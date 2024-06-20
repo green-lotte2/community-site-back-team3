@@ -3,9 +3,7 @@ package kr.co.orangenode.service.project;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import kr.co.orangenode.dto.project.CollaboratorDTO;
 import kr.co.orangenode.dto.project.ProjectDTO;
-import kr.co.orangenode.entity.project.Board;
 import kr.co.orangenode.entity.project.Collaborator;
 import kr.co.orangenode.entity.project.Project;
 import kr.co.orangenode.mapper.ProjectMapper;
@@ -30,7 +28,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
     private final ProjectMapper projectMapper;
-    private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
 
     /* 프로젝트 생성 */
@@ -71,17 +68,6 @@ public class ProjectService {
         try {
             Optional<Project> findProNo = projectRepository.findById(proNo);
             if(findProNo.isPresent()){
-
-                // Board 삭제
-                List<Board> boards = boardRepository.findAllByProNo(proNo);
-                log.info(boards.toString());
-
-                for(Board board : boards) {
-                    log.info("here ... 1");
-                    boardRepository.deleteById(board.getBoardNo());
-                }
-                log.info("here ... 4");
-
                 collaboratorRepository.deleteAllByProNo(proNo);
                 projectRepository.deleteById(proNo);
                 return ResponseEntity.status(HttpStatus.OK).body("success");
