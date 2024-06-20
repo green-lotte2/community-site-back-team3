@@ -30,13 +30,23 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Page<Article> getArticleList(PageRequestDTO pageRequestDTO, Pageable pageable) {
-        QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
-                .fetchResults();
-
-        return new PageImpl<>(article.getResults(), pageable, article.getTotal());
+        // 검색이 아닐때
+        if(pageRequestDTO.getSearchType() == null && pageRequestDTO.getSearchKeyword() == null) {
+            QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
+                    .fetchResults();
+            return new PageImpl<>(article.getResults(), pageable, (int)article.getTotal());
+        } else{
+            QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
+                    .where(qArticle.title.contains(pageRequestDTO.getSearchKeyword())) // contains는 포함만해도 찾음
+                    .fetchResults();
+            return new PageImpl<>(article.getResults(), pageable, (int)article.getTotal());
+        }
     }
 
     @Override

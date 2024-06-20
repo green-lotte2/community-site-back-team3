@@ -25,19 +25,16 @@ public class PageRequestDTO {
     @Builder.Default
     private String how = "ASC";
 
-    @Builder.Default
-    private String sort = "sold";
+
+    private String sort = "rdate";
+
 
     private String cateName;
     private String searchType;
     private String searchKeyword;
 
-    public Pageable getPageable(){
-        if(this.how.equals("ASC")) {
-            return PageRequest.of(this.pg - 1, this.size, Sort.by(this.sort).ascending());
-        }else {
-            return PageRequest.of(this.pg - 1, this.size, Sort.by(this.sort).descending());
-        }
+    public Pageable getPageable(String sort){
+        return PageRequest.of(this.pg - 1, this.size, Sort.by(sort).descending());
     }
 
 }

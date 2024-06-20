@@ -23,7 +23,7 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final StringPath cateName = createString("cateName");
 
-    public final NumberPath<Integer> cno = createNumber("cno", Integer.class);
+    public final NumberPath<Integer> cNo = createNumber("cNo", Integer.class);
 
     public final StringPath content = createString("content");
 

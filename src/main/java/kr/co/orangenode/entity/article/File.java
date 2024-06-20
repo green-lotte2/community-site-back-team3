@@ -1,8 +1,6 @@
 package kr.co.orangenode.entity.article;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
@@ -14,6 +12,7 @@ import lombok.*;
 @Table(name = "file")
 public class File {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fno;
     private int ano;
     private String sName;
