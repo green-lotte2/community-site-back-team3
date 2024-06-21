@@ -31,13 +31,13 @@ jobs:
           java-version: '17'
 
       # application.properties를 프로젝트에 포함
-      - name: add Application.properties
-        run: touch ./src/main/resources/application.properties
+      - name: add Application.yml
+        run: touch ./src/main/resources/application.yml
         shell: bash
 
       # github secret으로 등록한 properties 내용 덮어쓰기
       - name: copy Application.properties
-        run: echo "${{ secrets.APP_PROPERTIES }}" > ./src/main/resources/application.properties
+        run: echo "${{ secrets.APP_PROPERTIES }}" > ./src/main/resources/application.yml
         shell: bash
 
       # gradle 권한 설정
