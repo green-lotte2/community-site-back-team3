@@ -24,6 +24,7 @@ public class Question {
     private String cate;
     private String title;
     private String content;
+    private Integer parent;
     private String ip;
     private int status;
 
