@@ -4,6 +4,6 @@ import kr.co.orangenode.entity.cs.CsEntity;
 
 import java.util.List;
 
-public interface csRepositoryCustom {
+public interface CsRepositoryCustom {
     List<CsEntity> selectCs(String CateName);
 }
