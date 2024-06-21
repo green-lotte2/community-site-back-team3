@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.orangenode.mapper.QuestionMapper">
+    <update id="updateQuestionStatus">
+        UPDATE question
+        set status = 1
+        WHERE qno = #{questionDTO.getParent()}
+    </update>
+</mapper>

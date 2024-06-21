@@ -34,6 +34,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         if(pageRequestDTO.getSearchType() == null && pageRequestDTO.getSearchKeyword() == null) {
             log.info("검색 아닐때");
             QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .orderBy(qArticle.ano.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
@@ -42,6 +43,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         } else{
             log.info("검색 일때");
             QueryResults<Article> article = jpaQueryFactory.selectFrom(qArticle)
+                    .orderBy(qArticle.ano.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .where(qArticle.cateName.eq(pageRequestDTO.getCateName()))
