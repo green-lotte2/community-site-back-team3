@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface QuestionRepositoryCustom {
     public List<Question> selectQuestion();
+    public List<Question> selectMyQuestion(String uid);
+    public List<Question> selectMyAnswer(String uid, int parent);
 }

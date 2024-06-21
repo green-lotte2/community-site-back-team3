@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Console;
 import java.util.List;
 
 @Service
@@ -38,8 +39,7 @@ public class QuestionService {
     public ResponseEntity<?> answerQuestion(QuestionDTO questionDTO){
         log.info("관리자 답변하기 서비스" + questionDTO);
         Question question = modelMapper.map(questionDTO, Question.class);
-
-
+        
         if(questionDTO.getContent().isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("answer fail");
         }else{
@@ -47,5 +47,36 @@ public class QuestionService {
             questionMapper.updateQuestionStatus(questionDTO.getParent());
             return ResponseEntity.status(HttpStatus.OK).body(question);
         }
+    }
+    
+    /** 관리자 답변 들고오기*/
+    public ResponseEntity<?> selectAnswer(Integer parent){
+        log.info("관리자 답변가져오기 서비스" + parent);
+
+        Question question = questionRepository.findByParent(parent);
+
+        if(question.getContent().isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No answer found");
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(question);
+        }
+    }
+    
+    /** 내가 문의한 글 가져오기*/
+    public ResponseEntity<?> selectMyQuestion(String uid){
+        log.info("내가 문의한 글 서비스" + uid);
+        List<Question> questions = questionRepository.selectMyQuestion(uid);
+        log.info("내가 문의한 글 서비스...2 "+ questions);
+
+        if(questions.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No question found");
+        }else {
+            return ResponseEntity.status(HttpStatus.OK).body(questions);
+        }
+    }
+
+    /** 내 문의 답변 가져오기*/
+    public ResponseEntity<?> selectMyAnswer(Integer uid){
+        return null;
     }
 }
