@@ -22,6 +22,25 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     @Override
     public List<Question> selectQuestion() {
 
-        return jpaQueryFactory.select(question).from(question).where(question.parent.isNull()).fetch();
+        return jpaQueryFactory.select(question)
+                                .from(question)
+                                .where(question.parent.isNull())
+                                .fetch();
+    }
+
+    @Override
+    public List<Question> selectMyQuestion(String uid) {
+        return jpaQueryFactory.select(question)
+                .from(question)
+                .where(question.parent.isNull().and(question.uid.eq(uid)))
+                .fetch();
+    }
+
+    @Override
+    public List<Question> selectMyAnswer(String uid, int parent) {
+        return jpaQueryFactory.select(question)
+                .from(question)
+                .where(question.parent.eq(parent).and(question.uid.eq(uid)))
+                .fetch();
     }
 }

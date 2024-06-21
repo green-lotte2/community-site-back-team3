@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
@@ -36,5 +37,21 @@ public class QuestionController {
         questionDTO.setIp(ip);
 
         return questionService.answerQuestion(questionDTO);
+    }
+    
+    /** 관리자 답변 가져오기*/
+    @GetMapping("/question/selectAnswer")
+    public ResponseEntity<?> selectAnswer(@RequestParam Integer parent) {
+        log.info("관리자 답변 들고오기" + parent);
+
+        return questionService.selectAnswer(parent);
+    }
+
+    /**내가 문의한 글 보기*/
+    @GetMapping("/question/selectMy")
+    public ResponseEntity<?> selectMyQuestion(@RequestParam String uid) {
+        log.info("내 답변 들고오기");
+
+        return questionService.selectMyQuestion(uid);
     }
 }
