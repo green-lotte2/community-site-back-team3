@@ -38,7 +38,7 @@ public class ProjectController {
         return projectService.updateProject(projectDTO);
     }
     /* 칸반보드 불러오기*/
-    @GetMapping("/project/kanban")
+    @GetMapping("/kanban")
     public ResponseEntity<?> viewProjectKanban(@RequestParam int proNo) {
         log.info("proNo:" + proNo);
         return projectService.viewKanban(proNo);
