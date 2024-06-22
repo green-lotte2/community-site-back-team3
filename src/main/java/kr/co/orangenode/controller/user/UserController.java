@@ -80,7 +80,7 @@ public class UserController {
         }
     }
     // 회원가입 //
-    @PostMapping("/user")
+    @PostMapping("/user/register")
     public Map<String, String> register(@RequestBody UserDTO userDTO){
         String uid = userService.register(userDTO).getUid();
         return Map.of("userid", uid);
@@ -97,7 +97,7 @@ public class UserController {
         return userService.userInfo(uid);
     }
     // 사용자 비밀번호 검증 //
-    @PostMapping("/user/check")
+    @PostMapping("/user/verify/pass")
     public ResponseEntity<?> userCheck(@RequestBody UserDTO userDTO) {
         log.info("uid: " + userDTO.getUid());
         log.info("pass: " + userDTO.getPass());
@@ -113,13 +113,13 @@ public class UserController {
         }
     }
     // 회원정보 수정 //
-    @PatchMapping("/user/update")
+    @PatchMapping("/user/info")
     public ResponseEntity<?> updateUser(UserDTO userDTO) {
 
         return userService.updateUserInfo(userDTO);
     }
     // 요금제 가입 grade 업데이트
-    @PatchMapping("/user/updateGrade")
+    @PatchMapping("/user/grade")
     public ResponseEntity<?> updateGrade(@RequestBody UserDTO userDTO) {
         boolean result = userService.updateUserGrade(userDTO);
         if(result) {
