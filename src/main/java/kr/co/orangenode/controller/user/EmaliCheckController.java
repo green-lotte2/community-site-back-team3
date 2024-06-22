@@ -23,7 +23,7 @@ public class EmaliCheckController {
     private final EmailCheckService emailCheckService;
 
     // 회원가입 이메일 중복체크 및 인증코드 전송
-    @PostMapping("/member/sendEmailCode")
+    @PostMapping("/user/email-code")
     public ResponseEntity<?> sendEmailCodeForRegistration(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         log.info("회원가입 이메일: " + email);
@@ -37,7 +37,7 @@ public class EmaliCheckController {
     }
 
     // 회원 ID 찾기 이메일 중복체크 및 인증코드 전송
-    @PostMapping("/member/sendEmailCodeForFindId")
+    @PostMapping("/user/email-code-id")
     public ResponseEntity<?> sendEmailCodeForFindId(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         log.info("id찾기 이메일: " + email);
@@ -51,7 +51,7 @@ public class EmaliCheckController {
     }
 
     // 이메일 인증코드 일치한지 확인
-    @PostMapping("/member/checkEmailCode")
+    @PostMapping("/user/verify/email-code")
     public ResponseEntity<?> checkEmailCode(@RequestBody Map<String, String> request) {
         String encryptedCode = request.get("code");
         String inputCode = request.get("inputCode");
@@ -74,7 +74,7 @@ public class EmaliCheckController {
     }
 
     // userId 찾기
-    @GetMapping("/member/findUserId")
+    @GetMapping("/user/uid")
     public ResponseEntity<?> findUserId(@RequestParam String name, @RequestParam String email) {
         Optional<User> user = emailCheckService.findUserIdByUserNameAndUserEmail(name, email);
         if (user.isPresent()) {
@@ -85,7 +85,7 @@ public class EmaliCheckController {
     }
 
     // userPass 수정
-    @GetMapping("/member/changePass")
+    @GetMapping("/user/new-pass")
     public ResponseEntity<?> changePass(@RequestParam String uid, @RequestParam String pass, @RequestParam String email) {
         long result = emailCheckService.updatePw(uid, pass, email);
         if (result > 0) {
